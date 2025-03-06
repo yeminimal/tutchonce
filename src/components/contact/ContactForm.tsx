@@ -46,7 +46,7 @@ const ContactForm = () => {
         `*Name:* ${name}\n` +
         `*Email:* ${email}\n` +
         `*Phone:* ${phone}\n` +
-        `*Service:* ${service || 'Not specified'}\n` +
+        `*Service:* ${formData.service || 'Not specified'}\n` +
         `*Message:* ${message}\n\n` +
         `Sent from Tutchonce website`
       );

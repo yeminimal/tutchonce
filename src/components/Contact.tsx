@@ -1,7 +1,7 @@
-
 import React, { useEffect, useRef } from 'react';
 import ContactInfo from './contact/ContactInfo';
 import ContactForm from './contact/ContactForm';
+import ContactSection from './contact/ContactSection';
 
 const Contact = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -43,16 +43,12 @@ const Contact = () => {
       <div className="container max-w-7xl mx-auto px-6 md:px-8 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Text content */}
-          <div className="max-w-2xl">
-            <span className="inline-block px-4 py-1.5 bg-clean-50 text-clean-800 rounded-full text-sm font-medium mb-6 animate-reveal">
-              Contact Us
-            </span>
-            <h2 className="text-4xl font-bold animate-reveal" style={{ transitionDelay: '100ms' }}>
-              Get in Touch
-            </h2>
-            <p className="mt-6 text-lg text-muted-foreground animate-reveal" style={{ transitionDelay: '200ms' }}>
-              Have questions or ready to schedule your cleaning? Contact us today and experience the difference of professional cleaning services throughout Nigeria.
-            </p>
+          <div>
+            <ContactSection 
+              subtitle="Contact Us"
+              title="Get in Touch"
+              description="Have questions or ready to schedule your cleaning? Contact us today and experience the difference of professional cleaning services throughout Nigeria."
+            />
             
             {/* Contact Info */}
             <ContactInfo />

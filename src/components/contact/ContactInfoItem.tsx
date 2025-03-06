@@ -1,0 +1,41 @@
+
+import React from 'react';
+
+interface ContactInfoItemProps {
+  icon: React.ReactNode;
+  title: string;
+  content: string;
+  link?: string;
+}
+
+const ContactInfoItem: React.FC<ContactInfoItemProps> = ({ icon, title, content, link }) => {
+  if (link) {
+    return (
+      <div className="flex items-start animate-reveal hover:translate-x-1 transition-transform duration-300">
+        <div className="h-10 w-10 rounded-full bg-clean-50 flex items-center justify-center flex-shrink-0 mr-4">
+          {icon}
+        </div>
+        <div>
+          <h4 className="font-medium text-foreground">{title}</h4>
+          <a href={link} className="text-muted-foreground mt-1 hover:text-clean-600 transition-colors">
+            {content}
+          </a>
+        </div>
+      </div>
+    );
+  }
+  
+  return (
+    <div className="flex items-start animate-reveal hover:translate-x-1 transition-transform duration-300">
+      <div className="h-10 w-10 rounded-full bg-clean-50 flex items-center justify-center flex-shrink-0 mr-4">
+        {icon}
+      </div>
+      <div>
+        <h4 className="font-medium text-foreground">{title}</h4>
+        <p className="text-muted-foreground mt-1">{content}</p>
+      </div>
+    </div>
+  );
+};
+
+export default ContactInfoItem;

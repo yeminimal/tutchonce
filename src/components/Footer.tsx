@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { Facebook, Instagram, Twitter } from 'lucide-react';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -14,9 +15,22 @@ const Footer = () => {
               Pure<span className="text-clean-600">Clean</span>
             </a>
             <p className="text-muted-foreground max-w-md">
-              Professional cleaning services for homes and businesses. 
-              We deliver exceptional cleaning experiences with attention to detail.
+              We provide premium cleaning services for homes and businesses throughout the area.
+              Our team of experienced professionals ensures satisfaction with every clean.
             </p>
+            
+            {/* Social Media Icons */}
+            <div className="flex space-x-4 mt-6">
+              <a href="#" className="text-gray-400 hover:text-clean-600 transition-colors">
+                <Facebook size={20} />
+              </a>
+              <a href="#" className="text-gray-400 hover:text-clean-600 transition-colors">
+                <Instagram size={20} />
+              </a>
+              <a href="#" className="text-gray-400 hover:text-clean-600 transition-colors">
+                <Twitter size={20} />
+              </a>
+            </div>
           </div>
           
           {/* Quick Links */}
@@ -43,6 +57,11 @@ const Footer = () => {
                   Contact
                 </a>
               </li>
+              <li>
+                <a href="#" className="text-muted-foreground hover:text-clean-600 transition-colors">
+                  Blog
+                </a>
+              </li>
             </ul>
           </div>
           
@@ -63,6 +82,12 @@ const Footer = () => {
                   info@pureclean.com
                 </a>
               </li>
+              <li className="text-muted-foreground">
+                Monday-Friday: 8am-6pm
+              </li>
+              <li className="text-muted-foreground">
+                Saturday: 9am-4pm
+              </li>
             </ul>
           </div>
         </div>
@@ -78,6 +103,9 @@ const Footer = () => {
             </a>
             <a href="#" className="text-muted-foreground hover:text-clean-600 transition-colors text-sm">
               Terms of Service
+            </a>
+            <a href="#" className="text-muted-foreground hover:text-clean-600 transition-colors text-sm">
+              Careers
             </a>
           </div>
         </div>

@@ -1,5 +1,5 @@
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -46,6 +46,13 @@ const ContactInfoItem: React.FC<ContactInfoItemProps> = ({ icon, title, content,
 const Contact = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    service: '',
+    message: ''
+  });
 
   const contactInfo = [
     {
@@ -68,8 +75,8 @@ const Contact = () => {
     },
     {
       icon: <MapPin size={18} className="text-clean-600" />,
-      title: "Location",
-      content: "123 Clean Street, Sparkle City, SC 12345"
+      title: "Service Area",
+      content: "We deliver anywhere within Nigeria"
     }
   ];
 
@@ -98,28 +105,45 @@ const Contact = () => {
     };
   }, []);
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
     // Simple form validation
     if (formRef.current) {
-      const formData = new FormData(formRef.current);
-      const name = formData.get('name') as string;
-      const email = formData.get('email') as string;
-      const phone = formData.get('phone') as string;
-      const message = formData.get('message') as string;
+      const { name, email, phone, service, message } = formData;
       
       if (!name || !email || !phone || !message) {
         toast({
           title: "Error",
-          description: "Please fill in all fields",
+          description: "Please fill in all required fields",
           variant: "destructive"
         });
         return;
       }
       
-      // In a real app, you'd send the form data to a server here
-      // For demo purposes, just show a success message
+      // Create WhatsApp message
+      const whatsappMessage = encodeURIComponent(
+        `*New Cleaning Service Inquiry*\n\n` +
+        `*Name:* ${name}\n` +
+        `*Email:* ${email}\n` +
+        `*Phone:* ${phone}\n` +
+        `*Service:* ${service || 'Not specified'}\n` +
+        `*Message:* ${message}\n\n` +
+        `Sent from Tutchonce website`
+      );
+      
+      // Open WhatsApp with the message
+      window.open(`https://wa.me/+2348025058426?text=${whatsappMessage}`, '_blank');
+      
+      // Show success message
       toast({
         title: "Message sent!",
         description: "We'll get back to you as soon as possible.",
@@ -127,6 +151,13 @@ const Contact = () => {
       
       // Reset form
       formRef.current.reset();
+      setFormData({
+        name: '',
+        email: '',
+        phone: '',
+        service: '',
+        message: ''
+      });
     }
   };
 
@@ -150,7 +181,7 @@ const Contact = () => {
               Get in Touch
             </h2>
             <p className="mt-6 text-lg text-muted-foreground animate-reveal" style={{ transitionDelay: '200ms' }}>
-              Have questions or ready to schedule your cleaning? Contact us today and experience the difference of professional cleaning services.
+              Have questions or ready to schedule your cleaning? Contact us today and experience the difference of professional cleaning services throughout Nigeria.
             </p>
             
             {/* Contact Info */}
@@ -181,6 +212,8 @@ const Contact = () => {
                     name="name"
                     placeholder="Your name" 
                     className="w-full transition-all duration-300 focus:ring-2 focus:ring-clean-600"
+                    onChange={handleChange}
+                    value={formData.name}
                   />
                 </div>
                 <div>
@@ -193,6 +226,8 @@ const Contact = () => {
                     type="email" 
                     placeholder="Your email" 
                     className="w-full transition-all duration-300 focus:ring-2 focus:ring-clean-600"
+                    onChange={handleChange}
+                    value={formData.email}
                   />
                 </div>
               </div>
@@ -205,6 +240,8 @@ const Contact = () => {
                   name="phone"
                   placeholder="Your phone number" 
                   className="w-full transition-all duration-300 focus:ring-2 focus:ring-clean-600"
+                  onChange={handleChange}
+                  value={formData.phone}
                 />
               </div>
               <div>
@@ -213,13 +250,16 @@ const Contact = () => {
                 </label>
                 <select 
                   name="service"
+                  id="service"
                   className="w-full rounded-md border border-input bg-background px-3 py-2 text-foreground transition-all duration-300 focus:ring-2 focus:ring-clean-600"
+                  onChange={handleChange}
+                  value={formData.service}
                 >
                   <option value="">Select a service</option>
-                  <option value="regular">Regular Cleaning</option>
-                  <option value="deep">Deep Cleaning</option>
-                  <option value="move">Move-In/Move-Out</option>
-                  <option value="custom">Custom Cleaning</option>
+                  <option value="Regular Cleaning">Regular Cleaning</option>
+                  <option value="Deep Cleaning">Deep Cleaning</option>
+                  <option value="Move-In/Move-Out">Move-In/Move-Out</option>
+                  <option value="Custom Cleaning">Custom Cleaning</option>
                 </select>
               </div>
               <div>
@@ -231,6 +271,8 @@ const Contact = () => {
                   name="message"
                   placeholder="Tell us about your cleaning needs" 
                   className="w-full min-h-[120px] transition-all duration-300 focus:ring-2 focus:ring-clean-600"
+                  onChange={handleChange}
+                  value={formData.message}
                 />
               </div>
               <Button 

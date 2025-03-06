@@ -85,22 +85,22 @@ const Testimonials = () => {
   
   const testimonials = [
     {
-      name: "Sarah Johnson",
-      role: "Homeowner",
-      content: "I've tried several cleaning services, but none compare to the level of detail and care they provide. My home has never looked better!",
+      name: "Chioma Okafor",
+      role: "Lagos Resident",
+      content: "Tutchonce Cleaning Services has transformed how I maintain my home. Their attention to detail is remarkable and the staff is always professional. Best cleaning service in Lagos!",
       rating: 5
     },
     {
-      name: "Michael Robinson",
-      role: "Apartment Owner",
-      content: "Reliable, thorough, and professional. I love coming home after they've cleaned - it feels like a luxury hotel every time.",
+      name: "Oluwaseun Adeyemi",
+      role: "Business Owner",
+      content: "As a busy business owner, I need reliable cleaning for my office space. Tutchonce delivers consistently excellent service that keeps our workplace spotless and professional.",
       rating: 5,
       accent: true
     },
     {
-      name: "Emma Davis",
-      role: "Busy Professional",
-      content: "Their cleaning team is exceptional! They're respectful of my space and consistently deliver outstanding results that exceed my expectations.",
+      name: "Ngozi Okonkwo",
+      role: "Working Professional",
+      content: "I've tried several cleaning companies in Abuja, but none compare to Tutchonce. Their thoroughness and reliability is unmatched. They truly care about customer satisfaction!",
       rating: 5
     }
   ];
@@ -145,7 +145,7 @@ const Testimonials = () => {
             What Our Clients Say
           </h2>
           <p className="mt-6 text-lg text-muted-foreground animate-reveal" style={{ transitionDelay: '200ms' }}>
-            We take pride in exceeding our clients' expectations. Here's what some of our happy customers have to say about our services.
+            We take pride in exceeding our clients' expectations across Nigeria. Here's what some of our happy customers have to say about our services.
           </p>
         </div>
         

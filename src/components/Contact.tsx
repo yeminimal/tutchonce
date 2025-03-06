@@ -3,17 +3,35 @@ import React, { useEffect, useRef } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Phone, Mail, MapPin, ArrowRight } from "lucide-react";
+import { Phone, Mail, MapPin, ArrowRight, Send } from "lucide-react";
+import { toast } from "@/components/ui/use-toast";
 
 interface ContactInfoItemProps {
   icon: React.ReactNode;
   title: string;
   content: string;
+  link?: string;
 }
 
-const ContactInfoItem: React.FC<ContactInfoItemProps> = ({ icon, title, content }) => {
+const ContactInfoItem: React.FC<ContactInfoItemProps> = ({ icon, title, content, link }) => {
+  if (link) {
+    return (
+      <div className="flex items-start animate-reveal hover:translate-x-1 transition-transform duration-300">
+        <div className="h-10 w-10 rounded-full bg-clean-50 flex items-center justify-center flex-shrink-0 mr-4">
+          {icon}
+        </div>
+        <div>
+          <h4 className="font-medium text-foreground">{title}</h4>
+          <a href={link} className="text-muted-foreground mt-1 hover:text-clean-600 transition-colors">
+            {content}
+          </a>
+        </div>
+      </div>
+    );
+  }
+  
   return (
-    <div className="flex items-start animate-reveal">
+    <div className="flex items-start animate-reveal hover:translate-x-1 transition-transform duration-300">
       <div className="h-10 w-10 rounded-full bg-clean-50 flex items-center justify-center flex-shrink-0 mr-4">
         {icon}
       </div>
@@ -27,17 +45,26 @@ const ContactInfoItem: React.FC<ContactInfoItemProps> = ({ icon, title, content 
 
 const Contact = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
+  const formRef = useRef<HTMLFormElement>(null);
 
   const contactInfo = [
     {
       icon: <Phone size={18} className="text-clean-600" />,
-      title: "Phone",
-      content: "(123) 456-7890"
+      title: "WhatsApp",
+      content: "+234 802 505 8426",
+      link: "https://wa.me/+2348025058426"
+    },
+    {
+      icon: <Phone size={18} className="text-clean-600" />,
+      title: "WhatsApp",
+      content: "+234 803 722 6269",
+      link: "https://wa.me/+2348037226269"
     },
     {
       icon: <Mail size={18} className="text-clean-600" />,
       title: "Email",
-      content: "info@pureclean.com"
+      content: "tutchoncecleaningservices@gmail.com",
+      link: "mailto:tutchoncecleaningservices@gmail.com"
     },
     {
       icon: <MapPin size={18} className="text-clean-600" />,
@@ -71,6 +98,38 @@ const Contact = () => {
     };
   }, []);
 
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    // Simple form validation
+    if (formRef.current) {
+      const formData = new FormData(formRef.current);
+      const name = formData.get('name') as string;
+      const email = formData.get('email') as string;
+      const phone = formData.get('phone') as string;
+      const message = formData.get('message') as string;
+      
+      if (!name || !email || !phone || !message) {
+        toast({
+          title: "Error",
+          description: "Please fill in all fields",
+          variant: "destructive"
+        });
+        return;
+      }
+      
+      // In a real app, you'd send the form data to a server here
+      // For demo purposes, just show a success message
+      toast({
+        title: "Message sent!",
+        description: "We'll get back to you as soon as possible.",
+      });
+      
+      // Reset form
+      formRef.current.reset();
+    }
+  };
+
   return (
     <section 
       id="contact" 
@@ -102,15 +161,16 @@ const Contact = () => {
                   icon={item.icon} 
                   title={item.title} 
                   content={item.content} 
+                  link={item.link}
                 />
               ))}
             </div>
           </div>
           
           {/* Form */}
-          <div className="bg-white rounded-2xl shadow-card p-8 animate-reveal" style={{ transitionDelay: '300ms' }}>
+          <div className="bg-white rounded-2xl shadow-card p-8 animate-reveal hover:shadow-lg transition-shadow duration-300" style={{ transitionDelay: '300ms' }}>
             <h3 className="text-xl font-semibold mb-6">Send us a message</h3>
-            <form className="space-y-6">
+            <form ref={formRef} className="space-y-6" onSubmit={handleSubmit}>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <label htmlFor="name" className="block text-sm font-medium text-foreground mb-2">
@@ -118,8 +178,9 @@ const Contact = () => {
                   </label>
                   <Input 
                     id="name"
+                    name="name"
                     placeholder="Your name" 
-                    className="w-full"
+                    className="w-full transition-all duration-300 focus:ring-2 focus:ring-clean-600"
                   />
                 </div>
                 <div>
@@ -128,9 +189,10 @@ const Contact = () => {
                   </label>
                   <Input 
                     id="email"
+                    name="email"
                     type="email" 
                     placeholder="Your email" 
-                    className="w-full"
+                    className="w-full transition-all duration-300 focus:ring-2 focus:ring-clean-600"
                   />
                 </div>
               </div>
@@ -140,15 +202,19 @@ const Contact = () => {
                 </label>
                 <Input 
                   id="phone"
+                  name="phone"
                   placeholder="Your phone number" 
-                  className="w-full"
+                  className="w-full transition-all duration-300 focus:ring-2 focus:ring-clean-600"
                 />
               </div>
               <div>
                 <label htmlFor="service" className="block text-sm font-medium text-foreground mb-2">
                   Service Interested In
                 </label>
-                <select className="w-full rounded-md border border-input bg-background px-3 py-2 text-foreground">
+                <select 
+                  name="service"
+                  className="w-full rounded-md border border-input bg-background px-3 py-2 text-foreground transition-all duration-300 focus:ring-2 focus:ring-clean-600"
+                >
                   <option value="">Select a service</option>
                   <option value="regular">Regular Cleaning</option>
                   <option value="deep">Deep Cleaning</option>
@@ -162,8 +228,9 @@ const Contact = () => {
                 </label>
                 <Textarea 
                   id="message"
+                  name="message"
                   placeholder="Tell us about your cleaning needs" 
-                  className="w-full min-h-[120px]"
+                  className="w-full min-h-[120px] transition-all duration-300 focus:ring-2 focus:ring-clean-600"
                 />
               </div>
               <Button 
@@ -171,7 +238,7 @@ const Contact = () => {
                 className="w-full bg-clean-600 hover:bg-clean-700 text-white rounded-full py-6 button-hover-effect group"
               >
                 Send Message
-                <ArrowRight size={16} className="ml-2 group-hover:translate-x-1 transition-transform" />
+                <Send size={16} className="ml-2 group-hover:translate-x-1 transition-transform" />
               </Button>
             </form>
           </div>

@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Menu, X } from "lucide-react";
+import { Menu, X, CalendarCheck } from "lucide-react";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -19,6 +19,14 @@ const Navbar = () => {
     };
   }, []);
 
+  const scrollToContact = () => {
+    const contactSection = document.getElementById('contact');
+    if (contactSection) {
+      contactSection.scrollIntoView({ behavior: 'smooth' });
+      if (isMobileMenuOpen) setIsMobileMenuOpen(false);
+    }
+  };
+
   return (
     <header 
       className={cn(
@@ -30,21 +38,21 @@ const Navbar = () => {
         <div className="flex items-center justify-between">
           {/* Logo */}
           <a href="#" className="font-display text-2xl font-semibold text-foreground transition-colors">
-            Pure<span className="text-clean-600">Clean</span>
+            Tutch<span className="text-clean-600">once</span>
           </a>
           
           {/* Desktop Menu */}
           <nav className="hidden md:flex items-center space-x-8">
-            <a href="#services" className="text-foreground/80 hover:text-clean-600 transition-colors font-medium text-sm">
+            <a href="#services" className="text-foreground/80 hover:text-clean-600 transition-colors font-medium text-sm hover:scale-105 duration-200">
               Services
             </a>
-            <a href="#how-it-works" className="text-foreground/80 hover:text-clean-600 transition-colors font-medium text-sm">
+            <a href="#how-it-works" className="text-foreground/80 hover:text-clean-600 transition-colors font-medium text-sm hover:scale-105 duration-200">
               How It Works
             </a>
-            <a href="#testimonials" className="text-foreground/80 hover:text-clean-600 transition-colors font-medium text-sm">
+            <a href="#testimonials" className="text-foreground/80 hover:text-clean-600 transition-colors font-medium text-sm hover:scale-105 duration-200">
               Testimonials
             </a>
-            <a href="#contact" className="text-foreground/80 hover:text-clean-600 transition-colors font-medium text-sm">
+            <a href="#contact" className="text-foreground/80 hover:text-clean-600 transition-colors font-medium text-sm hover:scale-105 duration-200">
               Contact
             </a>
           </nav>
@@ -53,8 +61,10 @@ const Navbar = () => {
           <div className="hidden md:block">
             <Button 
               variant="default" 
-              className="bg-clean-600 hover:bg-clean-700 text-white rounded-full px-6 button-hover-effect"
+              className="bg-clean-600 hover:bg-clean-700 text-white rounded-full px-6 button-hover-effect group"
+              onClick={scrollToContact}
             >
+              <CalendarCheck className="mr-2 h-4 w-4 group-hover:scale-110 transition-transform" />
               Book Now
             </Button>
           </div>
@@ -62,7 +72,7 @@ const Navbar = () => {
           {/* Mobile Menu Button */}
           <button 
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="md:hidden text-foreground p-2"
+            className="md:hidden text-foreground p-2 hover:bg-clean-50 rounded-full transition-colors"
             aria-label="Toggle menu"
           >
             {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
@@ -76,28 +86,28 @@ const Navbar = () => {
           <nav className="flex flex-col space-y-6 mt-8">
             <a 
               href="#services" 
-              className="text-foreground font-medium text-lg"
+              className="text-foreground font-medium text-lg transition-colors hover:text-clean-600"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               Services
             </a>
             <a 
               href="#how-it-works" 
-              className="text-foreground font-medium text-lg"
+              className="text-foreground font-medium text-lg transition-colors hover:text-clean-600"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               How It Works
             </a>
             <a 
               href="#testimonials" 
-              className="text-foreground font-medium text-lg"
+              className="text-foreground font-medium text-lg transition-colors hover:text-clean-600"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               Testimonials
             </a>
             <a 
               href="#contact" 
-              className="text-foreground font-medium text-lg"
+              className="text-foreground font-medium text-lg transition-colors hover:text-clean-600"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               Contact
@@ -106,9 +116,10 @@ const Navbar = () => {
           <div className="mt-auto">
             <Button 
               variant="default" 
-              className="w-full bg-clean-600 hover:bg-clean-700 text-white rounded-full button-hover-effect"
-              onClick={() => setIsMobileMenuOpen(false)}
+              className="w-full bg-clean-600 hover:bg-clean-700 text-white rounded-full button-hover-effect group"
+              onClick={scrollToContact}
             >
+              <CalendarCheck className="mr-2 h-4 w-4 group-hover:scale-110 transition-transform" />
               Book Now
             </Button>
           </div>

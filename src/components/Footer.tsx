@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Facebook, Instagram, Twitter } from 'lucide-react';
+import { Facebook, Instagram, Twitter, Phone } from 'lucide-react';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -12,7 +12,7 @@ const Footer = () => {
           {/* Logo and description */}
           <div className="md:col-span-2">
             <a href="#" className="font-display text-2xl font-semibold text-foreground inline-block mb-4">
-              Pure<span className="text-clean-600">Clean</span>
+              Tutch<span className="text-clean-600">once</span>
             </a>
             <p className="text-muted-foreground max-w-md">
               We provide premium cleaning services for homes and businesses throughout the area.
@@ -21,13 +21,13 @@ const Footer = () => {
             
             {/* Social Media Icons */}
             <div className="flex space-x-4 mt-6">
-              <a href="#" className="text-gray-400 hover:text-clean-600 transition-colors">
+              <a href="#" className="text-gray-400 hover:text-clean-600 transition-colors transform hover:scale-110 duration-300">
                 <Facebook size={20} />
               </a>
-              <a href="#" className="text-gray-400 hover:text-clean-600 transition-colors">
+              <a href="#" className="text-gray-400 hover:text-clean-600 transition-colors transform hover:scale-110 duration-300">
                 <Instagram size={20} />
               </a>
-              <a href="#" className="text-gray-400 hover:text-clean-600 transition-colors">
+              <a href="#" className="text-gray-400 hover:text-clean-600 transition-colors transform hover:scale-110 duration-300">
                 <Twitter size={20} />
               </a>
             </div>
@@ -73,13 +73,20 @@ const Footer = () => {
                 123 Clean Street, Sparkle City, SC 12345
               </li>
               <li>
-                <a href="tel:+11234567890" className="text-muted-foreground hover:text-clean-600 transition-colors">
-                  (123) 456-7890
+                <a href="https://wa.me/+2348025058426" className="text-muted-foreground hover:text-clean-600 transition-colors flex items-center">
+                  <Phone size={16} className="mr-2" />
+                  +234 802 505 8426
                 </a>
               </li>
               <li>
-                <a href="mailto:info@pureclean.com" className="text-muted-foreground hover:text-clean-600 transition-colors">
-                  info@pureclean.com
+                <a href="https://wa.me/+2348037226269" className="text-muted-foreground hover:text-clean-600 transition-colors flex items-center">
+                  <Phone size={16} className="mr-2" />
+                  +234 803 722 6269
+                </a>
+              </li>
+              <li>
+                <a href="mailto:tutchoncecleaningservices@gmail.com" className="text-muted-foreground hover:text-clean-600 transition-colors">
+                  tutchoncecleaningservices@gmail.com
                 </a>
               </li>
               <li className="text-muted-foreground">
@@ -95,7 +102,7 @@ const Footer = () => {
         {/* Bottom bar */}
         <div className="border-t border-gray-100 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
           <p className="text-muted-foreground text-sm">
-            © {currentYear} PureClean. All rights reserved.
+            © {currentYear} Tutchonce. All rights reserved.
           </p>
           <div className="flex space-x-6 mt-4 md:mt-0">
             <a href="#" className="text-muted-foreground hover:text-clean-600 transition-colors text-sm">

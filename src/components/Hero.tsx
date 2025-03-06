@@ -1,7 +1,7 @@
 
 import React, { useEffect, useRef } from 'react';
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Check } from "lucide-react";
+import { ArrowRight, Check, CalendarCheck } from "lucide-react";
 
 const Hero = () => {
   const heroRef = useRef<HTMLDivElement>(null);
@@ -34,6 +34,20 @@ const Hero = () => {
     };
   }, []);
 
+  const scrollToContact = () => {
+    const contactSection = document.getElementById('contact');
+    if (contactSection) {
+      contactSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const scrollToServices = () => {
+    const servicesSection = document.getElementById('services');
+    if (servicesSection) {
+      servicesSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <section 
       ref={heroRef}
@@ -55,13 +69,13 @@ const Hero = () => {
               <span className="text-clean-600">Peaceful Lives</span>
             </h1>
             <p className="mt-6 text-lg text-muted-foreground animate-reveal" style={{ transitionDelay: '200ms' }}>
-              Experience the joy of coming home to a perfectly clean space. Our professional cleaning service delivers exceptional results, giving you more time to enjoy life.
+              Experience the joy of coming home to a perfectly clean space. Tutchonce professional cleaning service delivers exceptional results, giving you more time to enjoy life.
             </p>
             
             {/* Feature list */}
             <div className="mt-8 space-y-4 animate-reveal" style={{ transitionDelay: '300ms' }}>
               {features.map((feature, index) => (
-                <div key={index} className="flex items-center">
+                <div key={index} className="flex items-center hover:translate-x-2 transition-transform duration-300">
                   <div className="flex-shrink-0 h-6 w-6 rounded-full bg-clean-100 flex items-center justify-center mr-3">
                     <Check size={14} className="text-clean-600" />
                   </div>
@@ -73,15 +87,18 @@ const Hero = () => {
             {/* CTA Buttons */}
             <div className="mt-10 flex flex-col sm:flex-row gap-4 animate-reveal" style={{ transitionDelay: '400ms' }}>
               <Button 
-                className="bg-clean-600 hover:bg-clean-700 text-white rounded-full px-8 py-6 button-hover-effect"
+                className="bg-clean-600 hover:bg-clean-700 text-white rounded-full px-8 py-6 button-hover-effect group"
+                onClick={scrollToContact}
               >
+                <CalendarCheck className="mr-2 h-5 w-5 group-hover:rotate-12 transition-transform" />
                 Book a Cleaning
               </Button>
               <Button 
                 variant="outline" 
                 className="border-clean-200 hover:bg-clean-50 text-foreground rounded-full px-8 py-6 button-hover-effect group"
+                onClick={scrollToServices}
               >
-                See Pricing
+                See Services
                 <ArrowRight size={16} className="ml-2 group-hover:translate-x-1 transition-transform" />
               </Button>
             </div>
@@ -89,18 +106,18 @@ const Hero = () => {
           
           {/* Image */}
           <div className="relative animate-reveal" style={{ transitionDelay: '500ms' }}>
-            <div className="aspect-square max-w-md mx-auto lg:ml-auto rounded-2xl overflow-hidden shadow-card">
+            <div className="aspect-square max-w-md mx-auto lg:ml-auto rounded-2xl overflow-hidden shadow-card hover:shadow-xl transition-shadow duration-300">
               <div className="absolute inset-0 bg-gradient-to-br from-clean-50/50 to-clean-200/30 opacity-70 rounded-2xl z-10"></div>
               <img 
                 src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=640&q=80" 
                 alt="Clean home environment" 
-                className="w-full h-full object-cover rounded-2xl image-filter"
+                className="w-full h-full object-cover rounded-2xl image-filter transition-transform duration-700 hover:scale-105"
                 loading="lazy"
               />
             </div>
             
             {/* Floating card */}
-            <div className="absolute -bottom-6 -left-6 md:bottom-8 md:-left-12 glass px-5 py-4 rounded-xl shadow-smooth animate-float max-w-xs">
+            <div className="absolute -bottom-6 -left-6 md:bottom-8 md:-left-12 glass px-5 py-4 rounded-xl shadow-smooth animate-float max-w-xs hover:translate-y-[-5px] transition-transform duration-300">
               <div className="flex items-center space-x-3">
                 <div className="h-12 w-12 rounded-full bg-clean-100 flex items-center justify-center flex-shrink-0">
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-clean-600">

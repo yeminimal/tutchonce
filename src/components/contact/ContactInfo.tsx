@@ -6,25 +6,25 @@ import ContactInfoItem from './ContactInfoItem';
 const ContactInfo = () => {
   const contactInfo = [
     {
-      icon: <Phone size={18} className="text-clean-600" />,
+      icon: <Phone size={18} className="text-brand-primary" />,
       title: "WhatsApp",
       content: "+234 802 505 8426",
       link: "https://wa.me/+2348025058426"
     },
     {
-      icon: <Phone size={18} className="text-clean-600" />,
+      icon: <Phone size={18} className="text-brand-primary" />,
       title: "WhatsApp",
       content: "+234 803 722 6269",
       link: "https://wa.me/+2348037226269"
     },
     {
-      icon: <Mail size={18} className="text-clean-600" />,
+      icon: <Mail size={18} className="text-brand-primary" />,
       title: "Email",
       content: "tutchoncecleaningservices@gmail.com",
       link: "mailto:tutchoncecleaningservices@gmail.com"
     },
     {
-      icon: <MapPin size={18} className="text-clean-600" />,
+      icon: <MapPin size={18} className="text-brand-primary" />,
       title: "Service Area",
       content: "We deliver anywhere within Nigeria"
     }

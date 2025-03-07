@@ -12,7 +12,7 @@ const Footer = () => {
           {/* Logo and description */}
           <div className="md:col-span-2">
             <a href="#" className="font-display text-2xl font-semibold text-foreground inline-block mb-4">
-              Tutch<span className="text-clean-600">once</span>
+              Tutch<span className="text-brand-primary">once</span>
             </a>
             <p className="text-muted-foreground max-w-md">
               We provide premium cleaning services for homes and businesses throughout the area.
@@ -21,13 +21,13 @@ const Footer = () => {
             
             {/* Social Media Icons */}
             <div className="flex space-x-4 mt-6">
-              <a href="#" className="text-gray-400 hover:text-clean-600 transition-colors transform hover:scale-110 duration-300">
+              <a href="#" className="text-gray-400 hover:text-brand-primary transition-colors transform hover:scale-110 duration-300">
                 <Facebook size={20} />
               </a>
-              <a href="#" className="text-gray-400 hover:text-clean-600 transition-colors transform hover:scale-110 duration-300">
+              <a href="#" className="text-gray-400 hover:text-brand-primary transition-colors transform hover:scale-110 duration-300">
                 <Instagram size={20} />
               </a>
-              <a href="#" className="text-gray-400 hover:text-clean-600 transition-colors transform hover:scale-110 duration-300">
+              <a href="#" className="text-gray-400 hover:text-brand-primary transition-colors transform hover:scale-110 duration-300">
                 <Twitter size={20} />
               </a>
             </div>
@@ -38,27 +38,27 @@ const Footer = () => {
             <h3 className="font-semibold text-lg mb-4">Quick Links</h3>
             <ul className="space-y-3">
               <li>
-                <a href="#services" className="text-muted-foreground hover:text-clean-600 transition-colors">
+                <a href="#services" className="text-muted-foreground hover:text-brand-primary transition-colors">
                   Services
                 </a>
               </li>
               <li>
-                <a href="#how-it-works" className="text-muted-foreground hover:text-clean-600 transition-colors">
+                <a href="#how-it-works" className="text-muted-foreground hover:text-brand-primary transition-colors">
                   How It Works
                 </a>
               </li>
               <li>
-                <a href="#testimonials" className="text-muted-foreground hover:text-clean-600 transition-colors">
+                <a href="#testimonials" className="text-muted-foreground hover:text-brand-primary transition-colors">
                   Testimonials
                 </a>
               </li>
               <li>
-                <a href="#contact" className="text-muted-foreground hover:text-clean-600 transition-colors">
+                <a href="#contact" className="text-muted-foreground hover:text-brand-primary transition-colors">
                   Contact
                 </a>
               </li>
               <li>
-                <a href="#" className="text-muted-foreground hover:text-clean-600 transition-colors">
+                <a href="#" className="text-muted-foreground hover:text-brand-primary transition-colors">
                   Blog
                 </a>
               </li>
@@ -70,22 +70,22 @@ const Footer = () => {
             <h3 className="font-semibold text-lg mb-4">Contact</h3>
             <ul className="space-y-3">
               <li className="text-muted-foreground">
-                123 Clean Street, Sparkle City, SC 12345
+                We deliver anywhere within Nigeria
               </li>
               <li>
-                <a href="https://wa.me/+2348025058426" className="text-muted-foreground hover:text-clean-600 transition-colors flex items-center">
+                <a href="https://wa.me/+2348025058426" className="text-muted-foreground hover:text-brand-primary transition-colors flex items-center">
                   <Phone size={16} className="mr-2" />
                   +234 802 505 8426
                 </a>
               </li>
               <li>
-                <a href="https://wa.me/+2348037226269" className="text-muted-foreground hover:text-clean-600 transition-colors flex items-center">
+                <a href="https://wa.me/+2348037226269" className="text-muted-foreground hover:text-brand-primary transition-colors flex items-center">
                   <Phone size={16} className="mr-2" />
                   +234 803 722 6269
                 </a>
               </li>
               <li>
-                <a href="mailto:tutchoncecleaningservices@gmail.com" className="text-muted-foreground hover:text-clean-600 transition-colors">
+                <a href="mailto:tutchoncecleaningservices@gmail.com" className="text-muted-foreground hover:text-brand-primary transition-colors">
                   tutchoncecleaningservices@gmail.com
                 </a>
               </li>
@@ -105,13 +105,13 @@ const Footer = () => {
             © {currentYear} Tutchonce. All rights reserved.
           </p>
           <div className="flex space-x-6 mt-4 md:mt-0">
-            <a href="#" className="text-muted-foreground hover:text-clean-600 transition-colors text-sm">
+            <a href="#" className="text-muted-foreground hover:text-brand-primary transition-colors text-sm">
               Privacy Policy
             </a>
-            <a href="#" className="text-muted-foreground hover:text-clean-600 transition-colors text-sm">
+            <a href="#" className="text-muted-foreground hover:text-brand-primary transition-colors text-sm">
               Terms of Service
             </a>
-            <a href="#" className="text-muted-foreground hover:text-clean-600 transition-colors text-sm">
+            <a href="#" className="text-muted-foreground hover:text-brand-primary transition-colors text-sm">
               Careers
             </a>
           </div>

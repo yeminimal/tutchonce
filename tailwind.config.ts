@@ -67,6 +67,11 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
+				brand: {
+					'primary': '#228977',
+					'secondary': '#21665a',
+					'light': '#f8fffe',
+				},
 				clean: {
 					'50': '#f8fafc',
 					'100': '#f0f5fa',

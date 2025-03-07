@@ -70,7 +70,7 @@ const Footer = () => {
             <h3 className="font-semibold text-lg mb-4">Contact</h3>
             <ul className="space-y-3">
               <li className="text-muted-foreground">
-                We deliver anywhere within Nigeria
+                123 Clean Street, Sparkle City, SC 12345
               </li>
               <li>
                 <a href="https://wa.me/+2348025058426" className="text-muted-foreground hover:text-clean-600 transition-colors flex items-center">

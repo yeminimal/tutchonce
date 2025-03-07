@@ -5,16 +5,9 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Send } from "lucide-react";
 import { toast } from "@/components/ui/use-toast";
-import { createClient } from '@supabase/supabase-js';
-
-// Initialize Supabase client
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
-const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
-const supabase = createClient(supabaseUrl, supabaseKey);
 
 const ContactForm = () => {
   const formRef = useRef<HTMLFormElement>(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -31,38 +24,8 @@ const ContactForm = () => {
     }));
   };
 
-  const saveToDatabase = async () => {
-    try {
-      const { data, error } = await supabase
-        .from('contacts')
-        .insert([
-          { 
-            name: formData.name,
-            email: formData.email,
-            phone: formData.phone,
-            service: formData.service,
-            message: formData.message,
-            created_at: new Date().toISOString()
-          }
-        ]);
-      
-      if (error) {
-        console.error('Error saving to database:', error);
-        // Still continue with WhatsApp message even if DB save fails
-        return false;
-      }
-      
-      console.log('Contact saved to database:', data);
-      return true;
-    } catch (error) {
-      console.error('Exception saving to database:', error);
-      return false;
-    }
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitting(true);
     
     // Simple form validation
     if (formRef.current) {
@@ -74,12 +37,8 @@ const ContactForm = () => {
           description: "Please fill in all required fields",
           variant: "destructive"
         });
-        setIsSubmitting(false);
         return;
       }
-      
-      // Save to Supabase
-      const dbSaved = await saveToDatabase();
       
       // Create WhatsApp message
       const whatsappMessage = encodeURIComponent(
@@ -98,9 +57,7 @@ const ContactForm = () => {
       // Show success message
       toast({
         title: "Message sent!",
-        description: dbSaved 
-          ? "We've saved your information and will get back to you soon." 
-          : "We'll get back to you as soon as possible.",
+        description: "We'll get back to you as soon as possible.",
       });
       
       // Reset form
@@ -113,7 +70,6 @@ const ContactForm = () => {
         message: ''
       });
     }
-    setIsSubmitting(false);
   };
 
   return (
@@ -196,9 +152,8 @@ const ContactForm = () => {
         <Button 
           type="submit" 
           className="w-full bg-clean-600 hover:bg-clean-700 text-white rounded-full py-6 button-hover-effect group"
-          disabled={isSubmitting}
         >
-          {isSubmitting ? 'Sending...' : 'Send Message'}
+          Send Message
           <Send size={16} className="ml-2 group-hover:translate-x-1 transition-transform" />
         </Button>
       </form>

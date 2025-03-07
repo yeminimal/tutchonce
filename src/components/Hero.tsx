@@ -104,13 +104,13 @@ const Hero = () => {
             </div>
           </div>
           
-          {/* Image - Updated with Nigerian lady cleaning */}
+          {/* Image */}
           <div className="relative animate-reveal" style={{ transitionDelay: '500ms' }}>
             <div className="aspect-square max-w-md mx-auto lg:ml-auto rounded-2xl overflow-hidden shadow-card hover:shadow-xl transition-shadow duration-300">
               <div className="absolute inset-0 bg-gradient-to-br from-clean-50/50 to-clean-200/30 opacity-70 rounded-2xl z-10"></div>
               <img 
-                src="https://images.unsplash.com/photo-1584820927498-cfe5211fd8bf?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=640&q=80" 
-                alt="Nigerian woman cleaning a home" 
+                src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=640&q=80" 
+                alt="Clean home environment" 
                 className="w-full h-full object-cover rounded-2xl image-filter transition-transform duration-700 hover:scale-105"
                 loading="lazy"
               />

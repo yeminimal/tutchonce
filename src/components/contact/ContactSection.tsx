@@ -13,7 +13,7 @@ const ContactSection: React.FC<ContactSectionProps> = ({ title, subtitle, descri
       <span className="inline-block px-4 py-1.5 bg-brand-light text-brand-primary rounded-full text-sm font-medium mb-6 animate-reveal">
         {subtitle}
       </span>
-      <h2 className="text-4xl font-bold animate-reveal" style={{ transitionDelay: '100ms' }}>
+      <h2 className="text-4xl font-bold text-brand-primary animate-reveal" style={{ transitionDelay: '100ms' }}>
         {title}
       </h2>
       <p className="mt-6 text-lg text-muted-foreground animate-reveal" style={{ transitionDelay: '200ms' }}>

@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Facebook, Instagram, Twitter, Phone } from 'lucide-react';
 
 const Footer = () => {
@@ -11,9 +12,9 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Logo and description */}
           <div className="md:col-span-2">
-            <a href="#" className="font-display text-2xl font-semibold text-foreground inline-block mb-4">
+            <Link to="/" className="font-display text-2xl font-semibold text-foreground inline-block mb-4">
               Tutch<span className="text-brand-primary">once</span>
-            </a>
+            </Link>
             <p className="text-muted-foreground max-w-md">
               We provide premium cleaning services for homes and businesses throughout the area.
               Our team of experienced professionals ensures satisfaction with every clean.
@@ -53,13 +54,18 @@ const Footer = () => {
                 </a>
               </li>
               <li>
-                <a href="#contact" className="text-muted-foreground hover:text-brand-primary transition-colors">
-                  Contact
-                </a>
+                <Link to="/blog" className="text-muted-foreground hover:text-brand-primary transition-colors">
+                  Blog
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-muted-foreground hover:text-brand-primary transition-colors">
-                  Blog
+                <Link to="/careers" className="text-muted-foreground hover:text-brand-primary transition-colors">
+                  Careers
+                </Link>
+              </li>
+              <li>
+                <a href="#contact" className="text-muted-foreground hover:text-brand-primary transition-colors">
+                  Contact
                 </a>
               </li>
             </ul>
@@ -111,9 +117,9 @@ const Footer = () => {
             <a href="#" className="text-muted-foreground hover:text-brand-primary transition-colors text-sm">
               Terms of Service
             </a>
-            <a href="#" className="text-muted-foreground hover:text-brand-primary transition-colors text-sm">
+            <Link to="/careers" className="text-muted-foreground hover:text-brand-primary transition-colors text-sm">
               Careers
-            </a>
+            </Link>
           </div>
         </div>
       </div>

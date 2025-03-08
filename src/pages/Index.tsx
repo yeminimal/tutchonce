@@ -60,11 +60,11 @@ const Index = () => {
         <Hero />
         <Services />
         
-        {/* How It Works Section (simplified) */}
+        {/* How It Works Section (updated colors) */}
         <section id="how-it-works" className="py-24 relative">
           <div className="container max-w-7xl mx-auto px-6 md:px-8">
             <div className="text-center max-w-3xl mx-auto mb-16">
-              <span className="inline-block px-4 py-1.5 bg-clean-50 text-clean-800 rounded-full text-sm font-medium mb-6 animate-reveal">
+              <span className="inline-block px-4 py-1.5 bg-brand-light text-brand-primary rounded-full text-sm font-medium mb-6 animate-reveal">
                 Simple Process
               </span>
               <h2 className="text-4xl font-bold animate-reveal" style={{ transitionDelay: '100ms' }}>
@@ -78,8 +78,8 @@ const Index = () => {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
               {/* Step 1 */}
               <div className="text-center animate-reveal" style={{ transitionDelay: '300ms' }}>
-                <div className="h-16 w-16 rounded-full bg-clean-50 flex items-center justify-center mx-auto mb-6">
-                  <span className="text-xl font-bold text-clean-600">1</span>
+                <div className="h-16 w-16 rounded-full bg-brand-light flex items-center justify-center mx-auto mb-6">
+                  <span className="text-xl font-bold text-brand-primary">1</span>
                 </div>
                 <h3 className="text-xl font-medium mb-3">Book Online</h3>
                 <p className="text-muted-foreground">
@@ -89,8 +89,8 @@ const Index = () => {
               
               {/* Step 2 */}
               <div className="text-center animate-reveal" style={{ transitionDelay: '400ms' }}>
-                <div className="h-16 w-16 rounded-full bg-clean-50 flex items-center justify-center mx-auto mb-6">
-                  <span className="text-xl font-bold text-clean-600">2</span>
+                <div className="h-16 w-16 rounded-full bg-brand-light flex items-center justify-center mx-auto mb-6">
+                  <span className="text-xl font-bold text-brand-primary">2</span>
                 </div>
                 <h3 className="text-xl font-medium mb-3">We Clean</h3>
                 <p className="text-muted-foreground">
@@ -100,8 +100,8 @@ const Index = () => {
               
               {/* Step 3 */}
               <div className="text-center animate-reveal" style={{ transitionDelay: '500ms' }}>
-                <div className="h-16 w-16 rounded-full bg-clean-50 flex items-center justify-center mx-auto mb-6">
-                  <span className="text-xl font-bold text-clean-600">3</span>
+                <div className="h-16 w-16 rounded-full bg-brand-light flex items-center justify-center mx-auto mb-6">
+                  <span className="text-xl font-bold text-brand-primary">3</span>
                 </div>
                 <h3 className="text-xl font-medium mb-3">Enjoy Your Clean Space</h3>
                 <p className="text-muted-foreground">

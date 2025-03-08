@@ -1,10 +1,27 @@
 
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Facebook, Instagram, Twitter, Phone } from 'lucide-react';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
+  const location = useLocation();
+  
+  // This function handles scrolling to sections or redirecting to the home page with anchor
+  const handleNavigation = (e: React.MouseEvent<HTMLAnchorElement>, sectionId: string) => {
+    e.preventDefault();
+    
+    if (location.pathname === '/') {
+      // If we're on the home page, just scroll to the section
+      const section = document.getElementById(sectionId);
+      if (section) {
+        section.scrollIntoView({ behavior: 'smooth' });
+      }
+    } else {
+      // If we're on another page, navigate to home with the hash
+      window.location.href = `/#${sectionId}`;
+    }
+  };
   
   return (
     <footer className="bg-white border-t border-gray-100 py-12">
@@ -39,17 +56,29 @@ const Footer = () => {
             <h3 className="font-semibold text-lg mb-4">Quick Links</h3>
             <ul className="space-y-3">
               <li>
-                <a href="#services" className="text-muted-foreground hover:text-brand-primary transition-colors">
+                <a 
+                  href="#services" 
+                  onClick={(e) => handleNavigation(e, 'services')}
+                  className="text-muted-foreground hover:text-brand-primary transition-colors"
+                >
                   Services
                 </a>
               </li>
               <li>
-                <a href="#how-it-works" className="text-muted-foreground hover:text-brand-primary transition-colors">
+                <a 
+                  href="#how-it-works" 
+                  onClick={(e) => handleNavigation(e, 'how-it-works')}
+                  className="text-muted-foreground hover:text-brand-primary transition-colors"
+                >
                   How It Works
                 </a>
               </li>
               <li>
-                <a href="#testimonials" className="text-muted-foreground hover:text-brand-primary transition-colors">
+                <a 
+                  href="#testimonials" 
+                  onClick={(e) => handleNavigation(e, 'testimonials')}
+                  className="text-muted-foreground hover:text-brand-primary transition-colors"
+                >
                   Testimonials
                 </a>
               </li>
@@ -64,7 +93,11 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <a href="#contact" className="text-muted-foreground hover:text-brand-primary transition-colors">
+                <a 
+                  href="#contact" 
+                  onClick={(e) => handleNavigation(e, 'contact')}
+                  className="text-muted-foreground hover:text-brand-primary transition-colors"
+                >
                   Contact
                 </a>
               </li>

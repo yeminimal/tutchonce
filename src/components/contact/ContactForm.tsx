@@ -85,7 +85,7 @@ const ContactForm = () => {
               id="name"
               name="name"
               placeholder="Your name" 
-              className="w-full transition-all duration-300 focus:ring-2 focus:ring-clean-600"
+              className="w-full transition-all duration-300 focus:ring-2 focus:ring-brand-primary"
               onChange={handleChange}
               value={formData.name}
             />
@@ -99,7 +99,7 @@ const ContactForm = () => {
               name="email"
               type="email" 
               placeholder="Your email" 
-              className="w-full transition-all duration-300 focus:ring-2 focus:ring-clean-600"
+              className="w-full transition-all duration-300 focus:ring-2 focus:ring-brand-primary"
               onChange={handleChange}
               value={formData.email}
             />
@@ -113,7 +113,7 @@ const ContactForm = () => {
             id="phone"
             name="phone"
             placeholder="Your phone number" 
-            className="w-full transition-all duration-300 focus:ring-2 focus:ring-clean-600"
+            className="w-full transition-all duration-300 focus:ring-2 focus:ring-brand-primary"
             onChange={handleChange}
             value={formData.phone}
           />
@@ -125,7 +125,7 @@ const ContactForm = () => {
           <select 
             name="service"
             id="service"
-            className="w-full rounded-md border border-input bg-background px-3 py-2 text-foreground transition-all duration-300 focus:ring-2 focus:ring-clean-600"
+            className="w-full rounded-md border border-input bg-background px-3 py-2 text-foreground transition-all duration-300 focus:ring-2 focus:ring-brand-primary"
             onChange={handleChange}
             value={formData.service}
           >
@@ -144,14 +144,14 @@ const ContactForm = () => {
             id="message"
             name="message"
             placeholder="Tell us about your cleaning needs" 
-            className="w-full min-h-[120px] transition-all duration-300 focus:ring-2 focus:ring-clean-600"
+            className="w-full min-h-[120px] transition-all duration-300 focus:ring-2 focus:ring-brand-primary"
             onChange={handleChange}
             value={formData.message}
           />
         </div>
         <Button 
           type="submit" 
-          className="w-full bg-clean-600 hover:bg-clean-700 text-white rounded-full py-6 button-hover-effect group"
+          className="w-full bg-brand-primary hover:bg-brand-secondary text-white rounded-full py-6 button-hover-effect group"
         >
           Send Message
           <Send size={16} className="ml-2 group-hover:translate-x-1 transition-transform" />

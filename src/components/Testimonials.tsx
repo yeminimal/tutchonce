@@ -23,7 +23,7 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
       className={cn(
         "p-8 rounded-2xl card-hover animate-reveal",
         accent 
-          ? "bg-clean-600 text-white" 
+          ? "bg-brand-primary text-white" 
           : "bg-white shadow-card"
       )}
     >
@@ -56,7 +56,7 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
         <div 
           className={cn(
             "h-10 w-10 rounded-full mr-3 flex items-center justify-center text-lg font-semibold",
-            accent ? "bg-white text-clean-600" : "bg-clean-100 text-clean-600"
+            accent ? "bg-white text-brand-primary" : "bg-brand-light text-brand-primary"
           )}
         >
           {name.charAt(0)}
@@ -134,11 +134,11 @@ const Testimonials = () => {
     <section 
       id="testimonials" 
       ref={sectionRef}
-      className="py-24 bg-clean-50"
+      className="py-24 bg-brand-light"
     >
       <div className="container max-w-7xl mx-auto px-6 md:px-8">
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <span className="inline-block px-4 py-1.5 bg-white text-clean-800 rounded-full text-sm font-medium mb-6 animate-reveal">
+          <span className="inline-block px-4 py-1.5 bg-white text-brand-primary rounded-full text-sm font-medium mb-6 animate-reveal">
             Testimonials
           </span>
           <h2 className="text-4xl font-bold animate-reveal" style={{ transitionDelay: '100ms' }}>

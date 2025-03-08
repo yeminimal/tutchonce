@@ -44,7 +44,7 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ icon, title, description, ima
   return (
     <div 
       className={cn(
-        "relative p-8 pt-14 rounded-2xl card-hover animate-reveal overflow-hidden",
+        "relative p-8 pt-20 rounded-2xl card-hover animate-reveal overflow-hidden",
         isEven ? "bg-brand-light" : "bg-white shadow-card"
       )}
     >
@@ -58,10 +58,10 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ icon, title, description, ima
       </div>
       
       <div className="relative z-10">
-        <div className="absolute -top-6 -left-2 h-12 w-12 rounded-full bg-white shadow-smooth flex items-center justify-center">
+        <div className="absolute -top-12 left-8 h-16 w-16 rounded-full bg-white shadow-smooth flex items-center justify-center">
           {renderIcon()}
         </div>
-        <h3 className="mt-2 text-xl font-semibold text-brand-primary">{title}</h3>
+        <h3 className="text-xl font-semibold text-brand-primary">{title}</h3>
         <p className="mt-3 text-muted-foreground">{description}</p>
       </div>
     </div>

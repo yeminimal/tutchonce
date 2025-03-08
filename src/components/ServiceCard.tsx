@@ -8,7 +8,7 @@ import {
   HardHat, 
   PaintRoller, 
   ClipboardCheck, 
-  Spray 
+  Spray as SprayIcon
 } from "lucide-react";
 
 export interface ServiceCardProps {
@@ -35,7 +35,7 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ icon, title, description, ima
       case 'janitorial':
         return <ClipboardCheck className="text-clean-600" />;
       case 'fumigation':
-        return <Spray className="text-clean-600" />;
+        return <SprayIcon className="text-clean-600" />;
       default:
         return <Sparkles className="text-clean-600" />;
     }

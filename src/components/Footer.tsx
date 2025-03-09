@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Facebook, Instagram, Twitter, Phone } from 'lucide-react';
+import { Phone } from 'lucide-react';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -33,22 +33,9 @@ const Footer = () => {
               Tutch<span className="text-brand-primary">once</span>
             </Link>
             <p className="text-muted-foreground max-w-md">
-              We provide premium cleaning services for homes and businesses throughout the area.
+              We provide premium cleaning services for homes and businesses throughout Nigeria.
               Our team of experienced professionals ensures satisfaction with every clean.
             </p>
-            
-            {/* Social Media Icons */}
-            <div className="flex space-x-4 mt-6">
-              <a href="#" className="text-gray-400 hover:text-brand-primary transition-colors transform hover:scale-110 duration-300">
-                <Facebook size={20} />
-              </a>
-              <a href="#" className="text-gray-400 hover:text-brand-primary transition-colors transform hover:scale-110 duration-300">
-                <Instagram size={20} />
-              </a>
-              <a href="#" className="text-gray-400 hover:text-brand-primary transition-colors transform hover:scale-110 duration-300">
-                <Twitter size={20} />
-              </a>
-            </div>
           </div>
           
           {/* Quick Links */}
@@ -83,12 +70,12 @@ const Footer = () => {
                 </a>
               </li>
               <li>
-                <Link to="/blog" className="text-muted-foreground hover:text-brand-primary transition-colors">
+                <Link to="/blog" onClick={() => window.scrollTo(0, 0)} className="text-muted-foreground hover:text-brand-primary transition-colors">
                   Blog
                 </Link>
               </li>
               <li>
-                <Link to="/careers" className="text-muted-foreground hover:text-brand-primary transition-colors">
+                <Link to="/careers" onClick={() => window.scrollTo(0, 0)} className="text-muted-foreground hover:text-brand-primary transition-colors">
                   Careers
                 </Link>
               </li>
@@ -144,13 +131,13 @@ const Footer = () => {
             © {currentYear} Tutchonce. All rights reserved.
           </p>
           <div className="flex space-x-6 mt-4 md:mt-0">
-            <a href="#" className="text-muted-foreground hover:text-brand-primary transition-colors text-sm">
+            <Link to="/privacy-policy" onClick={() => window.scrollTo(0, 0)} className="text-muted-foreground hover:text-brand-primary transition-colors text-sm">
               Privacy Policy
-            </a>
-            <a href="#" className="text-muted-foreground hover:text-brand-primary transition-colors text-sm">
+            </Link>
+            <Link to="/terms-of-service" onClick={() => window.scrollTo(0, 0)} className="text-muted-foreground hover:text-brand-primary transition-colors text-sm">
               Terms of Service
-            </a>
-            <Link to="/careers" className="text-muted-foreground hover:text-brand-primary transition-colors text-sm">
+            </Link>
+            <Link to="/careers" onClick={() => window.scrollTo(0, 0)} className="text-muted-foreground hover:text-brand-primary transition-colors text-sm">
               Careers
             </Link>
           </div>

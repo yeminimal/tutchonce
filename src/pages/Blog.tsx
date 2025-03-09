@@ -1,5 +1,5 @@
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { Helmet } from 'react-helmet';
@@ -8,9 +8,16 @@ import { Calendar, User, Clock } from 'lucide-react';
 
 const Blog = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
+  const [blogPosts, setBlogPosts] = useState<any[]>([]);
 
   useEffect(() => {
     document.documentElement.classList.add('smooth-scroll');
+    
+    // Load blog posts from localStorage
+    const savedPosts = localStorage.getItem('blogPosts');
+    if (savedPosts) {
+      setBlogPosts(JSON.parse(savedPosts));
+    }
     
     const handleIntersection = (entries: IntersectionObserverEntry[]) => {
       entries.forEach(entry => {
@@ -39,38 +46,10 @@ const Blog = () => {
     };
   }, []);
 
-  const blogPosts = [
-    {
-      id: 1,
-      title: "Top 10 Eco-Friendly Cleaning Products You Should Be Using",
-      excerpt: "Discover environmentally friendly cleaning solutions that work just as well as traditional products without the harmful chemicals.",
-      author: "Jane Doe",
-      date: "May 15, 2023",
-      readTime: "5 min read",
-      image: "public/lovable-uploads/c5442ef4-b436-4d8d-8bc2-c63c107e1d08.png",
-      category: "Eco-Friendly"
-    },
-    {
-      id: 2,
-      title: "How to Deep Clean Your Kitchen Like a Professional",
-      excerpt: "Learn the step-by-step process our professional cleaners use to make kitchens spotless and sanitary.",
-      author: "John Smith",
-      date: "June 3, 2023",
-      readTime: "8 min read",
-      image: "public/lovable-uploads/e36c2a0a-ff4e-4be4-bf6c-0366d214a280.png",
-      category: "Tips & Tricks"
-    },
-    {
-      id: 3,
-      title: "The Ultimate Moving Checklist: Before and After Cleaning",
-      excerpt: "Make your move stress-free with our comprehensive cleaning checklist for both your old and new home.",
-      author: "Sarah Johnson",
-      date: "July 12, 2023",
-      readTime: "6 min read",
-      image: "public/lovable-uploads/f0d47f10-fab6-41e8-80f1-9e70448d4b9f.png",
-      category: "Moving"
-    }
-  ];
+  // Scroll to top on page load
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <div className="min-h-screen bg-background">
@@ -95,56 +74,63 @@ const Blog = () => {
               </p>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {blogPosts.map((post) => (
-                <div key={post.id} className="bg-white rounded-2xl shadow-card overflow-hidden animate-reveal card-hover" style={{ transitionDelay: `${200 + post.id * 100}ms` }}>
-                  <div className="h-48 overflow-hidden">
-                    <img 
-                      src={post.image} 
-                      alt={post.title} 
-                      className="w-full h-full object-cover transition-transform hover:scale-105 duration-500"
-                    />
-                  </div>
-                  <div className="p-6">
-                    <span className="text-xs font-medium text-brand-primary bg-brand-light px-3 py-1 rounded-full">
-                      {post.category}
-                    </span>
-                    <h3 className="mt-4 text-xl font-semibold text-brand-primary line-clamp-2">
-                      {post.title}
-                    </h3>
-                    <p className="mt-3 text-muted-foreground text-sm line-clamp-3">
-                      {post.excerpt}
-                    </p>
-                    <div className="mt-5 flex items-center justify-between text-sm text-muted-foreground">
-                      <div className="flex items-center">
-                        <User size={14} className="mr-1" />
-                        <span>{post.author}</span>
+            {blogPosts.length > 0 ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {blogPosts.map((post, index) => (
+                  <div key={post.id} className="bg-white rounded-2xl shadow-card overflow-hidden animate-reveal card-hover" style={{ transitionDelay: `${200 + index * 100}ms` }}>
+                    {post.image && (
+                      <div className="h-48 overflow-hidden">
+                        <img 
+                          src={post.image} 
+                          alt={post.title} 
+                          className="w-full h-full object-cover transition-transform hover:scale-105 duration-500"
+                          onError={(e) => {
+                            const target = e.target as HTMLImageElement;
+                            target.src = 'https://via.placeholder.com/640x360?text=Tutchonce+Cleaning';
+                          }}
+                        />
                       </div>
-                      <div className="flex items-center">
-                        <Calendar size={14} className="mr-1" />
-                        <span>{post.date}</span>
+                    )}
+                    <div className="p-6">
+                      <span className="text-xs font-medium text-brand-primary bg-brand-light px-3 py-1 rounded-full">
+                        Blog
+                      </span>
+                      <h3 className="mt-4 text-xl font-semibold text-brand-primary line-clamp-2">
+                        {post.title}
+                      </h3>
+                      <p className="mt-3 text-muted-foreground text-sm line-clamp-3">
+                        {post.excerpt || post.content.substring(0, 150) + '...'}
+                      </p>
+                      <div className="mt-5 flex items-center justify-between text-sm text-muted-foreground">
+                        <div className="flex items-center">
+                          <User size={14} className="mr-1" />
+                          <span>Admin</span>
+                        </div>
+                        <div className="flex items-center">
+                          <Calendar size={14} className="mr-1" />
+                          <span>{new Date(post.date).toLocaleDateString()}</span>
+                        </div>
+                        <div className="flex items-center">
+                          <Clock size={14} className="mr-1" />
+                          <span>5 min read</span>
+                        </div>
                       </div>
-                      <div className="flex items-center">
-                        <Clock size={14} className="mr-1" />
-                        <span>{post.readTime}</span>
-                      </div>
+                      <Button 
+                        variant="outline" 
+                        className="w-full mt-6 border-brand-primary text-brand-primary hover:bg-brand-light"
+                      >
+                        Read More
+                      </Button>
                     </div>
-                    <Button 
-                      variant="outline" 
-                      className="w-full mt-6 border-brand-primary text-brand-primary hover:bg-brand-light"
-                    >
-                      Read More
-                    </Button>
                   </div>
-                </div>
-              ))}
-            </div>
-            
-            <div className="mt-16 text-center">
-              <Button variant="default" className="bg-brand-primary hover:bg-brand-secondary">
-                View All Articles
-              </Button>
-            </div>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-16 bg-white rounded-2xl shadow-card">
+                <h3 className="text-xl font-semibold text-brand-primary mb-2">No Blog Posts Yet</h3>
+                <p className="text-muted-foreground">Check back soon for new articles and cleaning tips!</p>
+              </div>
+            )}
           </div>
         </section>
       </main>

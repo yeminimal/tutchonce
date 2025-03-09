@@ -1,5 +1,5 @@
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { Helmet } from 'react-helmet';
@@ -8,9 +8,16 @@ import { MapPin, Clock, Briefcase, ChevronRight } from 'lucide-react';
 
 const Careers = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
+  const [jobs, setJobs] = useState<any[]>([]);
 
   useEffect(() => {
     document.documentElement.classList.add('smooth-scroll');
+    
+    // Load career posts from localStorage
+    const savedPosts = localStorage.getItem('careerPosts');
+    if (savedPosts) {
+      setJobs(JSON.parse(savedPosts));
+    }
     
     const handleIntersection = (entries: IntersectionObserverEntry[]) => {
       entries.forEach(entry => {
@@ -39,50 +46,10 @@ const Careers = () => {
     };
   }, []);
 
-  const jobs = [
-    {
-      id: 1,
-      title: "Senior Cleaning Technician",
-      location: "Lagos, Nigeria",
-      type: "Full-time",
-      description: "We're looking for experienced cleaning professionals to join our team. You'll be responsible for leading cleaning operations for our high-profile clients.",
-      requirements: [
-        "Minimum 3 years of professional cleaning experience",
-        "Experience with specialized cleaning equipment",
-        "Excellent attention to detail",
-        "Strong communication skills",
-        "Ability to lead a small team"
-      ]
-    },
-    {
-      id: 2,
-      title: "Cleaning Operations Manager",
-      location: "Abuja, Nigeria",
-      type: "Full-time",
-      description: "Oversee cleaning operations across multiple locations, manage staff scheduling, and ensure customer satisfaction.",
-      requirements: [
-        "5+ years in cleaning services with 2+ years in management",
-        "Strong organizational and leadership skills",
-        "Experience with inventory management",
-        "Customer service excellence",
-        "Valid driver's license"
-      ]
-    },
-    {
-      id: 3,
-      title: "Part-time Cleaning Associate",
-      location: "Port Harcourt, Nigeria",
-      type: "Part-time",
-      description: "Join our team for residential cleaning services. Flexible hours and competitive pay.",
-      requirements: [
-        "Previous cleaning experience preferred",
-        "Reliable transportation",
-        "Available weekends",
-        "Strong work ethic",
-        "Attention to detail"
-      ]
-    }
-  ];
+  // Scroll to top on page load
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <div className="min-h-screen bg-background">
@@ -158,42 +125,47 @@ const Careers = () => {
               Open Positions
             </h2>
             
-            <div className="space-y-6">
-              {jobs.map((job) => (
-                <div key={job.id} className="bg-white p-6 rounded-2xl shadow-card animate-reveal">
-                  <div className="flex flex-col md:flex-row md:items-center justify-between">
-                    <div>
-                      <h3 className="text-xl font-semibold text-brand-primary">{job.title}</h3>
-                      <div className="flex flex-wrap gap-4 mt-2">
-                        <span className="inline-flex items-center text-sm text-muted-foreground">
-                          <MapPin size={16} className="mr-1" /> {job.location}
-                        </span>
-                        <span className="inline-flex items-center text-sm text-muted-foreground">
-                          <Clock size={16} className="mr-1" /> {job.type}
-                        </span>
+            {jobs.length > 0 ? (
+              <div className="space-y-6">
+                {jobs.map((job, index) => (
+                  <div key={job.id} className="bg-white p-6 rounded-2xl shadow-card animate-reveal">
+                    <div className="flex flex-col md:flex-row md:items-center justify-between">
+                      <div>
+                        <h3 className="text-xl font-semibold text-brand-primary">{job.title}</h3>
+                        <div className="flex flex-wrap gap-4 mt-2">
+                          <span className="inline-flex items-center text-sm text-muted-foreground">
+                            <MapPin size={16} className="mr-1" /> {job.location}
+                          </span>
+                          <span className="inline-flex items-center text-sm text-muted-foreground">
+                            <Clock size={16} className="mr-1" /> {job.type}
+                          </span>
+                        </div>
+                        <p className="mt-4 text-muted-foreground">{job.description}</p>
+                        
+                        <div className="mt-4">
+                          <h4 className="font-medium text-brand-primary mb-2">Requirements:</h4>
+                          <div className="text-sm text-muted-foreground space-y-1">
+                            {job.requirements}
+                          </div>
+                        </div>
                       </div>
-                      <p className="mt-4 text-muted-foreground">{job.description}</p>
                       
-                      <div className="mt-4">
-                        <h4 className="font-medium text-brand-primary mb-2">Requirements:</h4>
-                        <ul className="list-disc pl-5 text-sm text-muted-foreground space-y-1">
-                          {job.requirements.map((req, index) => (
-                            <li key={index}>{req}</li>
-                          ))}
-                        </ul>
-                      </div>
+                      <Button
+                        className="mt-6 md:mt-0 bg-brand-primary hover:bg-brand-secondary group"
+                      >
+                        Apply Now
+                        <ChevronRight className="ml-1 group-hover:translate-x-1 transition-transform" size={16} />
+                      </Button>
                     </div>
-                    
-                    <Button
-                      className="mt-6 md:mt-0 bg-brand-primary hover:bg-brand-secondary group"
-                    >
-                      Apply Now
-                      <ChevronRight className="ml-1 group-hover:translate-x-1 transition-transform" size={16} />
-                    </Button>
                   </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-16 bg-white rounded-2xl shadow-card">
+                <h3 className="text-xl font-semibold text-brand-primary mb-2">No Open Positions</h3>
+                <p className="text-muted-foreground">We don't have any openings at the moment. Please check back later!</p>
+              </div>
+            )}
             
             <div className="mt-12 text-center">
               <p className="text-lg text-muted-foreground mb-6 animate-reveal">

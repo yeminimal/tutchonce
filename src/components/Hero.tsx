@@ -51,7 +51,7 @@ const Hero = () => {
   return (
     <section 
       ref={heroRef}
-      className="relative min-h-screen pt-32 pb-20 overflow-hidden"
+      className="relative min-h-screen pt-28 pb-16 overflow-hidden"
     >
       {/* Background blur effect */}
       <div className="absolute top-0 -left-20 w-72 h-72 bg-brand-light rounded-full filter blur-3xl opacity-60 z-0"></div>
@@ -113,6 +113,10 @@ const Hero = () => {
                 alt="Nigerian lady cleaning" 
                 className="w-full h-full object-cover rounded-2xl image-filter transition-transform duration-700 hover:scale-105"
                 loading="lazy"
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement;
+                  target.src = 'https://via.placeholder.com/640x640?text=Tutchonce+Cleaning';
+                }}
               />
             </div>
             
@@ -127,7 +131,7 @@ const Hero = () => {
                 </div>
                 <div>
                   <h4 className="font-medium text-foreground">Trusted by</h4>
-                  <p className="text-sm text-muted-foreground">5,000+ happy homes</p>
+                  <p className="text-sm text-muted-foreground">150+ happy homes</p>
                 </div>
               </div>
             </div>

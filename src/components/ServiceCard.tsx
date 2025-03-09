@@ -23,7 +23,11 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ title, description, image, is
         <img 
           src={image} 
           alt={title} 
-          className="w-full h-full object-cover transition-transform hover:scale-105 duration-300" 
+          className="w-full h-full object-cover transition-transform hover:scale-105 duration-300"
+          onError={(e) => {
+            const target = e.target as HTMLImageElement;
+            target.src = 'https://via.placeholder.com/640x360?text=Tutchonce+Cleaning';
+          }}
         />
       </div>
       

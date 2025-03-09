@@ -60,22 +60,22 @@ const Index = () => {
         <Hero />
         <Services />
         
-        {/* How It Works Section (updated colors) */}
-        <section id="how-it-works" className="py-24 relative">
+        {/* How It Works Section (reduced vertical padding) */}
+        <section id="how-it-works" className="py-16 relative">
           <div className="container max-w-7xl mx-auto px-6 md:px-8">
-            <div className="text-center max-w-3xl mx-auto mb-16">
-              <span className="inline-block px-4 py-1.5 bg-brand-light text-brand-primary rounded-full text-sm font-medium mb-6 animate-reveal">
+            <div className="text-center max-w-3xl mx-auto mb-12">
+              <span className="inline-block px-4 py-1.5 bg-brand-light text-brand-primary rounded-full text-sm font-medium mb-5 animate-reveal">
                 Simple Process
               </span>
               <h2 className="text-4xl font-bold animate-reveal" style={{ transitionDelay: '100ms' }}>
                 How It Works
               </h2>
-              <p className="mt-6 text-lg text-muted-foreground animate-reveal" style={{ transitionDelay: '200ms' }}>
+              <p className="mt-5 text-lg text-muted-foreground animate-reveal" style={{ transitionDelay: '200ms' }}>
                 Getting your home or office cleaned by our Nigerian professionals is simple and convenient.
               </p>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
               {/* Step 1 */}
               <div className="text-center animate-reveal" style={{ transitionDelay: '300ms' }}>
                 <div className="h-16 w-16 rounded-full bg-brand-light flex items-center justify-center mx-auto mb-6">

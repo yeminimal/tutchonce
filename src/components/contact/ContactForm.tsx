@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -38,6 +37,12 @@ const ContactForm = () => {
     e.preventDefault();
     setIsSubmitting(true);
     
+    // Create WhatsApp message
+    const whatsappMessage = `Hello Tutchonce Cleaning Services, my name is ${formData.name}. I'm interested in your ${formData.service || 'services'}. ${formData.message}. You can reach me at ${formData.email} or ${formData.phone}.`;
+    const encodedMessage = encodeURIComponent(whatsappMessage);
+    const whatsappNumber = "+2349021991992"; // Replace with the actual WhatsApp number
+    const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
+    
     // Simulate form submission
     setTimeout(() => {
       setIsSubmitting(false);
@@ -45,11 +50,14 @@ const ContactForm = () => {
       
       toast({
         title: "Message Sent!",
-        description: "We've received your message. Our team will get back to you soon.",
+        description: "We've received your message. Redirecting you to WhatsApp...",
       });
       
-      // Reset form after a delay
+      // Redirect to WhatsApp after a brief delay
       setTimeout(() => {
+        window.open(whatsappUrl, '_blank');
+        
+        // Reset form after redirection
         setIsSubmitted(false);
         setFormData({
           name: '',
@@ -58,8 +66,8 @@ const ContactForm = () => {
           service: '',
           message: '',
         });
-      }, 3000);
-    }, 1500);
+      }, 1500);
+    }, 1000);
   };
   
   return (

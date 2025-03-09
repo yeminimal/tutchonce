@@ -1,10 +1,10 @@
 
-import React, { useState } from 'react';
+import React from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { LogOut } from 'lucide-react';
 import BlogPostEditor from './BlogPostEditor';
-import CareerPostEditor from './CareerPostEditor';
+import CareerPostEditor from './careers/CareerPostEditor';
 
 interface AdminDashboardProps {
   onLogout: () => void;

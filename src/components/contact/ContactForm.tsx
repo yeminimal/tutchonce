@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -40,7 +41,7 @@ const ContactForm = () => {
     // Create WhatsApp message
     const whatsappMessage = `Hello Tutchonce Cleaning Services, my name is ${formData.name}. I'm interested in your ${formData.service || 'services'}. ${formData.message}. You can reach me at ${formData.email} or ${formData.phone}.`;
     const encodedMessage = encodeURIComponent(whatsappMessage);
-    const whatsappNumber = "+2349021991992"; // Replace with the actual WhatsApp number
+    const whatsappNumber = "+2348025058426"; // Updated WhatsApp number
     const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
     
     // Simulate form submission

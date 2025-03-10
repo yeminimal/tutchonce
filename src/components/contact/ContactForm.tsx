@@ -167,7 +167,11 @@ const ContactForm = () => {
               <SelectTrigger id="service" className="w-full">
                 <SelectValue placeholder="Select a service" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent 
+                className="bg-white max-h-60 overflow-y-auto z-50"
+                position="popper"
+                sideOffset={4}
+              >
                 <SelectItem value="general">General Cleaning Services</SelectItem>
                 <SelectItem value="facility">Facility Management</SelectItem>
                 <SelectItem value="moveInOut">Move In/Move Out Services</SelectItem>
@@ -209,3 +213,4 @@ const ContactForm = () => {
 };
 
 export default ContactForm;
+

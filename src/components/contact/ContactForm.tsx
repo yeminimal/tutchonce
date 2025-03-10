@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -24,6 +24,7 @@ const ContactForm = () => {
   
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const formRef = useRef<HTMLFormElement>(null);
   
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -34,19 +35,26 @@ const ContactForm = () => {
     setFormData(prev => ({ ...prev, service: value }));
   };
   
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     
-    // Create WhatsApp message
-    const whatsappMessage = `Hello Tutchonce Cleaning Services, my name is ${formData.name}. I'm interested in your ${formData.service || 'services'}. ${formData.message}. You can reach me at ${formData.email} or ${formData.phone}.`;
-    const encodedMessage = encodeURIComponent(whatsappMessage);
-    const whatsappNumber = "+2348025058426"; // Updated WhatsApp number
-    const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
+    // Create form data to send to Google Script
+    const submitData = new FormData();
+    submitData.append('name', formData.name);
+    submitData.append('email', formData.email);
+    submitData.append('phone', formData.phone);
+    submitData.append('service', formData.service || 'General Cleaning Services');
+    submitData.append('message', formData.message);
     
-    // Simulate form submission
-    setTimeout(() => {
-      setIsSubmitting(false);
+    try {
+      // Submit to Google Script
+      const scriptUrl = "https://script.google.com/macros/s/AKfycbyLa1pe5yUdZD7pDd0tOQAcSosUlWxop2oRPGOOcFuXK2_LCyltP69CNy0DaVbD0n2t/exec";
+      await fetch(scriptUrl, {
+        method: 'POST',
+        body: submitData
+      });
+      
       setIsSubmitted(true);
       
       toast({
@@ -54,11 +62,21 @@ const ContactForm = () => {
         description: "We've received your message. Redirecting you to WhatsApp...",
       });
       
-      // Redirect to WhatsApp after a brief delay
+      // Format WhatsApp message
+      const name = encodeURIComponent(formData.name);
+      const email = encodeURIComponent(formData.email);
+      const phone = encodeURIComponent(formData.phone);
+      const service = encodeURIComponent(formData.service || 'General Cleaning Services');
+      const message = encodeURIComponent(formData.message);
+      
+      // Create WhatsApp URL with formatted message
+      const whatsappURL = `https://wa.me/+2348025058426?text=New%20Cleaning%20Request:%0AName:%20${name}%0AEmail:%20${email}%0APhone:%20${phone}%0AService:%20${service}%0AMessage:%20${message}`;
+      
+      // Redirect after a brief delay
       setTimeout(() => {
-        window.open(whatsappUrl, '_blank');
+        window.open(whatsappURL, '_blank');
         
-        // Reset form after redirection
+        // Reset form
         setIsSubmitted(false);
         setFormData({
           name: '',
@@ -68,7 +86,16 @@ const ContactForm = () => {
           message: '',
         });
       }, 1500);
-    }, 1000);
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      toast({
+        title: "Error",
+        description: "There was a problem sending your message. Please try again.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
   
   return (
@@ -84,7 +111,7 @@ const ContactForm = () => {
           </p>
         </div>
       ) : (
-        <form onSubmit={handleSubmit} className="space-y-5">
+        <form ref={formRef} onSubmit={handleSubmit} className="space-y-5">
           <div>
             <label htmlFor="name" className="block text-sm font-medium mb-1">
               Full Name

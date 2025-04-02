@@ -36,13 +36,13 @@ const Contact = () => {
     <section 
       id="contact" 
       ref={sectionRef}
-      className="py-24 relative"
+      className="py-16 md:py-24 relative"
     >
       {/* Background blur effect */}
       <div className="absolute top-40 -right-20 w-72 h-72 bg-clean-100 rounded-full filter blur-3xl opacity-60 z-0"></div>
       
-      <div className="container max-w-7xl mx-auto px-6 md:px-8 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      <div className="container max-w-7xl mx-auto px-4 sm:px-6 md:px-8 relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-start">
           {/* Text content */}
           <div>
             <ContactSection 
@@ -56,7 +56,9 @@ const Contact = () => {
           </div>
           
           {/* CTA Form */}
-          <ContactForm />
+          <div className="mt-4 md:mt-0">
+            <ContactForm />
+          </div>
         </div>
       </div>
     </section>

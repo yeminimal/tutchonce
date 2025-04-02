@@ -223,3 +223,23 @@
 .shadow-smooth {
   box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.06);
 }
+
+/* Mobile-specific utilities */
+@media (max-width: 640px) {
+  .touch-target {
+    @apply min-h-[44px] min-w-[44px]; /* Minimum size for touch targets */
+  }
+  
+  .mobile-padding {
+    @apply px-4 py-3;
+  }
+  
+  .mobile-text {
+    @apply text-sm;
+  }
+}
+
+/* Fix for mobile overflow issues */
+.overflow-fix {
+  overflow-x: hidden;
+}

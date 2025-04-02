@@ -1,3 +1,4 @@
+
 import React, { useEffect, useRef } from 'react';
 import ContactInfo from './contact/ContactInfo';
 import ContactForm from './contact/ContactForm';
@@ -46,15 +47,15 @@ const Contact = () => {
           <div>
             <ContactSection 
               subtitle="Contact Us"
-              title="Get in Touch"
-              description="Have questions or ready to schedule your cleaning? Contact us today and experience the difference of professional cleaning services throughout Nigeria."
+              title="Ready for a Cleaner Space?"
+              description="Contact us for a personalized cleaning solution. Our team is ready to provide you with professional cleaning services throughout Nigeria."
             />
             
             {/* Contact Info */}
             <ContactInfo />
           </div>
           
-          {/* Form */}
+          {/* CTA Form */}
           <ContactForm />
         </div>
       </div>

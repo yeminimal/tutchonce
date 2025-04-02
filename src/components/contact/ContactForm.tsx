@@ -29,9 +29,9 @@ const ContactForm = () => {
       
       <Button 
         onClick={handleGetQuotation}
-        className="bg-brand-primary hover:bg-brand-secondary text-white w-full max-w-xs py-6 rounded-full text-lg font-medium animate-pulse-subtle transition-all duration-300 hover:scale-105"
+        className="bg-brand-primary hover:bg-brand-secondary text-white w-full max-w-xs py-5 rounded-full text-base font-medium animate-pulse-subtle transition-all duration-300 hover:scale-105 flex items-center justify-center gap-3"
       >
-        <MessageSquareQuote className="mr-2" />
+        <MessageSquareQuote size={20} />
         Get Quotation on WhatsApp
       </Button>
     </div>

@@ -1,11 +1,12 @@
 
 import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { cn } from "@/lib/utils";
 import { Menu } from "lucide-react";
 import { useScrollEffect } from '@/hooks/use-scroll-effect';
 import DesktopMenu from './navigation/DesktopMenu';
 import MobileMenu from './navigation/MobileMenu';
+import Logo from './Logo';
 
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -51,9 +52,7 @@ const Navbar = () => {
       <div className="container max-w-7xl mx-auto">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <Link to="/" className="font-display text-2xl font-semibold text-foreground transition-colors">
-            Tutch<span className="text-brand-primary">once</span>
-          </Link>
+          <Logo size="md" variant={isScrolled ? "default" : "default"} />
           
           {/* Desktop Menu */}
           <DesktopMenu 

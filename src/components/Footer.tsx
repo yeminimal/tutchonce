@@ -110,7 +110,11 @@ const Footer = () => {
                 </a>
               </li>
               <li>
-                <a href="mailto:tutchoncecleaningservices@gmail.com" className="text-muted-foreground hover:text-brand-primary transition-colors">
+                <a 
+                  href="mailto:tutchoncecleaningservices@gmail.com" 
+                  className="text-muted-foreground hover:text-brand-primary transition-colors truncate block max-w-[200px] md:max-w-[180px] lg:max-w-[220px]"
+                  title="tutchoncecleaningservices@gmail.com"
+                >
                   tutchoncecleaningservices@gmail.com
                 </a>
               </li>

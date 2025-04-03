@@ -22,7 +22,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
   const closeMobileMenu = () => setIsMobileMenuOpen(false);
   
   return (
-    <div className="fixed inset-0 z-40 bg-white flex flex-col pt-20 pb-6 px-6 md:hidden animate-fade-in">
+    <div className="fixed inset-0 z-40 bg-white/95 backdrop-blur-sm flex flex-col pt-20 pb-6 px-6 md:hidden animate-fade-in shadow-md">
       {/* Close button at the top */}
       <button 
         onClick={closeMobileMenu}

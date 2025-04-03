@@ -58,3 +58,17 @@
   transform-origin: bottom left;
 }
 
+/* Email truncation for footer */
+.truncate-email {
+  max-width: 220px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: inline-block;
+}
+
+@media (max-width: 768px) {
+  .truncate-email {
+    max-width: 180px;
+  }
+}

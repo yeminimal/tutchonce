@@ -112,8 +112,7 @@ const Footer = () => {
               <li>
                 <a 
                   href="mailto:tutchoncecleaningservices@gmail.com" 
-                  className="text-muted-foreground hover:text-brand-primary transition-colors truncate block max-w-[200px] md:max-w-[180px] lg:max-w-[220px]"
-                  title="tutchoncecleaningservices@gmail.com"
+                  className="text-muted-foreground hover:text-brand-primary transition-colors"
                 >
                   tutchoncecleaningservices@gmail.com
                 </a>

@@ -21,7 +21,8 @@ const ContactInfo = () => {
       icon: <Mail size={18} className="text-brand-primary" />,
       title: "Email",
       content: "tutchoncecleaningservices@gmail.com",
-      link: "mailto:tutchoncecleaningservices@gmail.com"
+      link: "mailto:tutchoncecleaningservices@gmail.com",
+      truncate: true
     },
     {
       icon: <MapPin size={18} className="text-brand-primary" />,
@@ -39,6 +40,7 @@ const ContactInfo = () => {
           title={item.title} 
           content={item.content} 
           link={item.link}
+          truncate={item.truncate}
         />
       ))}
     </div>

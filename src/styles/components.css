@@ -58,7 +58,7 @@
   transform-origin: bottom left;
 }
 
-/* Email truncation for footer */
+/* Email truncation for contact section */
 .truncate-email {
   max-width: 220px;
   overflow: hidden;

@@ -42,18 +42,22 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background overflow-fix">
       <Helmet>
-        <title>Tutchonce Cleaning Services | Professional Home Cleaning in Nigeria</title>
-        <meta name="description" content="Tutchonce offers premium cleaning services across Nigeria. Specializing in residential and commercial cleaning with professional, reliable and affordable service." />
-        <meta name="keywords" content="cleaning services Nigeria, house cleaning Nigeria, professional cleaners Lagos, home cleaning service Abuja, apartment cleaning Nigeria, deep cleaning services, affordable cleaning services, residential cleaning Nigeria, office cleaning Nigeria, best cleaning company Nigeria, Tutchonce cleaning, eco-friendly cleaning, reliable cleaning service" />
+        <title>Tutchonce Cleaning Services | Professional Home & Office Cleaning in Nigeria</title>
+        <meta name="description" content="Tutchonce offers premium cleaning services across Nigeria. Specializing in residential, commercial, post-construction, and facility management with reliable, affordable service." />
+        <meta name="keywords" content="cleaning services Nigeria, house cleaning Nigeria, professional cleaners Lagos, home cleaning service Abuja, apartment cleaning Nigeria, deep cleaning services, affordable cleaning services, residential cleaning Nigeria, office cleaning Nigeria, best cleaning company Nigeria, Tutchonce cleaning, eco-friendly cleaning, reliable cleaning service, janitorial services, post construction cleaning, move in move out cleaning" />
         <meta name="author" content="Tutchonce Cleaning Services" />
-        <meta property="og:title" content="Tutchonce Cleaning Services | Professional Home Cleaning in Nigeria" />
+        <meta property="og:title" content="Tutchonce Cleaning Services | Professional Home & Office Cleaning in Nigeria" />
         <meta property="og:description" content="Transform your space with premium cleaning services from Tutchonce. Serving all areas across Nigeria with reliable, professional cleaning solutions." />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://tutchonce.com" />
+        <meta property="og:image" content="/lovable-uploads/06012ea1-8e1f-43a9-9839-a10a76d6f3df.png" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Tutchonce Cleaning Services | Professional Home Cleaning in Nigeria" />
+        <meta name="twitter:title" content="Tutchonce Cleaning Services | Professional Home & Office Cleaning in Nigeria" />
         <meta name="twitter:description" content="Professional cleaning services for homes and businesses across Nigeria. Book your cleaning today!" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+        <meta name="twitter:image" content="/lovable-uploads/06012ea1-8e1f-43a9-9839-a10a76d6f3df.png" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+        <meta name="theme-color" content="#228977" />
+        <link rel="canonical" href="https://tutchonce.com" />
       </Helmet>
       
       <Navbar />

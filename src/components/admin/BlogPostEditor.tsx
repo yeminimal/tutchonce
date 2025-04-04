@@ -2,9 +2,10 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/components/ui/use-toast";
 import { Plus, Edit, Trash2 } from 'lucide-react';
+import RichTextEditor from './editor/RichTextEditor';
+import { Card, CardContent } from "@/components/ui/card";
 
 interface BlogPost {
   id: string;
@@ -78,6 +79,11 @@ const BlogPostEditor = () => {
       description: `Blog post ${currentPost.id ? 'updated' : 'created'} successfully.`,
     });
   };
+
+  const handleCancelForm = () => {
+    setFormVisible(false);
+    setCurrentPost(null);
+  };
   
   return (
     <div>
@@ -90,100 +96,98 @@ const BlogPostEditor = () => {
       </div>
       
       {formVisible && currentPost && (
-        <div className="bg-brand-light p-6 rounded-xl mb-8">
-          <h4 className="text-lg font-medium mb-4">
-            {currentPost.id ? 'Edit' : 'Create'} Blog Post
-          </h4>
-          
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <label htmlFor="title" className="block text-sm font-medium mb-1">
-                Title
-              </label>
-              <Input 
-                id="title"
-                value={currentPost.title}
-                onChange={(e) => setCurrentPost({...currentPost, title: e.target.value})}
-                placeholder="Post Title"
-                required
-              />
-            </div>
+        <Card className="bg-brand-light mb-8">
+          <CardContent className="p-6">
+            <h4 className="text-lg font-medium mb-4">
+              {currentPost.id ? 'Edit' : 'Create'} Blog Post
+            </h4>
             
-            <div>
-              <label htmlFor="excerpt" className="block text-sm font-medium mb-1">
-                Excerpt
-              </label>
-              <Input 
-                id="excerpt"
-                value={currentPost.excerpt}
-                onChange={(e) => setCurrentPost({...currentPost, excerpt: e.target.value})}
-                placeholder="Brief excerpt of the post"
-                required
-              />
-            </div>
-            
-            <div>
-              <label htmlFor="image" className="block text-sm font-medium mb-1">
-                Image URL
-              </label>
-              <Input 
-                id="image"
-                value={currentPost.image || ''}
-                onChange={(e) => setCurrentPost({...currentPost, image: e.target.value})}
-                placeholder="Image URL for the post"
-              />
-            </div>
-            
-            <div>
-              <label htmlFor="content" className="block text-sm font-medium mb-1">
-                Content
-              </label>
-              <Textarea 
-                id="content"
-                value={currentPost.content}
-                onChange={(e) => setCurrentPost({...currentPost, content: e.target.value})}
-                placeholder="Post content"
-                className="min-h-[200px]"
-                required
-              />
-            </div>
-            
-            <div className="flex justify-end space-x-3 pt-2">
-              <Button type="button" variant="outline" onClick={() => {
-                setFormVisible(false);
-                setCurrentPost(null);
-              }}>
-                Cancel
-              </Button>
-              <Button type="submit" className="bg-brand-primary hover:bg-brand-secondary text-white">
-                Save Post
-              </Button>
-            </div>
-          </form>
-        </div>
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div>
+                <label htmlFor="title" className="block text-sm font-medium mb-1">
+                  Title
+                </label>
+                <Input 
+                  id="title"
+                  value={currentPost.title}
+                  onChange={(e) => setCurrentPost({...currentPost, title: e.target.value})}
+                  placeholder="Post Title"
+                  required
+                />
+              </div>
+              
+              <div>
+                <label htmlFor="excerpt" className="block text-sm font-medium mb-1">
+                  Excerpt
+                </label>
+                <Input 
+                  id="excerpt"
+                  value={currentPost.excerpt}
+                  onChange={(e) => setCurrentPost({...currentPost, excerpt: e.target.value})}
+                  placeholder="Brief excerpt of the post"
+                  required
+                />
+              </div>
+              
+              <div>
+                <label htmlFor="image" className="block text-sm font-medium mb-1">
+                  Image URL
+                </label>
+                <Input 
+                  id="image"
+                  value={currentPost.image || ''}
+                  onChange={(e) => setCurrentPost({...currentPost, image: e.target.value})}
+                  placeholder="Image URL for the post"
+                />
+              </div>
+              
+              <div>
+                <label htmlFor="content" className="block text-sm font-medium mb-1">
+                  Content
+                </label>
+                <RichTextEditor 
+                  value={currentPost.content}
+                  onChange={(value) => setCurrentPost({...currentPost, content: value})}
+                  placeholder="Write your post content here..."
+                />
+              </div>
+              
+              <div className="flex justify-end space-x-3 pt-4">
+                <Button type="button" variant="outline" onClick={handleCancelForm}>
+                  Cancel
+                </Button>
+                <Button type="submit" className="bg-brand-primary hover:bg-brand-secondary text-white">
+                  Save Post
+                </Button>
+              </div>
+            </form>
+          </CardContent>
+        </Card>
       )}
       
       {posts.length > 0 ? (
         <div className="space-y-4">
           {posts.map((post) => (
-            <div key={post.id} className="border border-border rounded-lg p-4 flex justify-between items-center">
-              <div>
-                <h4 className="font-medium">{post.title}</h4>
-                <p className="text-sm text-muted-foreground">
-                  {new Date(post.date).toLocaleDateString()}
-                </p>
-              </div>
-              <div className="flex space-x-2">
-                <Button variant="outline" size="sm" onClick={() => handleEditPost(post)}>
-                  <Edit size={14} className="mr-1" />
-                  Edit
-                </Button>
-                <Button variant="outline" size="sm" className="text-destructive hover:text-destructive" onClick={() => handleDeletePost(post.id)}>
-                  <Trash2 size={14} className="mr-1" />
-                  Delete
-                </Button>
-              </div>
-            </div>
+            <Card key={post.id} className="border border-border">
+              <CardContent className="p-4 flex justify-between items-center">
+                <div>
+                  <h4 className="font-medium">{post.title}</h4>
+                  <p className="text-sm text-muted-foreground">
+                    {new Date(post.date).toLocaleDateString()}
+                  </p>
+                </div>
+                <div className="flex space-x-2">
+                  <Button variant="outline" size="sm" onClick={() => handleEditPost(post)}>
+                    <Edit size={14} className="mr-1" />
+                    Edit
+                  </Button>
+                  <Button variant="outline" size="sm" className="text-destructive hover:text-destructive" onClick={() => handleDeletePost(post.id)}>
+                    <Trash2 size={14} className="mr-1" />
+                    Delete
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
           ))}
         </div>
       ) : (

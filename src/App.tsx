@@ -3,7 +3,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Index from "./pages/Index";
 import Blog from "./pages/Blog";
 import Careers from "./pages/Careers";
@@ -27,6 +27,12 @@ const App = () => (
           <Route path="/admin" element={<Admin />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/terms-of-service" element={<TermsOfService />} />
+          
+          {/* Additional routes to handle various URL patterns */}
+          <Route path="/Admin" element={<Navigate to="/admin" replace />} />
+          <Route path="/ADMIN" element={<Navigate to="/admin" replace />} />
+          <Route path="/admin/" element={<Navigate to="/admin" replace />} />
+          
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

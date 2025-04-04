@@ -15,6 +15,11 @@ const Admin = () => {
     if (adminToken) {
       setIsAuthenticated(true);
     }
+
+    // Force HTTPS when deployed
+    if (window.location.hostname !== 'localhost' && window.location.protocol !== 'https:') {
+      window.location.href = window.location.href.replace('http:', 'https:');
+    }
   }, []);
 
   const handleLogout = () => {
@@ -32,15 +37,13 @@ const Admin = () => {
       <Navbar />
       <main className="pt-32 pb-20">
         <div className="container max-w-7xl mx-auto px-6 md:px-8">
-          <div className="mb-10">
-            <h1 className="text-3xl md:text-4xl font-bold text-brand-primary mb-2">Admin Dashboard</h1>
-            <p className="text-muted-foreground">Manage blog posts and career listings</p>
-          </div>
-          
           {isAuthenticated ? (
             <AdminDashboard onLogout={handleLogout} />
           ) : (
-            <AdminAuth onLogin={() => setIsAuthenticated(true)} />
+            <div className="max-w-md mx-auto">
+              <h1 className="text-3xl md:text-4xl font-bold text-brand-primary mb-6 text-center">Admin Access</h1>
+              <AdminAuth onLogin={() => setIsAuthenticated(true)} />
+            </div>
           )}
         </div>
       </main>

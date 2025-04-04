@@ -10,18 +10,20 @@ interface AdminAuthProps {
 }
 
 const AdminAuth: React.FC<AdminAuthProps> = ({ onLogin }) => {
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   
-  // For demo purposes, hardcoded password - in production, this should be handled securely
-  const ADMIN_PASSWORD = 'tutchonce2024';
+  // Updated credentials
+  const ADMIN_USERNAME = 'Tutchonce';
+  const ADMIN_PASSWORD = 'Tutchonce2024';
   
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     
     setTimeout(() => {
-      if (password === ADMIN_PASSWORD) {
+      if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
         localStorage.setItem('adminToken', 'admin-authenticated');
         onLogin();
         toast({
@@ -31,7 +33,7 @@ const AdminAuth: React.FC<AdminAuthProps> = ({ onLogin }) => {
       } else {
         toast({
           title: "Error",
-          description: "Invalid password. Please try again.",
+          description: "Invalid username or password. Please try again.",
           variant: "destructive"
         });
       }
@@ -50,6 +52,21 @@ const AdminAuth: React.FC<AdminAuthProps> = ({ onLogin }) => {
       <h2 className="text-xl font-semibold text-center mb-6">Admin Login</h2>
       
       <form onSubmit={handleSubmit} className="space-y-6">
+        <div>
+          <label htmlFor="username" className="block text-sm font-medium text-foreground mb-2">
+            Username
+          </label>
+          <Input 
+            id="username"
+            type="text"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            placeholder="Enter admin username"
+            className="w-full"
+            required
+          />
+        </div>
+        
         <div>
           <label htmlFor="password" className="block text-sm font-medium text-foreground mb-2">
             Password

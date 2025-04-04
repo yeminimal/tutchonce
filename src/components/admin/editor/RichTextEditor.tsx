@@ -38,7 +38,7 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({
 
   return (
     <div className={cn("rich-text-editor", className)}>
-      <style jsx global>{`
+      <style>{`
         .ql-container {
           border-bottom-left-radius: 0.5rem;
           border-bottom-right-radius: 0.5rem;

@@ -33,6 +33,10 @@ const App = () => (
           <Route path="/ADMIN" element={<Navigate to="/admin" replace />} />
           <Route path="/admin/" element={<Navigate to="/admin" replace />} />
           
+          {/* Special routes for handling preview links */}
+          <Route path="*/admin" element={<Admin />} />
+          <Route path="*/Admin" element={<Admin />} />
+          
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

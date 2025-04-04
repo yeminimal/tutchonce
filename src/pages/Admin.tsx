@@ -5,9 +5,11 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import AdminAuth from '../components/admin/AdminAuth';
 import AdminDashboard from '../components/admin/AdminDashboard';
+import { useLocation } from 'react-router-dom';
 
 const Admin = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const location = useLocation();
   
   useEffect(() => {
     // Check if admin is already logged in
@@ -16,11 +18,17 @@ const Admin = () => {
       setIsAuthenticated(true);
     }
 
-    // Force HTTPS when deployed
-    if (window.location.hostname !== 'localhost' && window.location.protocol !== 'https:') {
+    // Only force HTTPS in production environments
+    if (window.location.hostname !== 'localhost' && 
+        !window.location.hostname.includes('preview') && 
+        window.location.protocol !== 'https:') {
       window.location.href = window.location.href.replace('http:', 'https:');
     }
-  }, []);
+    
+    // Log current location for debugging
+    console.log('Current path:', location.pathname);
+    console.log('Current hostname:', window.location.hostname);
+  }, [location]);
 
   const handleLogout = () => {
     localStorage.removeItem('adminToken');

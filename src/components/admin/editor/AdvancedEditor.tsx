@@ -69,7 +69,7 @@ const AdvancedEditor: React.FC<AdvancedEditorProps> = ({
       const quill = quillRef.current?.getEditor();
       if (!quill) return;
 
-      const range = quill.getSelection(true);
+      const range = quill.getSelection() || { index: 0, length: 0 };
       
       // Show loading state
       toast({
@@ -90,7 +90,7 @@ const AdvancedEditor: React.FC<AdvancedEditorProps> = ({
       quill.insertEmbed(range.index, 'image', imageUrl);
       
       // Move cursor after the image
-      quill.setSelection(range.index + 1);
+      quill.setSelection(range.index + 1, 0);
       
       toast({
         title: "Success",

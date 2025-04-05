@@ -1,15 +1,17 @@
 
 import React from 'react';
-import { BlogPost } from './types';
-import EditorHeader from './components/EditorHeader';
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import MainContentSection from './components/MainContentSection';
 import PostSettings from './components/PostSettings';
 import SeoSettings from './components/SeoSettings';
+import EditorHeader from './components/EditorHeader';
 import EditorFooter from './components/EditorFooter';
+import { BlogPost } from './types';
 
 interface BlogPostEditorProps {
   currentPost: BlogPost;
-  setCurrentPost: (post: BlogPost) => void;
+  setCurrentPost: React.Dispatch<React.SetStateAction<BlogPost | null>>;
   onSubmit: (e: React.FormEvent) => void;
   onBack: () => void;
   handleImageUpload: (file: File) => Promise<string>;
@@ -22,7 +24,7 @@ const BlogPostEditor: React.FC<BlogPostEditorProps> = ({
   onBack,
   handleImageUpload
 }) => {
-  const isEditing = currentPost.id && currentPost.title;
+  const isEditing = !!currentPost.id && currentPost.id !== '';
   
   return (
     <div>
@@ -32,7 +34,7 @@ const BlogPostEditor: React.FC<BlogPostEditorProps> = ({
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="col-span-2">
             <MainContentSection 
-              currentPost={currentPost} 
+              currentPost={currentPost}
               setCurrentPost={setCurrentPost}
               handleImageUpload={handleImageUpload}
             />
@@ -41,13 +43,13 @@ const BlogPostEditor: React.FC<BlogPostEditorProps> = ({
           <div>
             <div className="space-y-6">
               <PostSettings 
-                currentPost={currentPost} 
-                setCurrentPost={setCurrentPost} 
+                currentPost={currentPost}
+                setCurrentPost={setCurrentPost}
               />
               
               <SeoSettings 
-                currentPost={currentPost} 
-                setCurrentPost={setCurrentPost} 
+                currentPost={currentPost}
+                setCurrentPost={setCurrentPost}
               />
               
               <EditorFooter onBack={onBack} />

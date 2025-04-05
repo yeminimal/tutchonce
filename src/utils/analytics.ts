@@ -1,25 +1,21 @@
 
 // Google Analytics implementation
 export const initializeAnalytics = () => {
-  // Load Google Analytics script
-  const script = document.createElement('script');
-  script.async = true;
-  script.src = `https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID`;
-  document.head.appendChild(script);
-
-  // Initialize analytics
+  // We don't need to load the script here as it's added directly to the HTML
+  
+  // Initialize dataLayer if not already done
   window.dataLayer = window.dataLayer || [];
+  
+  // Define gtag function
   function gtag(...args: any[]) {
-    window.dataLayer.push(args);
+    window.dataLayer.push(arguments);
   }
-  gtag('js', new Date());
-  gtag('config', 'GA_MEASUREMENT_ID');
 };
 
 // Track page views
 export const trackPageView = (url: string) => {
   if (typeof window !== 'undefined' && (window as any).gtag) {
-    (window as any).gtag('config', 'GA_MEASUREMENT_ID', {
+    (window as any).gtag('config', 'G-QJCCPY92NK', {
       page_path: url,
     });
   }

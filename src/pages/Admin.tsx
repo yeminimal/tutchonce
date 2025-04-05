@@ -1,61 +1,69 @@
 
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
+import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import AdminAuth from '../components/admin/AdminAuth';
-import AdminDashboard from '../components/admin/AdminDashboard';
-import { useLocation } from 'react-router-dom';
+import AdminLayout from '../components/admin/AdminLayout';
+import BlogDashboard from '../components/admin/BlogDashboard';
+import CareerDashboard from '../components/admin/CareerDashboard';
+import { trackPageView } from '../utils/analytics';
 
 const Admin = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
   
   useEffect(() => {
     // Check if admin is already logged in
     const adminToken = localStorage.getItem('adminToken');
     if (adminToken) {
       setIsAuthenticated(true);
+      
+      // Redirect to dashboard if on the login page
+      if (location.pathname === '/admin') {
+        navigate('/admin/dashboard');
+      }
+    } else {
+      // If not authenticated, redirect to login unless already there
+      if (location.pathname !== '/admin') {
+        navigate('/admin');
+      }
     }
 
-    // Only force HTTPS in production environments
-    if (window.location.hostname !== 'localhost' && 
-        !window.location.hostname.includes('preview') && 
-        window.location.protocol !== 'https:') {
-      window.location.href = window.location.href.replace('http:', 'https:');
+    // Track page view
+    trackPageView(location.pathname);
+    
+    // Debug logs
+    console.log('Admin page: Auth status =', !!adminToken);
+    console.log('Current path:', location.pathname);
+  }, [location.pathname, navigate]);
+
+  // Decide which component to render based on the route
+  const renderAdminContent = () => {
+    if (!isAuthenticated) {
+      return <AdminAuth />;
     }
     
-    // Log current location for debugging
-    console.log('Current path:', location.pathname);
-    console.log('Current hostname:', window.location.hostname);
-  }, [location]);
-
-  const handleLogout = () => {
-    localStorage.removeItem('adminToken');
-    setIsAuthenticated(false);
+    return (
+      <Routes>
+        <Route path="/" element={<AdminLayout />}>
+          <Route index element={<BlogDashboard />} />
+          <Route path="dashboard" element={<BlogDashboard />} />
+          <Route path="blog" element={<BlogDashboard />} />
+          <Route path="careers" element={<CareerDashboard />} />
+        </Route>
+      </Routes>
+    );
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-[#f8fffe]">
       <Helmet>
         <title>Admin Dashboard | Tutchonce Cleaning Services</title>
         <meta name="robots" content="noindex, nofollow" />
       </Helmet>
       
-      <Navbar />
-      <main className="pt-32 pb-20">
-        <div className="container max-w-7xl mx-auto px-6 md:px-8">
-          {isAuthenticated ? (
-            <AdminDashboard onLogout={handleLogout} />
-          ) : (
-            <div className="max-w-md mx-auto">
-              <h1 className="text-3xl md:text-4xl font-bold text-brand-primary mb-6 text-center">Admin Access</h1>
-              <AdminAuth onLogin={() => setIsAuthenticated(true)} />
-            </div>
-          )}
-        </div>
-      </main>
-      <Footer />
+      {renderAdminContent()}
     </div>
   );
 };

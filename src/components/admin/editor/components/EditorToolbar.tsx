@@ -5,8 +5,20 @@ interface EditorToolbarProps {
   onImageUpload?: (file: File) => Promise<string>;
 }
 
-const EditorToolbar: React.FC<EditorToolbarProps> = ({ onImageUpload }) => {
-  const modules = {
+// Define the correct return type for modules
+interface QuillModules {
+  toolbar: {
+    container: any[];
+    handlers?: Record<string, () => void>;
+  };
+  clipboard: {
+    matchVisual: boolean;
+  };
+}
+
+// Return a proper QuillModules object instead of being a React FC
+const EditorToolbar = ({ onImageUpload }: EditorToolbarProps): QuillModules => {
+  const modules: QuillModules = {
     toolbar: {
       container: [
         [{ 'header': [1, 2, 3, 4, 5, 6, false] }],

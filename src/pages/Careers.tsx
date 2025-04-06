@@ -20,10 +20,14 @@ const Careers = () => {
     if (savedPosts) {
       try {
         const parsedPosts = JSON.parse(savedPosts);
+        console.log('Raw career posts from storage:', parsedPosts);
+        
         // Only show active job listings, filter out drafts
         const activeJobs = parsedPosts.filter((job: CareerPost) => 
           job.status === 'active'
         );
+        console.log('Active jobs after filtering:', activeJobs);
+        
         // Sort by date, newest first
         const sortedJobs = activeJobs.sort((a: CareerPost, b: CareerPost) => 
           new Date(b.date).getTime() - new Date(a.date).getTime()
@@ -33,6 +37,8 @@ const Careers = () => {
         console.error('Error parsing career posts:', error);
         setJobs([]);
       }
+    } else {
+      console.log('No career posts found in localStorage');
     }
     
     const handleIntersection = (entries: IntersectionObserverEntry[]) => {

@@ -24,6 +24,7 @@ export const useBlogPosts = () => {
           post.excerpt !== undefined
         );
         setPosts(validPosts);
+        console.log('Loaded blog posts:', validPosts);
       } catch (error) {
         console.error('Error parsing blog posts:', error);
         setPosts([]);
@@ -35,6 +36,7 @@ export const useBlogPosts = () => {
     setPosts(updatedPosts);
     // Use a distinct key for blog posts storage
     localStorage.setItem('blogPosts', JSON.stringify(updatedPosts));
+    console.log('Saved blog posts:', updatedPosts);
   };
   
   const handleNewPost = () => {
@@ -92,9 +94,10 @@ export const useBlogPosts = () => {
     const postToSave = {
       ...currentPost,
       readingTime: `${readingTime} min read`,
-      status: currentPost.status || 'published'
+      status: currentPost.status || 'published' // Default to published if not set
     };
     
+    // If the post already exists in the posts array, update it, otherwise add it
     const updatedPosts = currentPost.id && posts.some(post => post.id === currentPost.id)
       ? posts.map(post => post.id === currentPost.id ? postToSave : post)
       : [...posts, postToSave];
@@ -105,7 +108,7 @@ export const useBlogPosts = () => {
     
     toast({
       title: "Success",
-      description: `Blog post has been ${currentPost.status === 'draft' ? 'saved as draft' : 'published'} successfully.`,
+      description: `Blog post has been ${postToSave.status === 'draft' ? 'saved as draft' : 'published'} successfully.`,
     });
   };
 
@@ -117,6 +120,7 @@ export const useBlogPosts = () => {
         // For this demo, we'll use the base64 data
         const result = reader.result as string;
         if (result) {
+          console.log("Image uploaded successfully");
           resolve(result);
         } else {
           reject(new Error("Failed to read file"));
@@ -146,7 +150,7 @@ export const useBlogPosts = () => {
       const matchesSearch = post.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
                             post.excerpt.toLowerCase().includes(searchTerm.toLowerCase());
       const matchesStatus = statusFilter === 'all' || 
-                           (statusFilter === 'published' && post.status !== 'draft') || 
+                           (statusFilter === 'published' && post.status === 'published') || 
                            (statusFilter === 'draft' && post.status === 'draft');
       
       return matchesSearch && matchesStatus;

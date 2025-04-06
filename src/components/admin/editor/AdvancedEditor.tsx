@@ -26,41 +26,14 @@ const AdvancedEditor: React.FC<AdvancedEditorProps> = ({
 }) => {
   const quillRef = useRef<ReactQuill>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [mounted, setMounted] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
   
-  // Key for forcing re-render if editor crashes
-  const [editorKey, setEditorKey] = useState<number>(Date.now());
-  const [localValue, setLocalValue] = useState<string>(value);
-  
-  // Initialize local value when component mounts
+  // Initialize editor only after component mounts
   useEffect(() => {
-    if (!mounted) {
-      setLocalValue(value);
-      setMounted(true);
-    }
-  }, [value, mounted]);
-  
-  // Sync external value changes with local state
-  useEffect(() => {
-    if (mounted && value !== localValue) {
-      setLocalValue(value);
-    }
-  }, [value, mounted, localValue]);
-  
-  // Error recovery mechanism
-  useEffect(() => {
-    const handleEditorError = () => {
-      console.log("Editor recovery triggered");
-      setEditorKey(Date.now());
-    };
-    
-    window.addEventListener('error', handleEditorError);
-    
-    return () => {
-      window.removeEventListener('error', handleEditorError);
-    };
+    setIsMounted(true);
   }, []);
-
+  
+  // Define modules configuration
   const modules = {
     toolbar: {
       container: [
@@ -142,15 +115,12 @@ const AdvancedEditor: React.FC<AdvancedEditorProps> = ({
     }
   };
 
-  // Function to handle manual content updates with debouncing
-  const handleChange = (content: string) => {
-    setLocalValue(content);
-    
-    // Only notify parent component of changes for intentional edits
-    if (mounted) {
-      onChange(content);
-    }
-  };
+  // Only render the editor after the component has mounted
+  if (!isMounted) {
+    return <div style={{ minHeight }} className="border rounded-md bg-gray-50 flex items-center justify-center">
+      <p className="text-muted-foreground">Editor loading...</p>
+    </div>;
+  }
 
   return (
     <div className={cn("advanced-editor", className)}>
@@ -173,6 +143,7 @@ const AdvancedEditor: React.FC<AdvancedEditorProps> = ({
             min-height: ${minHeight};
             max-height: 60vh;
             overflow-y: auto;
+            padding: 1rem;
           }
           .ql-editor p, .ql-editor ol, .ql-editor ul, .ql-editor pre, .ql-editor blockquote {
             margin-bottom: 1em;
@@ -183,6 +154,8 @@ const AdvancedEditor: React.FC<AdvancedEditorProps> = ({
           }
           .quill {
             width: 100%;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
           }
           .ql-snow .ql-tooltip {
             z-index: 50;
@@ -213,11 +186,10 @@ const AdvancedEditor: React.FC<AdvancedEditorProps> = ({
       )}
       
       <ReactQuill
-        key={`editor-${editorKey}`}
         ref={quillRef}
         theme="snow"
-        value={localValue}
-        onChange={handleChange}
+        value={value}
+        onChange={onChange}
         modules={modules}
         formats={formats}
         placeholder={placeholder}

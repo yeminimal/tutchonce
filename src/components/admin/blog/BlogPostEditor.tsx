@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card } from "@/components/ui/card";
 import { toast } from "@/components/ui/use-toast";
 import MainContentSection from './components/MainContentSection';
@@ -27,6 +27,16 @@ const BlogPostEditor: React.FC<BlogPostEditorProps> = ({
   const isEditing = !!currentPost.id && currentPost.id !== '';
   const [isDraft, setIsDraft] = useState(currentPost.status === 'draft');
   
+  // Ensure status is properly initialized
+  useEffect(() => {
+    if (!currentPost.status) {
+      setCurrentPost({...currentPost, status: 'draft'});
+      setIsDraft(true);
+    } else {
+      setIsDraft(currentPost.status === 'draft');
+    }
+  }, [currentPost.id]);
+  
   const handleSaveDraft = () => {
     const updatedPost = { ...currentPost, status: 'draft' as const };
     setCurrentPost(updatedPost);
@@ -43,6 +53,25 @@ const BlogPostEditor: React.FC<BlogPostEditorProps> = ({
   };
   
   const handlePublish = () => {
+    // Validate post content before publishing
+    if (!currentPost.title.trim()) {
+      toast({
+        title: "Error",
+        description: "Post title is required before publishing",
+        variant: "destructive"
+      });
+      return;
+    }
+    
+    if (!currentPost.content.trim()) {
+      toast({
+        title: "Error",
+        description: "Post content is required before publishing",
+        variant: "destructive"
+      });
+      return;
+    }
+    
     const updatedPost = { ...currentPost, status: 'published' as const };
     setCurrentPost(updatedPost);
     setIsDraft(false);

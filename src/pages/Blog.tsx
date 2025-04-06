@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Calendar, User, Clock, ChevronRight } from 'lucide-react';
 import { BlogPost } from '@/components/admin/blog/types';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import OptimizedImage from '@/components/OptimizedImage';
 
 const Blog = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -22,10 +23,14 @@ const Blog = () => {
     if (savedPosts) {
       try {
         const parsedPosts = JSON.parse(savedPosts);
+        console.log('Raw blog posts from storage:', parsedPosts);
+        
         // Only show published posts, filter out drafts
         const publishedPosts = parsedPosts.filter((post: BlogPost) => 
           post.status !== 'draft'
         );
+        console.log('Published posts after filtering:', publishedPosts);
+        
         // Sort by date, newest first
         const sortedPosts = publishedPosts.sort((a: BlogPost, b: BlogPost) => 
           new Date(b.date).getTime() - new Date(a.date).getTime()
@@ -35,6 +40,8 @@ const Blog = () => {
         console.error("Error loading blog posts:", error);
         setBlogPosts([]);
       }
+    } else {
+      console.log('No blog posts found in localStorage');
     }
     
     const handleIntersection = (entries: IntersectionObserverEntry[]) => {
@@ -74,6 +81,15 @@ const Blog = () => {
     setShowDialog(true);
   };
 
+  const getPlaceholderImage = (index: number) => {
+    const placeholders = [
+      'https://via.placeholder.com/640x360?text=Tutchonce+Cleaning',
+      'https://via.placeholder.com/640x360?text=Professional+Services',
+      'https://via.placeholder.com/640x360?text=Cleaning+Tips',
+    ];
+    return placeholders[index % placeholders.length];
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <Helmet>
@@ -101,19 +117,25 @@ const Blog = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {blogPosts.map((post, index) => (
                   <div key={post.id} className="bg-white rounded-2xl shadow-card overflow-hidden animate-reveal card-hover" style={{ transitionDelay: `${200 + index * 100}ms` }}>
-                    {post.image && (
-                      <div className="h-48 overflow-hidden">
+                    <div className="h-48 overflow-hidden">
+                      {post.image ? (
                         <img 
                           src={post.image} 
                           alt={post.title} 
                           className="w-full h-full object-cover transition-transform hover:scale-105 duration-500"
                           onError={(e) => {
                             const target = e.target as HTMLImageElement;
-                            target.src = 'https://via.placeholder.com/640x360?text=Tutchonce+Cleaning';
+                            target.src = getPlaceholderImage(index);
                           }}
                         />
-                      </div>
-                    )}
+                      ) : (
+                        <img 
+                          src={getPlaceholderImage(index)} 
+                          alt={post.title}
+                          className="w-full h-full object-cover transition-transform hover:scale-105 duration-500"
+                        />
+                      )}
+                    </div>
                     <div className="p-6">
                       <span className="text-xs font-medium text-brand-primary bg-brand-light px-3 py-1 rounded-full">
                         Blog
@@ -122,7 +144,7 @@ const Blog = () => {
                         {post.title}
                       </h3>
                       <p className="mt-3 text-muted-foreground text-sm line-clamp-3">
-                        {post.excerpt || post.content.substring(0, 150).replace(/<[^>]*>/g, '') + '...'}
+                        {post.excerpt || post.content.replace(/<[^>]*>/g, '').substring(0, 150) + '...'}
                       </p>
                       <div className="mt-5 flex items-center justify-between text-sm text-muted-foreground">
                         <div className="flex items-center">

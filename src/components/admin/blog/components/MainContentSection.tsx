@@ -21,7 +21,7 @@ const MainContentSection: React.FC<MainContentSectionProps> = ({
   return (
     <Card className="border border-gray-200">
       <CardContent className="p-6">
-        <div className="space-y-4">
+        <div className="space-y-6">
           <div>
             <Label htmlFor="title" className="text-base font-medium text-[#21665a]">
               Post Title
@@ -53,7 +53,7 @@ const MainContentSection: React.FC<MainContentSectionProps> = ({
             <Label htmlFor="content" className="text-base font-medium text-[#21665a]">
               Post Content
             </Label>
-            <div className="mt-1.5">
+            <div className="mt-3">
               <AdvancedEditor 
                 value={currentPost.content}
                 onChange={(value) => setCurrentPost({...currentPost, content: value})}

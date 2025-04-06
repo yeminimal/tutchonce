@@ -26,15 +26,28 @@ export const useCareerPosts = () => {
   const [statusFilter, setStatusFilter] = useState<string>('all');
   
   useEffect(() => {
-    // Load posts from localStorage
+    // Load posts from localStorage with a specific key for careers
     const savedPosts = localStorage.getItem('careerPosts');
     if (savedPosts) {
-      setPosts(JSON.parse(savedPosts));
+      try {
+        const parsedPosts = JSON.parse(savedPosts);
+        // Validate that we're loading career posts by checking for required fields
+        const validPosts = parsedPosts.filter((post: any) => 
+          post.title !== undefined && 
+          post.location !== undefined && 
+          post.type !== undefined
+        );
+        setPosts(validPosts);
+      } catch (error) {
+        console.error('Error parsing career posts:', error);
+        setPosts([]);
+      }
     }
   }, []);
   
   const savePosts = (updatedPosts: CareerPost[]) => {
     setPosts(updatedPosts);
+    // Use a distinct key for career posts storage
     localStorage.setItem('careerPosts', JSON.stringify(updatedPosts));
   };
   

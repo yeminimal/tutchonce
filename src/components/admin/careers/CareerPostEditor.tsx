@@ -24,7 +24,7 @@ const CareerPostEditor: React.FC<CareerPostEditorProps> = ({
   const isEditing = !!currentPost.id && currentPost.id !== '';
   
   return (
-    <div>
+    <div className="pb-10">
       <CareerEditorHeader isEditing={isEditing} onBack={onBack} />
       
       <form onSubmit={onSubmit} className="space-y-6">
@@ -32,17 +32,18 @@ const CareerPostEditor: React.FC<CareerPostEditorProps> = ({
           <div className="col-span-2">
             <Card className="border border-gray-200">
               <CardContent className="p-6">
+                <h4 className="font-medium text-[#228977] mb-4">Basic Job Information</h4>
                 <BasicJobInfo 
-                  currentPost={currentPost}
-                  setCurrentPost={setCurrentPost}
-                />
-                
-                <JobDetailsSection 
                   currentPost={currentPost}
                   setCurrentPost={setCurrentPost}
                 />
               </CardContent>
             </Card>
+            
+            <JobDetailsSection 
+              currentPost={currentPost}
+              setCurrentPost={setCurrentPost}
+            />
           </div>
           
           <div>
@@ -52,7 +53,31 @@ const CareerPostEditor: React.FC<CareerPostEditorProps> = ({
                 setCurrentPost={setCurrentPost}
               />
               
-              <EditorFooter onBack={onBack} />
+              <Card className="border border-gray-200">
+                <CardContent className="p-6">
+                  <h4 className="font-medium text-[#228977] mb-4">Actions</h4>
+                  <div className="flex flex-col space-y-4">
+                    <button
+                      type="submit"
+                      className="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-[#228977] hover:bg-[#21665a] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#228977]"
+                    >
+                      {isEditing ? 'Update Job Listing' : 'Publish Job Listing'}
+                    </button>
+                    
+                    <button
+                      type="button"
+                      onClick={onBack}
+                      className="inline-flex items-center justify-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#228977]"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </CardContent>
+              </Card>
+              
+              <p className="text-sm text-muted-foreground text-center mt-4">
+                All job listings are subject to review before being made public.
+              </p>
             </div>
           </div>
         </div>

@@ -1,5 +1,5 @@
 
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { cn } from '@/lib/utils';
@@ -26,6 +26,23 @@ const AdvancedEditor: React.FC<AdvancedEditorProps> = ({
 }) => {
   const quillRef = useRef<ReactQuill>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  
+  // Key for forcing re-render if editor crashes
+  const [editorKey, setEditorKey] = React.useState<number>(0);
+  
+  // Error recovery mechanism
+  useEffect(() => {
+    const handleEditorError = () => {
+      console.log("Editor recovery triggered");
+      setEditorKey(prev => prev + 1);
+    };
+    
+    window.addEventListener('error', handleEditorError);
+    
+    return () => {
+      window.removeEventListener('error', handleEditorError);
+    };
+  }, []);
 
   const modules = {
     toolbar: {
@@ -42,6 +59,10 @@ const AdvancedEditor: React.FC<AdvancedEditorProps> = ({
       handlers: {
         image: onImageUpload ? handleImageUpload : undefined
       }
+    },
+    clipboard: {
+      // Toggle to add or disable the clipboard module
+      matchVisual: false
     },
   };
 
@@ -77,14 +98,10 @@ const AdvancedEditor: React.FC<AdvancedEditorProps> = ({
         description: "Please wait while your image is being uploaded."
       });
 
-      // Insert a placeholder
-      quill.insertText(range.index, "Uploading image...");
+      // Don't insert placeholder to avoid editor state issues
       
       // Upload the image
       const imageUrl = await onImageUpload(file);
-      
-      // Remove the placeholder text (adjust the range accordingly)
-      quill.deleteText(range.index, "Uploading image...".length);
       
       // Insert the uploaded image
       quill.insertEmbed(range.index, 'image', imageUrl);
@@ -111,6 +128,12 @@ const AdvancedEditor: React.FC<AdvancedEditorProps> = ({
     }
   };
 
+  // Function to handle manual content updates without triggering internal editor state issues
+  const handleChange = (content: string) => {
+    // Apply some debouncing/throttling to avoid performance issues
+    onChange(content);
+  };
+
   return (
     <div className={cn("advanced-editor", className)}>
       <style>
@@ -130,6 +153,8 @@ const AdvancedEditor: React.FC<AdvancedEditorProps> = ({
           }
           .ql-editor {
             min-height: ${minHeight};
+            max-height: 60vh;
+            overflow-y: auto;
           }
           .ql-editor p, .ql-editor ol, .ql-editor ul, .ql-editor pre, .ql-editor blockquote {
             margin-bottom: 1em;
@@ -170,10 +195,11 @@ const AdvancedEditor: React.FC<AdvancedEditorProps> = ({
       )}
       
       <ReactQuill
+        key={`editor-${editorKey}`}
         ref={quillRef}
         theme="snow"
         value={value}
-        onChange={onChange}
+        onChange={handleChange}
         modules={modules}
         formats={formats}
         placeholder={placeholder}

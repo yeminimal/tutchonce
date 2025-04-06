@@ -11,15 +11,28 @@ export const useBlogPosts = () => {
   const { toast } = useToast();
   
   useEffect(() => {
-    // Load posts from localStorage
+    // Load posts from localStorage with a specific key for blog posts
     const savedPosts = localStorage.getItem('blogPosts');
     if (savedPosts) {
-      setPosts(JSON.parse(savedPosts));
+      try {
+        const parsedPosts = JSON.parse(savedPosts);
+        // Validate that we're loading blog posts by checking for required fields
+        const validPosts = parsedPosts.filter((post: any) => 
+          post.title !== undefined && 
+          post.content !== undefined && 
+          post.excerpt !== undefined
+        );
+        setPosts(validPosts);
+      } catch (error) {
+        console.error('Error parsing blog posts:', error);
+        setPosts([]);
+      }
     }
   }, []);
   
   const savePosts = (updatedPosts: BlogPost[]) => {
     setPosts(updatedPosts);
+    // Use a distinct key for blog posts storage
     localStorage.setItem('blogPosts', JSON.stringify(updatedPosts));
   };
   

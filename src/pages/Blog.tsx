@@ -4,11 +4,15 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { Helmet } from 'react-helmet';
 import { Button } from '@/components/ui/button';
-import { Calendar, User, Clock } from 'lucide-react';
+import { Calendar, User, Clock, ChevronRight } from 'lucide-react';
+import { BlogPost } from '@/components/admin/blog/types';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 const Blog = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const [blogPosts, setBlogPosts] = useState<any[]>([]);
+  const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
+  const [selectedPost, setSelectedPost] = useState<BlogPost | null>(null);
+  const [showDialog, setShowDialog] = useState(false);
 
   useEffect(() => {
     document.documentElement.classList.add('smooth-scroll');
@@ -16,7 +20,17 @@ const Blog = () => {
     // Load blog posts from localStorage
     const savedPosts = localStorage.getItem('blogPosts');
     if (savedPosts) {
-      setBlogPosts(JSON.parse(savedPosts));
+      try {
+        const parsedPosts = JSON.parse(savedPosts);
+        // Sort by date, newest first
+        const sortedPosts = parsedPosts.sort((a: BlogPost, b: BlogPost) => 
+          new Date(b.date).getTime() - new Date(a.date).getTime()
+        );
+        setBlogPosts(sortedPosts);
+      } catch (error) {
+        console.error("Error loading blog posts:", error);
+        setBlogPosts([]);
+      }
     }
     
     const handleIntersection = (entries: IntersectionObserverEntry[]) => {
@@ -50,6 +64,11 @@ const Blog = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+  
+  const openBlogPost = (post: BlogPost) => {
+    setSelectedPost(post);
+    setShowDialog(true);
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -99,12 +118,12 @@ const Blog = () => {
                         {post.title}
                       </h3>
                       <p className="mt-3 text-muted-foreground text-sm line-clamp-3">
-                        {post.excerpt || post.content.substring(0, 150) + '...'}
+                        {post.excerpt || post.content.substring(0, 150).replace(/<[^>]*>/g, '') + '...'}
                       </p>
                       <div className="mt-5 flex items-center justify-between text-sm text-muted-foreground">
                         <div className="flex items-center">
                           <User size={14} className="mr-1" />
-                          <span>Admin</span>
+                          <span>{post.author || 'Admin'}</span>
                         </div>
                         <div className="flex items-center">
                           <Calendar size={14} className="mr-1" />
@@ -112,14 +131,15 @@ const Blog = () => {
                         </div>
                         <div className="flex items-center">
                           <Clock size={14} className="mr-1" />
-                          <span>5 min read</span>
+                          <span>{post.readingTime || '5 min read'}</span>
                         </div>
                       </div>
                       <Button 
                         variant="outline" 
                         className="w-full mt-6 border-brand-primary text-brand-primary hover:bg-brand-light"
+                        onClick={() => openBlogPost(post)}
                       >
-                        Read More
+                        Read More <ChevronRight size={16} className="ml-1" />
                       </Button>
                     </div>
                   </div>
@@ -135,6 +155,64 @@ const Blog = () => {
         </section>
       </main>
       <Footer />
+      
+      {/* Blog Post Dialog */}
+      <Dialog open={showDialog} onOpenChange={setShowDialog}>
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+          {selectedPost && (
+            <>
+              <DialogHeader>
+                <DialogTitle className="text-2xl text-brand-primary">{selectedPost.title}</DialogTitle>
+                <div className="flex flex-wrap gap-4 mt-2">
+                  <span className="inline-flex items-center text-sm text-muted-foreground">
+                    <User size={14} className="mr-1" /> {selectedPost.author || 'Admin'}
+                  </span>
+                  <span className="inline-flex items-center text-sm text-muted-foreground">
+                    <Calendar size={14} className="mr-1" /> {new Date(selectedPost.date).toLocaleDateString()}
+                  </span>
+                  <span className="inline-flex items-center text-sm text-muted-foreground">
+                    <Clock size={14} className="mr-1" /> {selectedPost.readingTime || '5 min read'}
+                  </span>
+                </div>
+              </DialogHeader>
+              
+              {selectedPost.image && (
+                <div className="mt-4 rounded-lg overflow-hidden">
+                  <img 
+                    src={selectedPost.image} 
+                    alt={selectedPost.title} 
+                    className="w-full max-h-[300px] object-cover"
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      target.src = 'https://via.placeholder.com/1200x600?text=Tutchonce+Cleaning';
+                    }}
+                  />
+                </div>
+              )}
+              
+              <div className="mt-6">
+                <div 
+                  className="prose prose-lg max-w-none"
+                  dangerouslySetInnerHTML={{ __html: selectedPost.content }}
+                />
+              </div>
+              
+              {selectedPost.tags && selectedPost.tags.length > 0 && (
+                <div className="mt-8 flex flex-wrap gap-2">
+                  {selectedPost.tags.map((tag, index) => (
+                    <span 
+                      key={index} 
+                      className="inline-block px-3 py-1 bg-gray-100 text-gray-700 text-xs font-medium rounded-full"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              )}
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

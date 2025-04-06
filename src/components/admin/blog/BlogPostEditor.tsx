@@ -28,7 +28,7 @@ const BlogPostEditor: React.FC<BlogPostEditorProps> = ({
   const [isDraft, setIsDraft] = useState(currentPost.status === 'draft');
   
   const handleSaveDraft = () => {
-    const updatedPost = { ...currentPost, status: 'draft' };
+    const updatedPost = { ...currentPost, status: 'draft' as const };
     setCurrentPost(updatedPost);
     setIsDraft(true);
     
@@ -43,7 +43,7 @@ const BlogPostEditor: React.FC<BlogPostEditorProps> = ({
   };
   
   const handlePublish = () => {
-    const updatedPost = { ...currentPost, status: 'published' };
+    const updatedPost = { ...currentPost, status: 'published' as const };
     setCurrentPost(updatedPost);
     setIsDraft(false);
     

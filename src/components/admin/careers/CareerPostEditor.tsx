@@ -26,7 +26,7 @@ const CareerPostEditor: React.FC<CareerPostEditorProps> = ({
   const [isDraft, setIsDraft] = useState(currentPost.status === 'draft');
   
   const handleSaveDraft = () => {
-    const updatedPost = { ...currentPost, status: 'draft' };
+    const updatedPost = { ...currentPost, status: 'draft' as const };
     setCurrentPost(updatedPost);
     setIsDraft(true);
     
@@ -41,7 +41,7 @@ const CareerPostEditor: React.FC<CareerPostEditorProps> = ({
   };
   
   const handlePublish = () => {
-    const updatedPost = { ...currentPost, status: 'active' };
+    const updatedPost = { ...currentPost, status: 'active' as const };
     setCurrentPost(updatedPost);
     setIsDraft(false);
     

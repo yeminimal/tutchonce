@@ -15,7 +15,7 @@ const defaultCareerPost: CareerPost = {
   salary: '',
   applicationProcess: '<p>To apply for this position, please send your resume and cover letter to <a href="mailto:careers@tutchonce.com">careers@tutchonce.com</a></p>',
   date: new Date().toISOString().split('T')[0],
-  status: 'active'
+  status: 'draft'
 };
 
 export const useCareerPosts = () => {
@@ -107,7 +107,7 @@ export const useCareerPosts = () => {
     
     toast({
       title: "Success",
-      description: `Job listing has been ${currentPost.id && posts.some(post => post.id === currentPost.id) ? 'updated' : 'created'} successfully.`,
+      description: `Job listing has been ${currentPost.status === 'draft' ? 'saved as draft' : 'published'} successfully.`,
     });
   };
 

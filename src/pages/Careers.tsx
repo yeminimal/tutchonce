@@ -18,7 +18,21 @@ const Careers = () => {
     // Load career posts from localStorage
     const savedPosts = localStorage.getItem('careerPosts');
     if (savedPosts) {
-      setJobs(JSON.parse(savedPosts));
+      try {
+        const parsedPosts = JSON.parse(savedPosts);
+        // Only show active job listings, filter out drafts
+        const activeJobs = parsedPosts.filter((job: CareerPost) => 
+          job.status === 'active'
+        );
+        // Sort by date, newest first
+        const sortedJobs = activeJobs.sort((a: CareerPost, b: CareerPost) => 
+          new Date(b.date).getTime() - new Date(a.date).getTime()
+        );
+        setJobs(sortedJobs);
+      } catch (error) {
+        console.error('Error parsing career posts:', error);
+        setJobs([]);
+      }
     }
     
     const handleIntersection = (entries: IntersectionObserverEntry[]) => {

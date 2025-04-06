@@ -8,6 +8,7 @@ export const useBlogPosts = () => {
   const [currentPost, setCurrentPost] = useState<BlogPost | null>(null);
   const [view, setView] = useState<'list' | 'editor'>('list');
   const [searchTerm, setSearchTerm] = useState('');
+  const [statusFilter, setStatusFilter] = useState<string>('all');
   const { toast } = useToast();
   
   useEffect(() => {
@@ -49,7 +50,8 @@ export const useBlogPosts = () => {
       readingTime: '5 min read',
       seoTitle: '',
       seoDescription: '',
-      seoKeywords: ''
+      seoKeywords: '',
+      status: 'draft'
     });
     setView('editor');
   };
@@ -89,7 +91,8 @@ export const useBlogPosts = () => {
     
     const postToSave = {
       ...currentPost,
-      readingTime: `${readingTime} min read`
+      readingTime: `${readingTime} min read`,
+      status: currentPost.status || 'published'
     };
     
     const updatedPosts = currentPost.id && posts.some(post => post.id === currentPost.id)
@@ -102,7 +105,7 @@ export const useBlogPosts = () => {
     
     toast({
       title: "Success",
-      description: `Blog post has been ${currentPost.id && posts.some(post => post.id === currentPost.id) ? 'updated' : 'created'} successfully.`,
+      description: `Blog post has been ${currentPost.status === 'draft' ? 'saved as draft' : 'published'} successfully.`,
     });
   };
 
@@ -138,13 +141,28 @@ export const useBlogPosts = () => {
     }
   };
   
+  const getFilteredPosts = () => {
+    return posts.filter(post => {
+      const matchesSearch = post.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
+                            post.excerpt.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesStatus = statusFilter === 'all' || 
+                           (statusFilter === 'published' && post.status !== 'draft') || 
+                           (statusFilter === 'draft' && post.status === 'draft');
+      
+      return matchesSearch && matchesStatus;
+    });
+  };
+  
   return {
     posts,
+    filteredPosts: getFilteredPosts(),
     currentPost,
     setCurrentPost,
     view,
     searchTerm,
     setSearchTerm,
+    statusFilter,
+    setStatusFilter,
     handleNewPost,
     handleEditPost,
     handleDeletePost,

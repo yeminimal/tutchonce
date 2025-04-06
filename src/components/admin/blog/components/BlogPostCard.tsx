@@ -1,8 +1,10 @@
 
 import React from 'react';
-import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Edit, Trash2, Calendar, Clock } from 'lucide-react';
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Edit2, Trash2 } from 'lucide-react';
+import { formatDistanceToNow } from 'date-fns';
 import { BlogPost } from '../types';
 
 interface BlogPostCardProps {
@@ -12,57 +14,62 @@ interface BlogPostCardProps {
 }
 
 const BlogPostCard: React.FC<BlogPostCardProps> = ({ post, onEditPost, onDeletePost }) => {
+  const dateFormatted = new Date(post.date).toLocaleDateString();
+  const timeAgo = formatDistanceToNow(new Date(post.date), { addSuffix: true });
+  
   return (
-    <Card key={post.id} className="border border-gray-200 hover:shadow-md transition-shadow duration-200">
-      <CardContent className="p-0">
-        <div className="flex flex-col md:flex-row">
-          {post.image && (
-            <div className="md:w-48 h-48 md:h-auto overflow-hidden">
-              <img 
-                src={post.image} 
-                alt={post.title} 
-                className="w-full h-full object-cover"
-                onError={(e) => {
-                  const target = e.target as HTMLImageElement;
-                  target.src = 'https://via.placeholder.com/150?text=Tutchonce';
-                }}
-              />
+    <Card className="hover:shadow-md transition-shadow">
+      <CardContent className="p-4">
+        <div className="flex flex-col md:flex-row justify-between items-start gap-4">
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center">
+              <h3 className="text-lg font-medium text-[#228977] truncate">{post.title}</h3>
+              {post.status === 'draft' && (
+                <Badge variant="outline" className="ml-2 bg-yellow-50 text-yellow-700 border-yellow-300">
+                  Draft
+                </Badge>
+              )}
             </div>
-          )}
-          <div className="p-6 flex-1">
-            <h4 className="font-semibold text-lg text-[#228977] mb-2">{post.title}</h4>
-            <p className="text-sm text-gray-600 line-clamp-2 mb-4">
-              {post.excerpt || post.content.replace(/<[^>]*>/g, '').substring(0, 150) + '...'}
+            <p className="mt-1 text-sm text-muted-foreground line-clamp-2">
+              {post.excerpt || post.content.replace(/<[^>]*>/g, '').substring(0, 120) + '...'}
             </p>
-            
-            <div className="flex flex-wrap gap-2 mb-4">
-              {post.tags && post.tags.map((tag, i) => (
-                <span key={i} className="text-xs bg-[#f8fffe] text-[#228977] px-2 py-1 rounded-full">
-                  {tag}
+            <div className="mt-2 flex flex-wrap gap-2 items-center text-xs text-muted-foreground">
+              <span className="inline-flex items-center">
+                <span className="font-medium">Date:</span>
+                <span className="ml-1">{dateFormatted} ({timeAgo})</span>
+              </span>
+              <span className="inline-flex items-center">
+                <span className="font-medium">Author:</span>
+                <span className="ml-1">{post.author}</span>
+              </span>
+              {post.tags && post.tags.length > 0 && (
+                <span className="inline-flex items-center">
+                  <span className="font-medium">Tags:</span>
+                  <span className="ml-1">{post.tags.join(', ')}</span>
                 </span>
-              ))}
+              )}
             </div>
-            
-            <div className="flex items-center justify-between text-xs text-gray-500">
-              <div className="flex items-center">
-                <Calendar size={14} className="mr-1" />
-                <span>{new Date(post.date).toLocaleDateString()}</span>
-              </div>
-              <div className="flex items-center">
-                <Clock size={14} className="mr-1" />
-                <span>{post.readingTime || '5 min read'}</span>
-              </div>
-              <div className="flex space-x-2">
-                <Button variant="ghost" size="sm" className="text-[#228977] hover:text-[#21665a] hover:bg-[#f8fffe]" onClick={() => onEditPost(post)}>
-                  <Edit size={14} className="mr-1" />
-                  Edit
-                </Button>
-                <Button variant="ghost" size="sm" className="text-red-500 hover:text-red-700 hover:bg-red-50" onClick={() => onDeletePost(post.id)}>
-                  <Trash2 size={14} className="mr-1" />
-                  Delete
-                </Button>
-              </div>
-            </div>
+          </div>
+          
+          <div className="flex items-center space-x-2 self-end md:self-center">
+            <Button
+              variant="outline"
+              size="sm"
+              className="text-blue-600 border-blue-200 hover:bg-blue-50"
+              onClick={() => onEditPost(post)}
+            >
+              <Edit2 size={16} className="mr-1" />
+              Edit
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              className="text-red-600 border-red-200 hover:bg-red-50"
+              onClick={() => onDeletePost(post.id)}
+            >
+              <Trash2 size={16} className="mr-1" />
+              Delete
+            </Button>
           </div>
         </div>
       </CardContent>

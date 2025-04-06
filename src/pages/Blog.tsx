@@ -22,8 +22,12 @@ const Blog = () => {
     if (savedPosts) {
       try {
         const parsedPosts = JSON.parse(savedPosts);
+        // Only show published posts, filter out drafts
+        const publishedPosts = parsedPosts.filter((post: BlogPost) => 
+          post.status !== 'draft'
+        );
         // Sort by date, newest first
-        const sortedPosts = parsedPosts.sort((a: BlogPost, b: BlogPost) => 
+        const sortedPosts = publishedPosts.sort((a: BlogPost, b: BlogPost) => 
           new Date(b.date).getTime() - new Date(a.date).getTime()
         );
         setBlogPosts(sortedPosts);

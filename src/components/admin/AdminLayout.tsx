@@ -1,6 +1,6 @@
 
-import React from 'react';
-import { Outlet, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { useToast } from "@/hooks/use-toast";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
@@ -13,7 +13,23 @@ interface AdminLayoutProps {
 
 const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { toast } = useToast();
+  const [activeTab, setActiveTab] = useState<string>('blog');
+  
+  // Set active tab based on URL path
+  useEffect(() => {
+    if (location.pathname.includes('/careers')) {
+      setActiveTab('careers');
+    } else {
+      setActiveTab('blog');
+    }
+  }, [location.pathname]);
+  
+  const handleTabChange = (value: string) => {
+    setActiveTab(value);
+    navigate(`/admin/${value}`);
+  };
   
   const handleLogout = () => {
     localStorage.removeItem('adminToken');
@@ -58,7 +74,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
         
         <Card className="shadow-md bg-white border-none rounded-xl">
           <CardContent className="p-6 md:p-8">
-            <Tabs defaultValue="blog" className="w-full">
+            <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
               <TabsList className="grid w-full grid-cols-2 mb-8 bg-[#f8fffe]">
                 <TabsTrigger value="blog" className="text-base py-3 data-[state=active]:bg-[#228977] data-[state=active]:text-white">
                   Blog Management

@@ -9,6 +9,8 @@ interface BlogPostListProps {
   posts: BlogPost[];
   searchTerm: string;
   setSearchTerm: (term: string) => void;
+  statusFilter: string;
+  setStatusFilter: (status: string) => void;
   onNewPost: () => void;
   onEditPost: (post: BlogPost) => void;
   onDeletePost: (id: string) => void;
@@ -18,26 +20,25 @@ const BlogPostList: React.FC<BlogPostListProps> = ({
   posts,
   searchTerm,
   setSearchTerm,
+  statusFilter,
+  setStatusFilter,
   onNewPost,
   onEditPost,
   onDeletePost
 }) => {
-  const filteredPosts = posts.filter(post => 
-    post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    post.excerpt.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-  
   return (
     <div>
       <SearchBar 
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm}
+        statusFilter={statusFilter}
+        setStatusFilter={setStatusFilter}
         onNewPost={onNewPost}
       />
       
-      {filteredPosts.length > 0 ? (
+      {posts.length > 0 ? (
         <div className="space-y-4">
-          {filteredPosts.map((post) => (
+          {posts.map((post) => (
             <BlogPostCard 
               key={post.id}
               post={post}

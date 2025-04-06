@@ -6,12 +6,14 @@ import { useBlogPosts } from './blog/useBlogPosts';
 
 const BlogDashboard = () => {
   const {
-    posts,
+    filteredPosts,
     currentPost,
     setCurrentPost,
     view,
     searchTerm,
     setSearchTerm,
+    statusFilter,
+    setStatusFilter,
     handleNewPost,
     handleEditPost,
     handleDeletePost,
@@ -34,9 +36,11 @@ const BlogDashboard = () => {
   
   return (
     <BlogPostList 
-      posts={posts}
+      posts={filteredPosts}
       searchTerm={searchTerm}
       setSearchTerm={setSearchTerm}
+      statusFilter={statusFilter}
+      setStatusFilter={setStatusFilter}
       onNewPost={handleNewPost}
       onEditPost={handleEditPost}
       onDeletePost={handleDeletePost}

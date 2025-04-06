@@ -1,5 +1,5 @@
 
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { cn } from '@/lib/utils';
@@ -26,15 +26,32 @@ const AdvancedEditor: React.FC<AdvancedEditorProps> = ({
 }) => {
   const quillRef = useRef<ReactQuill>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [mounted, setMounted] = useState(false);
   
   // Key for forcing re-render if editor crashes
-  const [editorKey, setEditorKey] = React.useState<number>(0);
+  const [editorKey, setEditorKey] = useState<number>(Date.now());
+  const [localValue, setLocalValue] = useState<string>(value);
+  
+  // Initialize local value when component mounts
+  useEffect(() => {
+    if (!mounted) {
+      setLocalValue(value);
+      setMounted(true);
+    }
+  }, [value, mounted]);
+  
+  // Sync external value changes with local state
+  useEffect(() => {
+    if (mounted && value !== localValue) {
+      setLocalValue(value);
+    }
+  }, [value, mounted, localValue]);
   
   // Error recovery mechanism
   useEffect(() => {
     const handleEditorError = () => {
       console.log("Editor recovery triggered");
-      setEditorKey(prev => prev + 1);
+      setEditorKey(Date.now());
     };
     
     window.addEventListener('error', handleEditorError);
@@ -56,12 +73,11 @@ const AdvancedEditor: React.FC<AdvancedEditorProps> = ({
         ['link', 'image'],
         ['clean']
       ],
-      handlers: {
-        image: onImageUpload ? handleImageUpload : undefined
-      }
+      handlers: onImageUpload ? {
+        image: handleImageUpload
+      } : undefined
     },
     clipboard: {
-      // Toggle to add or disable the clipboard module
       matchVisual: false
     },
   };
@@ -97,8 +113,6 @@ const AdvancedEditor: React.FC<AdvancedEditorProps> = ({
         title: "Uploading...",
         description: "Please wait while your image is being uploaded."
       });
-
-      // Don't insert placeholder to avoid editor state issues
       
       // Upload the image
       const imageUrl = await onImageUpload(file);
@@ -128,10 +142,14 @@ const AdvancedEditor: React.FC<AdvancedEditorProps> = ({
     }
   };
 
-  // Function to handle manual content updates without triggering internal editor state issues
+  // Function to handle manual content updates with debouncing
   const handleChange = (content: string) => {
-    // Apply some debouncing/throttling to avoid performance issues
-    onChange(content);
+    setLocalValue(content);
+    
+    // Only notify parent component of changes for intentional edits
+    if (mounted) {
+      onChange(content);
+    }
   };
 
   return (
@@ -198,11 +216,12 @@ const AdvancedEditor: React.FC<AdvancedEditorProps> = ({
         key={`editor-${editorKey}`}
         ref={quillRef}
         theme="snow"
-        value={value}
+        value={localValue}
         onChange={handleChange}
         modules={modules}
         formats={formats}
         placeholder={placeholder}
+        preserveWhitespace={true}
       />
     </div>
   );

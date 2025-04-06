@@ -5,20 +5,30 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
 import { Calendar } from 'lucide-react';
 import { BlogPost } from '../types';
+import { Badge } from "@/components/ui/badge";
 
 interface PostSettingsProps {
   currentPost: BlogPost;
   setCurrentPost: (post: BlogPost) => void;
+  isDraft?: boolean;
 }
 
 const PostSettings: React.FC<PostSettingsProps> = ({
   currentPost,
-  setCurrentPost
+  setCurrentPost,
+  isDraft
 }) => {
   return (
     <Card className="border border-gray-200">
       <CardContent className="p-6">
-        <h4 className="font-medium text-[#228977] mb-4">Post Settings</h4>
+        <div className="flex justify-between items-center mb-4">
+          <h4 className="font-medium text-[#228977]">Post Settings</h4>
+          {isDraft && (
+            <Badge variant="outline" className="bg-yellow-50 text-yellow-700 border-yellow-300">
+              Draft
+            </Badge>
+          )}
+        </div>
         
         <div className="space-y-4">
           <div>

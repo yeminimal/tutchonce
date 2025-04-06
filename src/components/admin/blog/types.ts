@@ -6,10 +6,13 @@ export interface BlogPost {
   excerpt: string;
   date: string;
   image?: string;
-  author?: string;
-  tags?: string[];
-  readingTime?: string;
-  seoTitle?: string;
-  seoDescription?: string;
-  seoKeywords?: string;
+  author: string;
+  tags: string[];
+  readingTime: string;
+  seoTitle: string;
+  seoDescription: string;
+  seoKeywords: string;
+  status?: 'published' | 'draft';
 }
+
+export type ViewMode = 'list' | 'editor';

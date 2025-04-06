@@ -5,17 +5,30 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { CareerPost } from '../types';
+import { Badge } from "@/components/ui/badge";
 
 interface JobStatusProps {
   currentPost: CareerPost;
   setCurrentPost: React.Dispatch<React.SetStateAction<CareerPost | null>>;
+  isDraft?: boolean;
 }
 
-const JobStatus: React.FC<JobStatusProps> = ({ currentPost, setCurrentPost }) => {
+const JobStatus: React.FC<JobStatusProps> = ({ 
+  currentPost, 
+  setCurrentPost,
+  isDraft
+}) => {
   return (
     <Card className="border border-gray-200">
       <CardContent className="p-6">
-        <h4 className="font-medium text-[#228977] mb-4">Listing Status</h4>
+        <div className="flex justify-between items-center mb-4">
+          <h4 className="font-medium text-[#228977]">Listing Status</h4>
+          {isDraft && (
+            <Badge variant="outline" className="bg-yellow-50 text-yellow-700 border-yellow-300">
+              Draft
+            </Badge>
+          )}
+        </div>
         
         <div className="space-y-4">
           <div>
@@ -35,6 +48,9 @@ const JobStatus: React.FC<JobStatusProps> = ({ currentPost, setCurrentPost }) =>
                 <SelectItem value="closed">Closed</SelectItem>
               </SelectContent>
             </Select>
+            <p className="text-xs text-muted-foreground mt-1">
+              Active listings will appear on your careers page
+            </p>
           </div>
           
           <div>

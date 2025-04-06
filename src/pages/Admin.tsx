@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
-import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
+import { Routes, Route, useLocation, useNavigate, Navigate } from 'react-router-dom';
 import AdminAuth from '../components/admin/AdminAuth';
 import AdminLayout from '../components/admin/AdminLayout';
 import BlogDashboard from '../components/admin/BlogDashboard';
@@ -21,7 +21,7 @@ const Admin = () => {
       
       // Redirect to dashboard if on the login page
       if (location.pathname === '/admin') {
-        navigate('/admin/dashboard');
+        navigate('/admin/blog');
       }
     } else {
       // If not authenticated, redirect to login unless already there
@@ -41,16 +41,16 @@ const Admin = () => {
   // Decide which component to render based on the route
   const renderAdminContent = () => {
     if (!isAuthenticated) {
-      return <AdminAuth />;
+      return <AdminAuth onLogin={() => setIsAuthenticated(true)} />;
     }
     
     return (
       <Routes>
         <Route path="/" element={<AdminLayout />}>
-          <Route index element={<BlogDashboard />} />
-          <Route path="dashboard" element={<BlogDashboard />} />
+          <Route index element={<Navigate to="/admin/blog" replace />} />
           <Route path="blog" element={<BlogDashboard />} />
           <Route path="careers" element={<CareerDashboard />} />
+          <Route path="*" element={<Navigate to="/admin/blog" replace />} />
         </Route>
       </Routes>
     );

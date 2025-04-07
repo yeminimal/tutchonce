@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
@@ -35,6 +36,7 @@ export const navItems = [
 ];
 
 const NavItems: React.FC<NavItemProps> = ({ handleNavigation, closeMobileMenu, isMobile = false }) => {
+  const location = useLocation();
   const baseClasses = isMobile 
     ? "text-foreground font-medium text-lg transition-colors hover:text-brand-primary"
     : "text-foreground/80 hover:text-brand-primary transition-colors font-medium text-sm hover:scale-105 duration-200";
@@ -82,6 +84,13 @@ const NavItems: React.FC<NavItemProps> = ({ handleNavigation, closeMobileMenu, i
         onClick={() => isMobile && closeMobileMenu && closeMobileMenu()}
       >
         Careers
+      </Link>
+      <Link 
+        to="/bookings" 
+        className={baseClasses}
+        onClick={() => isMobile && closeMobileMenu && closeMobileMenu()}
+      >
+        Bookings
       </Link>
       <a 
         href="#contact" 

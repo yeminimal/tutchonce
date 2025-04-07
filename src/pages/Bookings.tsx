@@ -7,6 +7,10 @@ import BookingForm from '@/components/bookings/BookingForm';
 import BookingHeader from '@/components/bookings/BookingHeader';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from "@/hooks/use-toast";
+import { Database } from '@/integrations/supabase/types';
+
+// Define booking type from database schema
+type BookingInsert = Database['public']['Tables']['bookings']['Insert'];
 
 const Bookings = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -31,7 +35,7 @@ const Bookings = () => {
             service: bookingData.service,
             message: bookingData.message,
             created_at: new Date().toISOString()
-          }
+          } as BookingInsert
         ]);
       
       if (error) {

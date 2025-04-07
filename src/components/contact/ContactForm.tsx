@@ -3,20 +3,10 @@ import React from 'react';
 import { Button } from "@/components/ui/button";
 import { MessageSquareQuote } from 'lucide-react';
 import { useIsMobile } from "@/hooks/use-mobile";
+import { Link } from 'react-router-dom';
 
 const ContactForm = () => {
   const isMobile = useIsMobile();
-  
-  const handleGetQuotation = () => {
-    // WhatsApp redirect
-    const whatsappNumber = "+2348025058426";
-    const message = "Hello Tutchonce Cleaning Services, I would like to get a quotation for your cleaning services.";
-    const encodedMessage = encodeURIComponent(message);
-    const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
-    
-    // Open WhatsApp in a new tab
-    window.open(whatsappUrl, '_blank');
-  };
   
   return (
     <div className="bg-white rounded-2xl shadow-card p-6 sm:p-8 md:p-12 flex flex-col items-center justify-center text-center">
@@ -31,11 +21,13 @@ const ContactForm = () => {
       </div>
       
       <Button 
-        onClick={handleGetQuotation}
+        asChild
         className="bg-brand-primary hover:bg-brand-secondary text-white w-full max-w-xs py-5 rounded-full text-base font-medium transition-all duration-300 hover:scale-105 flex items-center justify-center gap-3"
       >
-        <MessageSquareQuote size={18} />
-        <span className="whitespace-nowrap">Get Quotation on WhatsApp</span>
+        <Link to="/bookings">
+          <MessageSquareQuote size={18} />
+          <span className="whitespace-nowrap">Get Quotation Now</span>
+        </Link>
       </Button>
     </div>
   );

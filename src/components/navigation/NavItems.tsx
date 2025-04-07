@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
@@ -7,6 +6,33 @@ export interface NavItemProps {
   closeMobileMenu?: () => void;
   isMobile?: boolean;
 }
+
+export const navItems = [
+  {
+    label: "Home",
+    href: "/",
+  },
+  {
+    label: "Services",
+    href: "/#services",
+  },
+  {
+    label: "Blog",
+    href: "/blog",
+  },
+  {
+    label: "Careers",
+    href: "/careers",
+  },
+  {
+    label: "Bookings",
+    href: "/bookings",
+  },
+  {
+    label: "Contact",
+    href: "/#contact",
+  },
+];
 
 const NavItems: React.FC<NavItemProps> = ({ handleNavigation, closeMobileMenu, isMobile = false }) => {
   const baseClasses = isMobile 

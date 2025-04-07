@@ -17,7 +17,7 @@ const EditorFooter: React.FC<EditorFooterProps> = ({
   contentType 
 }) => {
   return (
-    <div className="flex justify-end space-x-3">
+    <div className="sticky bottom-4 z-10 bg-white p-4 shadow-md rounded-lg border border-gray-100 flex justify-end space-x-3">
       <Button 
         type="button" 
         variant="outline" 

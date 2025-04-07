@@ -26,14 +26,26 @@ const AdvancedEditor: React.FC<AdvancedEditorProps> = ({
 }) => {
   const quillRef = useRef<ReactQuill>(null);
   const [isMounted, setIsMounted] = useState(false);
+  const [editorValue, setEditorValue] = useState(value);
   
   // Initialize editor only after component mounts
   useEffect(() => {
     setIsMounted(true);
   }, []);
   
+  // Sync external value with internal state
+  useEffect(() => {
+    setEditorValue(value);
+  }, [value]);
+  
   // Get toolbar configuration
   const modules = EditorToolbar({ onImageUpload });
+  
+  // Handle content change with debounce to prevent rapid re-renders
+  const handleChange = (content: string) => {
+    setEditorValue(content);
+    onChange(content);
+  };
   
   // Handle image upload via toolbar
   if (onImageUpload && modules.toolbar.handlers) {
@@ -66,8 +78,8 @@ const AdvancedEditor: React.FC<AdvancedEditorProps> = ({
       <ReactQuill
         ref={quillRef}
         theme="snow"
-        value={value}
-        onChange={onChange}
+        value={editorValue}
+        onChange={handleChange}
         modules={modules}
         formats={editorFormats}
         placeholder={placeholder}

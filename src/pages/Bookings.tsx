@@ -6,6 +6,7 @@ import { Helmet } from 'react-helmet';
 import BookingForm from '@/components/bookings/BookingForm';
 import BookingHeader from '@/components/bookings/BookingHeader';
 import { supabase } from '@/integrations/supabase/client';
+import { toast } from "@/hooks/use-toast";
 
 const Bookings = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -21,7 +22,7 @@ const Bookings = () => {
     
     try {
       // Save to Supabase
-      const { data, error } = await supabase
+      const { error } = await supabase
         .from('bookings')
         .insert([
           { 
@@ -35,6 +36,11 @@ const Bookings = () => {
       
       if (error) {
         console.error('Error saving booking:', error);
+        toast({
+          variant: "destructive",
+          title: "Error saving booking",
+          description: "Your booking wasn't saved to our system, but we'll still connect you via WhatsApp."
+        });
         // Continue with WhatsApp even if Supabase fails
       }
       
@@ -50,6 +56,11 @@ const Bookings = () => {
       setFormSubmitted(true);
     } catch (error) {
       console.error('Error processing booking:', error);
+      toast({
+        variant: "destructive",
+        title: "Error processing booking",
+        description: "There was a problem processing your request. Please try again."
+      });
     } finally {
       setIsSubmitting(false);
     }

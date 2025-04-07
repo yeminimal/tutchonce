@@ -79,17 +79,21 @@ const BlogPostEditor: React.FC<BlogPostEditorProps> = ({
       return;
     }
     
+    // Explicitly set status to published
     updatePost({ status: 'published' });
     setIsDraft(false);
     
-    // Publish the post
-    const event = { preventDefault: () => {} } as React.FormEvent;
-    onSubmit(event);
-    
-    toast({
-      title: "Post Published",
-      description: "Your blog post has been published successfully and is now visible on the blog page."
-    });
+    // Short delay to ensure status is updated before submitting
+    setTimeout(() => {
+      // Publish the post
+      const event = { preventDefault: () => {} } as React.FormEvent;
+      onSubmit(event);
+      
+      toast({
+        title: "Post Published",
+        description: "Your blog post has been published successfully and is now visible on the blog page."
+      });
+    }, 100);
   }, [currentPost.title, currentPost.content, updatePost, onSubmit]);
   
   return (

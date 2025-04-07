@@ -19,8 +19,8 @@ const EditorFooter: React.FC<EditorFooterProps> = ({
   const publishLabel = contentType === 'blog' ? 'Publish Post' : 'Publish Job';
   
   return (
-    <div className="flex flex-col space-y-4">
-      <div className="flex flex-col sm:flex-row sm:justify-between sm:space-x-3 space-y-3 sm:space-y-0">
+    <div className="mt-2">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center space-y-3 sm:space-y-0">
         <Button
           type="button"
           variant="outline"

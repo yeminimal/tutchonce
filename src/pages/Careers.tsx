@@ -27,7 +27,7 @@ const Careers = () => {
           post && typeof post === 'object'
         );
         
-        // Only show active job listings, filter out drafts
+        // Only show active job listings, filter out drafts and closed jobs
         const activeJobs = validPosts.filter((job: CareerPost) => 
           job.status === 'active'
         );

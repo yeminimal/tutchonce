@@ -26,7 +26,7 @@ const AdvancedEditor: React.FC<AdvancedEditorProps> = ({
 }) => {
   const quillRef = useRef<ReactQuill>(null);
   const [isMounted, setIsMounted] = useState(false);
-  const [internalValue, setInternalValue] = useState(value);
+  const [internalValue, setInternalValue] = useState(value || '');
   
   // Initialize editor only after component mounts
   useEffect(() => {
@@ -35,13 +35,17 @@ const AdvancedEditor: React.FC<AdvancedEditorProps> = ({
 
   // Sync external value with internal state when prop changes
   useEffect(() => {
-    setInternalValue(value);
+    if (value !== undefined) {
+      setInternalValue(value);
+    }
   }, [value]);
   
-  // Handle internal changes and propagate to parent
+  // Handle internal changes and propagate to parent only if component is mounted
   const handleChange = (newValue: string) => {
-    setInternalValue(newValue);
-    onChange(newValue);
+    if (isMounted) {
+      setInternalValue(newValue);
+      onChange(newValue);
+    }
   };
   
   // Get toolbar configuration

@@ -80,17 +80,21 @@ const CareerPostEditor: React.FC<CareerPostEditorProps> = ({
       return;
     }
     
+    // Explicitly set status to active for career posts
     updatePost({ status: 'active' });
     setIsDraft(false);
     
-    // Publish the post
-    const event = { preventDefault: () => {} } as React.FormEvent;
-    onSubmit(event);
-    
-    toast({
-      title: "Job Posting Published",
-      description: "Your job posting has been published successfully and is now visible on the careers page."
-    });
+    // Short delay to ensure status is updated before submitting
+    setTimeout(() => {
+      // Publish the post
+      const event = { preventDefault: () => {} } as React.FormEvent;
+      onSubmit(event);
+      
+      toast({
+        title: "Job Posting Published",
+        description: "Your job posting has been published successfully and is now visible on the careers page."
+      });
+    }, 100);
   }, [currentPost.title, currentPost.location, updatePost, onSubmit]);
   
   return (

@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Card } from "@/components/ui/card";
 import { toast } from "@/components/ui/use-toast";
 import MainContentSection from './components/MainContentSection';
@@ -35,11 +35,18 @@ const BlogPostEditor: React.FC<BlogPostEditorProps> = ({
     } else {
       setIsDraft(currentPost.status === 'draft');
     }
-  }, [currentPost.id]);
+  }, [currentPost.id, currentPost.status, setCurrentPost]);
+
+  // Memoize update functions to prevent unnecessary re-renders
+  const updatePost = useCallback((updatedPost: Partial<BlogPost>) => {
+    setCurrentPost(prev => {
+      if (!prev) return null;
+      return {...prev, ...updatedPost};
+    });
+  }, [setCurrentPost]);
   
-  const handleSaveDraft = () => {
-    const updatedPost = { ...currentPost, status: 'draft' as const };
-    setCurrentPost(updatedPost);
+  const handleSaveDraft = useCallback(() => {
+    updatePost({ status: 'draft' });
     setIsDraft(true);
     
     // Save the draft
@@ -50,9 +57,9 @@ const BlogPostEditor: React.FC<BlogPostEditorProps> = ({
       title: "Draft Saved",
       description: "Your blog post has been saved as a draft."
     });
-  };
+  }, [updatePost, onSubmit]);
   
-  const handlePublish = () => {
+  const handlePublish = useCallback(() => {
     // Validate post content before publishing
     if (!currentPost.title.trim()) {
       toast({
@@ -72,8 +79,7 @@ const BlogPostEditor: React.FC<BlogPostEditorProps> = ({
       return;
     }
     
-    const updatedPost = { ...currentPost, status: 'published' as const };
-    setCurrentPost(updatedPost);
+    updatePost({ status: 'published' });
     setIsDraft(false);
     
     // Publish the post
@@ -84,7 +90,7 @@ const BlogPostEditor: React.FC<BlogPostEditorProps> = ({
       title: "Post Published",
       description: "Your blog post has been published successfully and is now visible on the blog page."
     });
-  };
+  }, [currentPost.title, currentPost.content, updatePost, onSubmit]);
   
   return (
     <div>
@@ -116,12 +122,14 @@ const BlogPostEditor: React.FC<BlogPostEditorProps> = ({
                 setCurrentPost={setCurrentPost}
               />
               
-              <EditorFooter 
-                onBack={onBack} 
-                onSaveDraft={handleSaveDraft}
-                onUpload={handlePublish}
-                contentType="blog"
-              />
+              <Card className="border border-gray-200 p-4">
+                <EditorFooter 
+                  onBack={onBack} 
+                  onSaveDraft={handleSaveDraft}
+                  onUpload={handlePublish}
+                  contentType="blog"
+                />
+              </Card>
             </div>
           </div>
         </div>

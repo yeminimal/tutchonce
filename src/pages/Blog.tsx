@@ -24,9 +24,14 @@ const Blog = () => {
         const parsedPosts = JSON.parse(savedPosts);
         console.log('Raw blog posts from storage:', parsedPosts);
         
+        // Filter out any null or undefined posts
+        const validPosts = parsedPosts.filter((post: any) => 
+          post && typeof post === 'object'
+        );
+        
         // Only show published posts, filter out drafts
-        const publishedPosts = parsedPosts.filter((post: BlogPost) => 
-          post.status !== 'draft'
+        const publishedPosts = validPosts.filter((post: BlogPost) => 
+          post.status === 'published'
         );
         console.log('Published posts after filtering:', publishedPosts);
         

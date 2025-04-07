@@ -26,17 +26,29 @@ const AdvancedEditor: React.FC<AdvancedEditorProps> = ({
 }) => {
   const quillRef = useRef<ReactQuill>(null);
   const [isMounted, setIsMounted] = useState(false);
+  const [internalValue, setInternalValue] = useState(value);
   
   // Initialize editor only after component mounts
   useEffect(() => {
     setIsMounted(true);
   }, []);
+
+  // Sync external value with internal state when prop changes
+  useEffect(() => {
+    setInternalValue(value);
+  }, [value]);
+  
+  // Handle internal changes and propagate to parent
+  const handleChange = (newValue: string) => {
+    setInternalValue(newValue);
+    onChange(newValue);
+  };
   
   // Get toolbar configuration
   const modules = EditorToolbar({ onImageUpload });
   
   // Handle image upload via toolbar
-  if (onImageUpload && modules.toolbar.handlers) {
+  if (onImageUpload && modules.toolbar && modules.toolbar.handlers) {
     modules.toolbar.handlers.image = () => {
       const fileInput = document.querySelector('input[type=file]') as HTMLInputElement;
       if (fileInput) {
@@ -66,8 +78,8 @@ const AdvancedEditor: React.FC<AdvancedEditorProps> = ({
       <ReactQuill
         ref={quillRef}
         theme="snow"
-        value={value}
-        onChange={onChange}
+        value={internalValue}
+        onChange={handleChange}
         modules={modules}
         formats={editorFormats}
         placeholder={placeholder}

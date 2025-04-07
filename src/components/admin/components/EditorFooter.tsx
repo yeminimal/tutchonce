@@ -1,63 +1,57 @@
 
 import React from 'react';
-import { Button } from "@/components/ui/button";
-import { Save, Upload, X } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { ChevronLeft, Save, Upload } from 'lucide-react';
 
 interface EditorFooterProps {
   onBack: () => void;
-  onSaveDraft?: () => void;
-  onUpload?: () => void;
+  onSaveDraft: () => void;
+  onUpload: () => void;
   contentType: 'blog' | 'career';
 }
 
-const EditorFooter: React.FC<EditorFooterProps> = ({ 
-  onBack, 
-  onSaveDraft, 
+const EditorFooter: React.FC<EditorFooterProps> = ({
+  onBack,
+  onSaveDraft,
   onUpload,
-  contentType 
+  contentType
 }) => {
+  const publishLabel = contentType === 'blog' ? 'Publish Post' : 'Publish Job';
+  
   return (
-    <div className="flex justify-end space-x-3">
-      <Button 
-        type="button" 
-        variant="outline" 
-        onClick={onBack}
-        className="border-gray-300 text-gray-700"
-      >
-        <X size={16} className="mr-1.5" />
-        Cancel
-      </Button>
-      
-      {onSaveDraft && (
-        <Button 
+    <div className="flex flex-col space-y-4">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:space-x-3 space-y-3 sm:space-y-0">
+        <Button
           type="button"
-          onClick={onSaveDraft}
           variant="outline"
-          className="border-[#228977] text-[#228977] hover:bg-[#f8fffe]"
+          onClick={onBack}
+          className="flex items-center justify-center w-full sm:w-auto"
         >
-          <Save size={16} className="mr-1.5" />
-          Save as Draft
+          <ChevronLeft className="mr-1 h-4 w-4" />
+          Back
         </Button>
-      )}
-      
-      {onUpload ? (
-        <Button 
-          type="button"
-          onClick={onUpload}
-          className="bg-[#228977] hover:bg-[#21665a] text-white"
-        >
-          <Upload size={16} className="mr-1.5" />
-          Publish {contentType === 'blog' ? 'Post' : 'Job'}
-        </Button>
-      ) : (
-        <Button 
-          type="submit" 
-          className="bg-[#228977] hover:bg-[#21665a] text-white"
-        >
-          <Upload size={16} className="mr-1.5" />
-          Publish {contentType === 'blog' ? 'Post' : 'Job'}
-        </Button>
-      )}
+        
+        <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-3">
+          <Button
+            type="button"
+            variant="outline"
+            onClick={onSaveDraft}
+            className="flex items-center justify-center w-full sm:w-auto bg-white"
+          >
+            <Save className="mr-1 h-4 w-4" />
+            Save Draft
+          </Button>
+          
+          <Button
+            type="button"
+            onClick={onUpload}
+            className="flex items-center justify-center w-full sm:w-auto bg-[#228977] hover:bg-[#21665a]"
+          >
+            <Upload className="mr-1 h-4 w-4" />
+            {publishLabel}
+          </Button>
+        </div>
+      </div>
     </div>
   );
 };

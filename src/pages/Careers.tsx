@@ -22,8 +22,13 @@ const Careers = () => {
         const parsedPosts = JSON.parse(savedPosts);
         console.log('Raw career posts from storage:', parsedPosts);
         
+        // Filter out any null or undefined posts
+        const validPosts = parsedPosts.filter((post: any) => 
+          post && typeof post === 'object'
+        );
+        
         // Only show active job listings, filter out drafts
-        const activeJobs = parsedPosts.filter((job: CareerPost) => 
+        const activeJobs = validPosts.filter((job: CareerPost) => 
           job.status === 'active'
         );
         console.log('Active jobs after filtering:', activeJobs);

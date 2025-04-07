@@ -1,5 +1,6 @@
 
-import React, { useState } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
+import { Card } from "@/components/ui/card";
 import { toast } from "@/components/ui/use-toast";
 import BasicJobInfo from './components/BasicJobInfo';
 import JobDetailsSection from './components/JobDetailsSection';
@@ -24,9 +25,29 @@ const CareerPostEditor: React.FC<CareerPostEditorProps> = ({
   const isEditing = !!currentPost.id && currentPost.id !== '';
   const [isDraft, setIsDraft] = useState(currentPost.status === 'draft');
   
-  const handleSaveDraft = () => {
-    const updatedPost = { ...currentPost, status: 'draft' as const };
-    setCurrentPost(updatedPost);
+  // Ensure status is properly initialized
+  useEffect(() => {
+    if (!currentPost.status) {
+      setCurrentPost(prev => {
+        if (!prev) return null;
+        return {...prev, status: 'draft'};
+      });
+      setIsDraft(true);
+    } else {
+      setIsDraft(currentPost.status === 'draft');
+    }
+  }, [currentPost.id, currentPost.status, setCurrentPost]);
+
+  // Memoize update functions to prevent unnecessary re-renders
+  const updatePost = useCallback((updatedPost: Partial<CareerPost>) => {
+    setCurrentPost(prev => {
+      if (!prev) return null;
+      return {...prev, ...updatedPost};
+    });
+  }, [setCurrentPost]);
+  
+  const handleSaveDraft = useCallback(() => {
+    updatePost({ status: 'draft' });
     setIsDraft(true);
     
     // Save the draft
@@ -37,11 +58,29 @@ const CareerPostEditor: React.FC<CareerPostEditorProps> = ({
       title: "Draft Saved",
       description: "Your job posting has been saved as a draft."
     });
-  };
+  }, [updatePost, onSubmit]);
   
-  const handlePublish = () => {
-    const updatedPost = { ...currentPost, status: 'active' as const };
-    setCurrentPost(updatedPost);
+  const handlePublish = useCallback(() => {
+    // Validate required fields
+    if (!currentPost.title.trim()) {
+      toast({
+        title: "Error",
+        description: "Job title is required before publishing",
+        variant: "destructive"
+      });
+      return;
+    }
+    
+    if (!currentPost.location.trim()) {
+      toast({
+        title: "Error",
+        description: "Job location is required before publishing",
+        variant: "destructive"
+      });
+      return;
+    }
+    
+    updatePost({ status: 'active' });
     setIsDraft(false);
     
     // Publish the post
@@ -52,7 +91,7 @@ const CareerPostEditor: React.FC<CareerPostEditorProps> = ({
       title: "Job Posting Published",
       description: "Your job posting has been published successfully and is now visible on the careers page."
     });
-  };
+  }, [currentPost.title, currentPost.location, updatePost, onSubmit]);
   
   return (
     <div>
@@ -83,12 +122,14 @@ const CareerPostEditor: React.FC<CareerPostEditorProps> = ({
                 isDraft={isDraft}
               />
               
-              <EditorFooter 
-                onBack={onBack} 
-                onSaveDraft={handleSaveDraft}
-                onUpload={handlePublish}
-                contentType="career"
-              />
+              <Card className="border border-gray-200 p-4">
+                <EditorFooter 
+                  onBack={onBack} 
+                  onSaveDraft={handleSaveDraft}
+                  onUpload={handlePublish}
+                  contentType="career"
+                />
+              </Card>
             </div>
           </div>
         </div>

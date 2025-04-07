@@ -8,35 +8,7 @@ export interface NavItemProps {
   isMobile?: boolean;
 }
 
-export const navItems = [
-  {
-    label: "Home",
-    href: "/",
-  },
-  {
-    label: "Services",
-    href: "/#services",
-  },
-  {
-    label: "Blog",
-    href: "/blog",
-  },
-  {
-    label: "Careers",
-    href: "/careers",
-  },
-  {
-    label: "Bookings",
-    href: "/bookings",
-  },
-  {
-    label: "Contact",
-    href: "/#contact",
-  },
-];
-
 const NavItems: React.FC<NavItemProps> = ({ handleNavigation, closeMobileMenu, isMobile = false }) => {
-  const location = useLocation();
   const baseClasses = isMobile 
     ? "text-foreground font-medium text-lg transition-colors hover:text-brand-primary"
     : "text-foreground/80 hover:text-brand-primary transition-colors font-medium text-sm hover:scale-105 duration-200";
@@ -84,13 +56,6 @@ const NavItems: React.FC<NavItemProps> = ({ handleNavigation, closeMobileMenu, i
         onClick={() => isMobile && closeMobileMenu && closeMobileMenu()}
       >
         Careers
-      </Link>
-      <Link 
-        to="/bookings" 
-        className={baseClasses}
-        onClick={() => isMobile && closeMobileMenu && closeMobileMenu()}
-      >
-        Bookings
       </Link>
       <a 
         href="#contact" 

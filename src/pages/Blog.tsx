@@ -17,28 +17,16 @@ const Blog = () => {
   useEffect(() => {
     document.documentElement.classList.add('smooth-scroll');
     
-    // Load blog posts from localStorage with error handling
-    const fetchPosts = () => {
+    // Load blog posts from localStorage
+    const savedPosts = localStorage.getItem('blogPosts');
+    if (savedPosts) {
       try {
-        const savedPosts = localStorage.getItem('blogPosts');
-        if (!savedPosts) {
-          console.log('No blog posts found in localStorage');
-          setBlogPosts([]);
-          return;
-        }
-        
         const parsedPosts = JSON.parse(savedPosts);
         console.log('Raw blog posts from storage:', parsedPosts);
         
-        if (!Array.isArray(parsedPosts)) {
-          console.error('Parsed blog posts is not an array:', parsedPosts);
-          setBlogPosts([]);
-          return;
-        }
-        
         // Only show published posts, filter out drafts
         const publishedPosts = parsedPosts.filter((post: BlogPost) => 
-          post && post.status === 'published'
+          post.status !== 'draft'
         );
         console.log('Published posts after filtering:', publishedPosts);
         
@@ -51,11 +39,10 @@ const Blog = () => {
         console.error("Error loading blog posts:", error);
         setBlogPosts([]);
       }
-    };
+    } else {
+      console.log('No blog posts found in localStorage');
+    }
     
-    fetchPosts();
-    
-    // Set up animation observer
     const handleIntersection = (entries: IntersectionObserverEntry[]) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {

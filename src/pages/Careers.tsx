@@ -15,28 +15,16 @@ const Careers = () => {
   useEffect(() => {
     document.documentElement.classList.add('smooth-scroll');
     
-    // Load career posts from localStorage with robust error handling
-    const fetchJobs = () => {
+    // Load career posts from localStorage
+    const savedPosts = localStorage.getItem('careerPosts');
+    if (savedPosts) {
       try {
-        const savedPosts = localStorage.getItem('careerPosts');
-        if (!savedPosts) {
-          console.log('No career posts found in localStorage');
-          setJobs([]);
-          return;
-        }
-        
         const parsedPosts = JSON.parse(savedPosts);
         console.log('Raw career posts from storage:', parsedPosts);
         
-        if (!Array.isArray(parsedPosts)) {
-          console.error('Parsed career posts is not an array:', parsedPosts);
-          setJobs([]);
-          return;
-        }
-        
-        // Only show active job listings, filter out drafts and closed positions
+        // Only show active job listings, filter out drafts
         const activeJobs = parsedPosts.filter((job: CareerPost) => 
-          job && job.status === 'active'
+          job.status === 'active'
         );
         console.log('Active jobs after filtering:', activeJobs);
         
@@ -49,11 +37,10 @@ const Careers = () => {
         console.error('Error parsing career posts:', error);
         setJobs([]);
       }
-    };
+    } else {
+      console.log('No career posts found in localStorage');
+    }
     
-    fetchJobs();
-    
-    // Set up animation observer
     const handleIntersection = (entries: IntersectionObserverEntry[]) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {

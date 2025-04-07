@@ -3,7 +3,6 @@ import React, { useEffect, useRef } from 'react';
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Check, CalendarCheck } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { Link } from 'react-router-dom';
 
 const Hero = () => {
   const heroRef = useRef<HTMLDivElement>(null);
@@ -37,6 +36,13 @@ const Hero = () => {
       }
     };
   }, []);
+
+  const scrollToContact = () => {
+    const contactSection = document.getElementById('contact');
+    if (contactSection) {
+      contactSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
 
   const scrollToServices = () => {
     const servicesSection = document.getElementById('services');
@@ -84,13 +90,11 @@ const Hero = () => {
             {/* CTA Buttons */}
             <div className="mt-8 md:mt-10 flex flex-col sm:flex-row gap-3 md:gap-4 animate-reveal" style={{ transitionDelay: '400ms' }}>
               <Button 
-                asChild
                 className="bg-brand-primary hover:bg-brand-secondary text-white rounded-full px-6 md:px-8 py-5 md:py-6 button-hover-effect group text-sm md:text-base"
+                onClick={scrollToContact}
               >
-                <Link to="/bookings">
-                  <CalendarCheck className="mr-2 h-4 md:h-5 w-4 md:w-5 group-hover:rotate-12 transition-transform" />
-                  Book a Cleaning
-                </Link>
+                <CalendarCheck className="mr-2 h-4 md:h-5 w-4 md:w-5 group-hover:rotate-12 transition-transform" />
+                Book a Cleaning
               </Button>
               <Button 
                 variant="outline" 

@@ -3,7 +3,7 @@
   position: fixed;
   bottom: 20px;
   right: 20px;
-  background-color: #007BFF;
+  background-color: #228977; /* Replace with your website's primary color */
   color: white;
   border: none;
   border-radius: 50%;
@@ -38,7 +38,7 @@
 .quote-btn {
   margin: 10px 0;
   padding: 10px 20px;
-  background-color: #28a745;
+  background-color: #228977; /* Replace with your website's primary color */
   color: white;
   border: none;
   border-radius: 5px;

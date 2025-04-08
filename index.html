@@ -62,6 +62,50 @@
         "https://instagram.com/tutchoncecleaning",
         "https://twitter.com/tutchonceclean"
       ]
+      <!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tutchonce Cleaning Services</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <!-- Floating Chat Icon -->
+    <button id="chatIcon" class="chat-icon">💬</button>
+
+    <!-- Chat Modal -->
+    <div id="chatModal" class="chat-modal" style="display: none;">
+      <div class="chat-modal-content">
+        <h3>Request a Quote</h3>
+        <!-- Dropdown for Service Selection -->
+        <label for="serviceType">Select Service:</label>
+        <select id="serviceType">
+          <option value="Post-construction cleaning">Post-construction cleaning</option>
+          <option value="Fumigation">Fumigation</option>
+        </select>
+
+        <!-- Optional Inputs -->
+        <label for="roomSize">Number of Rooms/Size (optional):</label>
+        <input type="text" id="roomSize" placeholder="e.g., 3-bedroom flat" />
+
+        <label for="specialRequest">Special Request (optional):</label>
+        <textarea id="specialRequest" placeholder="Describe your request"></textarea>
+
+        <!-- Buttons -->
+        <button id="getQuote" class="quote-btn">Get Instant Quote</button>
+        <button id="customQuote" class="quote-btn">Request Custom Quote</button>
+
+        <!-- Close Modal -->
+        <button id="closeModal" class="close-btn">Close</button>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
     }
     </script>
   </body>

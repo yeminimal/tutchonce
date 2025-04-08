@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("specialRequest").value || "N/A";
 
     const message = `Hello Tutchonce, I'm interested in your ${serviceType} service. Room Size: ${roomSize}. Special Request: ${specialRequest}. Could you provide me with a quotation?`;
-    const whatsappURL = `https://wa.me/2348123456789?text=${encodeURIComponent(
+    const whatsappURL = `https://wa.me/+2348025058426?text=${encodeURIComponent(
       message
     )}`; // Replace with your actual business number
 

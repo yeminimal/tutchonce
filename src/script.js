@@ -4,15 +4,20 @@ document.addEventListener("DOMContentLoaded", () => {
   const chatModal = document.getElementById("chatModal");
   const closeModal = document.getElementById("closeModal");
 
-  // Open Chat Modal
-  chatIcon.addEventListener("click", () => {
-    chatModal.style.display = "flex";
-  });
+  if (chatIcon && chatModal && closeModal) {
+    // Open Chat Modal
+    chatIcon.addEventListener("click", () => {
+      chatModal.style.display = "flex";
+    });
 
-  // Close Chat Modal
-  closeModal.addEventListener("click", () => {
-    chatModal.style.display = "none";
-  });
+    // Close Chat Modal
+    closeModal.addEventListener("click", () => {
+      chatModal.style.display = "none";
+    });
+  } else {
+    console.error("Chatbot elements not found in the DOM.");
+  }
+});
 
   // Get Quote Button Logic
   const getQuoteBtn = document.getElementById("getQuote");

@@ -1,16 +1,13 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // Floating Chat Icon Logic
   const chatIcon = document.getElementById("chatIcon");
   const chatModal = document.getElementById("chatModal");
   const closeModal = document.getElementById("closeModal");
 
   if (chatIcon && chatModal && closeModal) {
-    // Open Chat Modal
     chatIcon.addEventListener("click", () => {
       chatModal.style.display = "flex";
     });
 
-    // Close Chat Modal
     closeModal.addEventListener("click", () => {
       chatModal.style.display = "none";
     });

@@ -47,6 +47,18 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  import { supabase } from './supabaseClient.js'; // if you're using ES modules
+
+// Inside each button handler:
+await supabase.from('quote_requests').insert([
+  {
+    service: serviceType,
+    room_size: roomSize,
+    special_request: specialRequest,
+    is_custom: true, // or false if from "Get Instant Quote"
+  },
+]);
+  
   // Custom Quote Button Logic
   const customQuoteBtn = document.getElementById("customQuote");
   if (customQuoteBtn) {

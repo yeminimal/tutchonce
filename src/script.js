@@ -20,16 +20,37 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Pricing Data
   const pricingData = {
-    "Post-construction cleaning": {
-      base_price: 200000,
-      materials: 226000,
-      range: [400000, 450000],
-    },
-    Fumigation: {
-      base_price: 150000,
-      range: [130000, 170000],
-    },
-  };
+  "Post-construction cleaning": {
+    range: [400000, 450000],
+  },
+  "Residential cleaning": {
+    range: [100000, 250000],
+  },
+  "Commercial cleaning": {
+    range: [200000, 400000],
+  },
+  "Move-in/Move-out cleaning": {
+    range: [150000, 250000],
+  },
+  "Deep cleaning": {
+    range: [200000, 350000],
+  },
+  "Fumigation": {
+    range: [200000, 300000],
+  },
+  "Janitorial services": {
+    range: [100000, 250000],
+  },
+  "Event clean-up": {
+    range: [150000, 300000],
+  },
+  "Facility maintenance": {
+    range: [150000, 450000],
+  },
+  "Custom cleaning request": {
+    range: [0, 0], // Triggers WhatsApp redirect
+  },
+};
 
   // Get Quote Button Logic
   const getQuoteBtn = document.getElementById("getQuote");

@@ -15,7 +15,7 @@ const JobListings = ({ jobs }: JobListingsProps) => {
   const [expandedJobId, setExpandedJobId] = useState<string | null>(null);
   
   // Filter to only show active jobs on the frontend
-  const activeJobs = jobs.filter(job => job.status === 'active');
+  const activeJobs = jobs.filter(job => job.status === 'published');
   
   const toggleJobExpansion = (jobId: string) => {
     setExpandedJobId(expandedJobId === jobId ? null : jobId);

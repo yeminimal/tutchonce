@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef, useState } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
@@ -7,6 +6,7 @@ import { BlogPost } from '@/components/admin/blog/types';
 import BlogHeader from '@/components/blog/BlogHeader';
 import BlogList from '@/components/blog/BlogList';
 import BlogDialog from '@/components/blog/BlogDialog';
+import { supabase } from '@/integrations/supabaseClient';
 
 const Blog = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -16,38 +16,24 @@ const Blog = () => {
 
   useEffect(() => {
     document.documentElement.classList.add('smooth-scroll');
-    
-    // Load blog posts from localStorage
-    const savedPosts = localStorage.getItem('blogPosts');
-    if (savedPosts) {
-      try {
-        const parsedPosts = JSON.parse(savedPosts);
-        console.log('Raw blog posts from storage:', parsedPosts);
-        
-        // Filter out any null or undefined posts
-        const validPosts = parsedPosts.filter((post: any) => 
-          post && typeof post === 'object'
-        );
-        
-        // Only show published posts, filter out drafts
-        const publishedPosts = validPosts.filter((post: BlogPost) => 
-          post.status === 'published'
-        );
-        console.log('Published posts after filtering:', publishedPosts);
-        
-        // Sort by date, newest first
-        const sortedPosts = publishedPosts.sort((a: BlogPost, b: BlogPost) => 
-          new Date(b.date).getTime() - new Date(a.date).getTime()
-        );
-        setBlogPosts(sortedPosts);
-      } catch (error) {
-        console.error("Error loading blog posts:", error);
+
+    const fetchBlogPosts = async () => {
+      const { data, error } = await supabase
+        .from('blog_posts')
+        .select('*')
+        .eq('status', 'published')
+        .order('date', { ascending: false });
+
+      if (error) {
+        console.error('Error fetching blog posts from Supabase:', error.message);
         setBlogPosts([]);
+      } else {
+        setBlogPosts(data || []);
       }
-    } else {
-      console.log('No blog posts found in localStorage');
-    }
-    
+    };
+
+    fetchBlogPosts();
+
     const handleIntersection = (entries: IntersectionObserverEntry[]) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -55,17 +41,17 @@ const Blog = () => {
         }
       });
     };
-    
+
     const observer = new IntersectionObserver(handleIntersection, {
       threshold: 0.1,
       rootMargin: '0px 0px -50px 0px'
     });
-    
+
     if (sectionRef.current) {
       const elements = sectionRef.current.querySelectorAll('.animate-reveal');
       elements.forEach(el => observer.observe(el));
     }
-    
+
     return () => {
       document.documentElement.classList.remove('smooth-scroll');
       if (sectionRef.current) {
@@ -79,7 +65,7 @@ const Blog = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-  
+
   const openBlogPost = (post: BlogPost) => {
     setSelectedPost(post);
     setShowDialog(true);
@@ -91,7 +77,7 @@ const Blog = () => {
         <title>Blog | Tutchonce Cleaning Services</title>
         <meta name="description" content="Read the latest articles about cleaning tips, eco-friendly solutions, and home maintenance from Tutchonce Cleaning Services experts." />
       </Helmet>
-      
+
       <Navbar />
       <main ref={sectionRef}>
         <section className="pt-32 pb-16 px-6">
@@ -102,7 +88,7 @@ const Blog = () => {
         </section>
       </main>
       <Footer />
-      
+
       <BlogDialog 
         selectedPost={selectedPost} 
         showDialog={showDialog} 

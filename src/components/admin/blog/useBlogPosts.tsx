@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
-import { useToast } from "@/hooks/use-toast";
+import { supabase } from './supabaseClient';
 import { BlogPost } from './types';
+import { useToast } from '@/hooks/use-toast';
 
 export const useBlogPosts = () => {
   const [posts, setPosts] = useState<BlogPost[]>([]);
@@ -11,31 +12,28 @@ export const useBlogPosts = () => {
   const { toast } = useToast();
 
   useEffect(() => {
-    // Load posts from localStorage with a specific key for blog posts
-    const savedPosts = localStorage.getItem('blogPosts');
-    if (savedPosts) {
-      try {
-        const parsedPosts = JSON.parse(savedPosts);
-        // Validate that we're loading blog posts by checking for required fields
-        const validPosts = parsedPosts.filter((post: any) =>
-          post.title !== undefined &&
-          post.content !== undefined &&
-          post.excerpt !== undefined
-        );
-        setPosts(validPosts);
-        console.log('Loaded blog posts:', validPosts);
-      } catch (error) {
-        console.error('Error parsing blog posts:', error);
+    // Fetch posts from Supabase
+    const fetchPosts = async () => {
+      const { data, error } = await supabase.from('blog_posts').select('*');
+      if (error) {
+        console.error('Error fetching blog posts:', error.message);
         setPosts([]);
+      } else {
+        setPosts(data || []);
       }
-    }
+    };
+
+    fetchPosts();
   }, []);
 
-  const savePosts = (updatedPosts: BlogPost[]) => {
-    setPosts(updatedPosts);
-    // Use a distinct key for blog posts storage
-    localStorage.setItem('blogPosts', JSON.stringify(updatedPosts));
-    console.log('Saved blog posts:', updatedPosts);
+  const savePosts = async (updatedPosts: BlogPost[]) => {
+    const { error } = await supabase.from('blog_posts').upsert(updatedPosts);
+    if (error) {
+      console.error('Error saving blog posts:', error.message);
+    } else {
+      setPosts(updatedPosts);
+      console.log('Saved blog posts:', updatedPosts);
+    }
   };
 
   const handleNewPost = () => {
@@ -62,10 +60,10 @@ export const useBlogPosts = () => {
     setView('editor');
   };
 
-  const handleDeletePost = (id: string) => {
+  const handleDeletePost = async (id: string) => {
     if (window.confirm('Are you sure you want to delete this post? This action cannot be undone.')) {
       const updatedPosts = posts.filter((post) => post.id !== id);
-      savePosts(updatedPosts);
+      await savePosts(updatedPosts);
       toast({
         title: "Post Deleted",
         description: "The blog post has been deleted successfully.",
@@ -73,7 +71,7 @@ export const useBlogPosts = () => {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!currentPost) return;
 
@@ -96,39 +94,17 @@ export const useBlogPosts = () => {
       status: currentPost.status || 'published', // Default to published if not set
     };
 
-    // If the post already exists in the posts array, update it, otherwise add it
     const updatedPosts = currentPost.id && posts.some((post) => post.id === currentPost.id)
       ? posts.map((post) => (post.id === currentPost.id ? postToSave : post))
       : [...posts, postToSave];
 
-    savePosts(updatedPosts);
+    await savePosts(updatedPosts);
     setCurrentPost(null);
     setView('list');
 
     toast({
       title: "Success",
       description: `Blog post has been ${postToSave.status === 'draft' ? 'saved as draft' : 'published'} successfully.`,
-    });
-  };
-
-  const handleImageUpload = async (file: File): Promise<string> => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        // In a real application, you'd upload to a server/S3/etc
-        // For this demo, we'll use the base64 data
-        const result = reader.result as string;
-        if (result) {
-          console.log("Image uploaded successfully");
-          resolve(result);
-        } else {
-          reject(new Error("Failed to read file"));
-        }
-      };
-      reader.onerror = () => {
-        reject(new Error("Failed to read file"));
-      };
-      reader.readAsDataURL(file);
     });
   };
 
@@ -172,7 +148,6 @@ export const useBlogPosts = () => {
     handleEditPost,
     handleDeletePost,
     handleSubmit,
-    handleImageUpload,
     handleBackToList,
   };
 };

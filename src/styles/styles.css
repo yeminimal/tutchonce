@@ -86,12 +86,15 @@
   }
 }
 
-/* TEMP PATCH — Force visibility of hidden cards */
+/* Ensure animate-reveal elements are visible */
 .animate-reveal {
-  opacity: 1 !important;
+  opacity: 1 !important; /* Force visibility */
   transform: none !important;
   visibility: visible !important;
-  z-index: 10 !important;
   display: block !important;
-  border: 1px dashed red !important; /* Optional for visual debug */
+}
+
+/* Debugging border for visibility */
+.animate-reveal {
+  border: 1px dashed red !important; /* Optional visual debug */
 }

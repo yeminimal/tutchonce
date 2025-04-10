@@ -1,0 +1,45 @@
+
+/* Mobile-specific utilities */
+@media (max-width: 640px) {
+  .touch-target {
+    @apply min-h-[44px] min-w-[44px]; /* Minimum size for touch targets */
+  }
+  
+  .mobile-padding {
+    @apply px-4 py-3;
+  }
+  
+  .mobile-text {
+    @apply text-sm;
+  }
+  
+  /* Improve tap targets for accessibility */
+  .nav-link {
+    @apply py-2 px-3;
+  }
+  
+  /* Ensure adequate spacing for text */
+  p, li {
+    @apply leading-relaxed;
+  }
+  
+  /* Ensure form elements are accessible */
+  input, textarea, select, button {
+    @apply min-h-[44px];
+  }
+}
+
+/* Enhanced focus styles for accessibility */
+*:focus-visible {
+  @apply outline-2 outline-offset-2 outline-brand-primary;
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -10,43 +10,43 @@ const Services = () => {
       icon: 'general' as const,
       title: "General Cleaning Services",
       description: "Our standard cleaning service includes dusting, vacuuming, mopping, and sanitizing all rooms in your home or office to ensure a spotless environment.",
-      image: "public/lovable-uploads/c5442ef4-b436-4d8d-8bc2-c63c107e1d08.png"
+      image: "/lovable-uploads/ae8c54e6-12ea-41dc-a4cd-10ac2a5bdcaa.png"
     },
     {
       icon: 'facility' as const,
       title: "Facility Management",
       description: "Comprehensive facility management services to keep your property in optimal condition, including maintenance scheduling, repairs coordination, and regular inspections.",
-      image: "public/lovable-uploads/e36c2a0a-ff4e-4be4-bf6c-0366d214a280.png"
+      image: "/lovable-uploads/e9b39e25-128a-4313-b0c8-48266a31044b.png"
     },
     {
       icon: 'moveInOut' as const,
       title: "Move In/Move Out Services",
       description: "Specialized cleaning service for when you're moving in or out of a home, ensuring a clean slate for the next chapter or a spotless property for new occupants.",
-      image: "public/lovable-uploads/f0d47f10-fab6-41e8-80f1-9e70448d4b9f.png"
+      image: "/lovable-uploads/846da206-943c-43d0-9412-22ec95f4db07.png"
     },
     {
       icon: 'construction' as const,
       title: "Post Construction Cleaning",
       description: "Thorough cleaning after construction or renovation projects, removing dust, debris, and construction materials to reveal the beauty of your newly completed space.",
-      image: "public/lovable-uploads/2a1f0653-a36e-411e-a5f8-6f8803238409.png"
+      image: "/lovable-uploads/87e1c0c5-de52-42d3-b2ab-3bd919a3e50a.png"
     },
     {
       icon: 'renovation' as const,
       title: "Renovation Cleaning",
       description: "Specialized cleaning during and after renovation projects to manage dust and debris, keeping your living or working environment as clean as possible throughout the process.",
-      image: "public/lovable-uploads/1a4c8b9f-04c2-4930-bdbe-b00b4653e497.png"
+      image: "/lovable-uploads/b910274f-19f2-4c38-a2e8-0be968c64921.png"
     },
     {
       icon: 'janitorial' as const,
       title: "Janitorial Services",
       description: "Regular janitorial services for businesses and commercial properties, maintaining cleanliness and hygiene standards throughout your workplace on a scheduled basis.",
-      image: "public/lovable-uploads/9b72914e-7abb-41a5-9f3e-516dea65d92c.png"
+      image: "/lovable-uploads/e0b762b5-4d17-4227-91ea-f21abf6a519d.png"
     },
     {
       icon: 'fumigation' as const,
       title: "Fumigation",
       description: "Professional fumigation services to eliminate pests and insects, ensuring your property is safe, hygienic, and free from unwanted infestations.",
-      image: "public/lovable-uploads/06012ea1-8e1f-43a9-9839-a10a76d6f3df.png"
+      image: "/lovable-uploads/17e69d6b-6610-4d6d-9c33-fb135ad22bbe.png"
     }
   ];
 

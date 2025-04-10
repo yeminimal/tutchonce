@@ -1,0 +1,21 @@
+
+/* Simple image filter */
+.image-filter {
+  filter: brightness(1.03) contrast(1.05);
+  transition: filter 0.3s ease;
+}
+
+/* Lazy load images with blur */
+.lazy-image {
+  transition: blur 0.5s ease, opacity 0.5s ease;
+}
+
+.lazy-image.loaded {
+  filter: blur(0);
+  opacity: 1;
+}
+
+.lazy-image:not(.loaded) {
+  filter: blur(10px);
+  opacity: 0.6;
+}

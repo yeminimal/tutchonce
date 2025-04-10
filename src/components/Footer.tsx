@@ -2,6 +2,7 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Phone } from 'lucide-react';
+import Logo from './Logo';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -29,9 +30,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Logo and description */}
           <div className="md:col-span-2">
-            <Link to="/" className="font-display text-2xl font-semibold text-foreground inline-block mb-4">
-              Tutch<span className="text-brand-primary">once</span>
-            </Link>
+            <Logo size="md" className="mb-4" />
             <p className="text-muted-foreground max-w-md">
               We provide premium cleaning services for homes and businesses throughout Nigeria.
               Our team of experienced professionals ensures satisfaction with every clean.
@@ -111,7 +110,10 @@ const Footer = () => {
                 </a>
               </li>
               <li>
-                <a href="mailto:tutchoncecleaningservices@gmail.com" className="text-muted-foreground hover:text-brand-primary transition-colors">
+                <a 
+                  href="mailto:tutchoncecleaningservices@gmail.com" 
+                  className="text-muted-foreground hover:text-brand-primary transition-colors"
+                >
                   tutchoncecleaningservices@gmail.com
                 </a>
               </li>

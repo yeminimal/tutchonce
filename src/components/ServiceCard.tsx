@@ -21,7 +21,7 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ title, description, image, is
       {/* Image with overlay */}
       <div className="w-full h-48 mb-6 rounded-lg overflow-hidden">
         <img 
-          src={image.startsWith("public/") ? image.replace("public/", "/") : image} 
+          src={image} 
           alt={title} 
           className="w-full h-full object-cover transition-transform hover:scale-105 duration-300"
           onError={(e) => {

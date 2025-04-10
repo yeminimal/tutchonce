@@ -6,9 +6,10 @@ interface ContactInfoItemProps {
   title: string;
   content: string;
   link?: string;
+  truncate?: boolean;
 }
 
-const ContactInfoItem: React.FC<ContactInfoItemProps> = ({ icon, title, content, link }) => {
+const ContactInfoItem: React.FC<ContactInfoItemProps> = ({ icon, title, content, link, truncate = false }) => {
   if (link) {
     return (
       <div className="flex items-start animate-reveal hover:translate-x-1 transition-transform duration-300">
@@ -17,7 +18,11 @@ const ContactInfoItem: React.FC<ContactInfoItemProps> = ({ icon, title, content,
         </div>
         <div>
           <h4 className="font-medium text-foreground">{title}</h4>
-          <a href={link} className="text-muted-foreground mt-1 hover:text-brand-primary transition-colors">
+          <a 
+            href={link} 
+            className={`text-muted-foreground mt-1 hover:text-brand-primary transition-colors ${truncate ? 'truncate-email' : ''}`}
+            title={truncate ? content : undefined}
+          >
             {content}
           </a>
         </div>

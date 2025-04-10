@@ -1,0 +1,11 @@
+{
+  "Post-construction cleaning": {
+    "base_price": 200000,
+    "materials": 226000,
+    "range": [400000, 450000]
+  },
+  "Fumigation": {
+    "base_price": 150000,
+    "range": [130000, 170000]
+  }
+}

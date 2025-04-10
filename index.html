@@ -3,10 +3,37 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>sparkly-home-page</title>
-    <meta name="description" content="Lovable Generated Project" />
-    <meta name="author" content="Lovable" />
-    <meta property="og:image" content="/og-image.png" />
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-QJCCPY92NK"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-QJCCPY92NK');
+    </script>
+    <title>Tutchonce Cleaning Services</title>
+    <meta name="description" content="Professional cleaning services across Nigeria. Book your cleaning today!" />
+    <meta name="author" content="Tutchonce" />
+    <meta property="og:image" content="/lovable-uploads/06012ea1-8e1f-43a9-9839-a10a76d6f3df.png" />
+    <meta property="og:title" content="Tutchonce Cleaning Services" />
+    <meta property="og:description" content="Transform your space with premium cleaning services from Tutchonce. Serving all areas across Nigeria with reliable, professional cleaning solutions." />
+    
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    
+    <!-- Preconnect to speed up resources -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- Security headers -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; script-src 'self' 'unsafe-inline' https://cdn.gpteng.co https://www.googletagmanager.com; connect-src 'self' https://ravzvjtprjsuuoetplre.supabase.co https://www.google-analytics.com">
+
+    <!-- Link the styles.css file -->
+    <link rel="stylesheet" href="src/styles/styles.css" />
   </head>
 
   <body>
@@ -14,5 +41,70 @@
     <!-- IMPORTANT: DO NOT REMOVE THIS SCRIPT TAG OR THIS VERY COMMENT! -->
     <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
     <script type="module" src="/src/main.tsx"></script>
+    
+    <!-- Structured data for SEO -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "name": "Tutchonce Cleaning Services",
+      "image": "/lovable-uploads/06012ea1-8e1f-43a9-9839-a10a76d6f3df.png",
+      "description": "Professional cleaning services across Nigeria",
+      "priceRange": "$$",
+      "address": {
+        "@type": "PostalAddress",
+        "addressCountry": "Nigeria"
+      },
+      "telephone": "+234 802 505 8426",
+      "email": "tutchoncecleaningservices@gmail.com",
+      "openingHours": "Mo-Su 08:00-20:00",
+      "url": "https://tutchonce.com",
+      "sameAs": [
+        "https://facebook.com/tutchoncecleaning",
+        "https://instagram.com/tutchoncecleaning",
+        "https://twitter.com/tutchonceclean"
+      ]
+    }
+    </script>
+
+    <!-- Floating Chat Icon -->
+    <button id="chatIcon" class="chat-icon">💬</button>
+
+    <!-- Chat Modal -->
+    <div id="chatModal" class="chat-modal" style="display: none;">
+      <div class="chat-modal-content">
+        <h3>Request a Quote</h3>
+        <!-- Dropdown for Service Selection -->
+        <label for="serviceType">Select Service:</label>
+<select id="serviceType">
+  <option value="Post-construction cleaning">Post-construction cleaning</option>
+  <option value="Residential cleaning">Residential cleaning</option>
+  <option value="Commercial cleaning">Commercial cleaning</option>
+  <option value="Move-in/Move-out cleaning">Move-in/Move-out cleaning</option>
+  <option value="Deep cleaning">Deep cleaning</option>
+  <option value="Fumigation">Fumigation</option>
+  <option value="Janitorial services">Janitorial services</option>
+  <option value="Event clean-up">Event clean-up</option>
+  <option value="Facility maintenance">Facility maintenance</option>
+  <option value="Custom cleaning request">Custom cleaning request</option>
+</select>
+
+        <!-- Optional Inputs -->
+        <label for="roomSize">Number of Rooms/Size (optional):</label>
+        <input type="text" id="roomSize" placeholder="e.g., 3-bedroom flat" />
+
+        <label for="specialRequest">Special Request (optional):</label>
+        <textarea id="specialRequest" placeholder="Describe your request"></textarea>
+
+        <!-- Buttons -->
+        <button id="getQuote" class="quote-btn">Get Instant Quote</button>
+        <button id="customQuote" class="quote-btn">Request Custom Quote</button>
+
+        <!-- Close Modal -->
+        <button id="closeModal" class="close-btn">Close</button>
+      </div>
+    </div>
+
+    <script type="module" src="/src/script.js"></script>
   </body>
 </html>

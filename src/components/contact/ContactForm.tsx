@@ -1,182 +1,42 @@
 
-import React, { useState } from 'react';
+import React from 'react';
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { 
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { toast } from "@/components/ui/use-toast";
-import { Check } from 'lucide-react';
+import { MessageSquareQuote } from 'lucide-react';
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const ContactForm = () => {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    service: '',
-    message: '',
-  });
+  const isMobile = useIsMobile();
   
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSubmitted, setIsSubmitted] = useState(false);
-  
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-  };
-  
-  const handleSelectChange = (value: string) => {
-    setFormData(prev => ({ ...prev, service: value }));
-  };
-  
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    
-    // Create WhatsApp message
-    const whatsappMessage = `Hello Tutchonce Cleaning Services, my name is ${formData.name}. I'm interested in your ${formData.service || 'services'}. ${formData.message}. You can reach me at ${formData.email} or ${formData.phone}.`;
-    const encodedMessage = encodeURIComponent(whatsappMessage);
-    const whatsappNumber = "+2348025058426"; // Updated WhatsApp number
+  const handleGetQuotation = () => {
+    // WhatsApp redirect
+    const whatsappNumber = "+2348025058426";
+    const message = "Hello Tutchonce Cleaning Services, I would like to get a quotation for your cleaning services.";
+    const encodedMessage = encodeURIComponent(message);
     const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
     
-    // Simulate form submission
-    setTimeout(() => {
-      setIsSubmitting(false);
-      setIsSubmitted(true);
-      
-      toast({
-        title: "Message Sent!",
-        description: "We've received your message. Redirecting you to WhatsApp...",
-      });
-      
-      // Redirect to WhatsApp after a brief delay
-      setTimeout(() => {
-        window.open(whatsappUrl, '_blank');
-        
-        // Reset form after redirection
-        setIsSubmitted(false);
-        setFormData({
-          name: '',
-          email: '',
-          phone: '',
-          service: '',
-          message: '',
-        });
-      }, 1500);
-    }, 1000);
+    // Open WhatsApp in a new tab
+    window.open(whatsappUrl, '_blank');
   };
   
   return (
-    <div className="bg-white rounded-2xl shadow-card p-6 md:p-8">
-      {isSubmitted ? (
-        <div className="text-center py-6">
-          <div className="mx-auto w-16 h-16 bg-brand-light rounded-full flex items-center justify-center mb-4">
-            <Check className="text-brand-primary" size={32} />
-          </div>
-          <h3 className="text-xl font-semibold mb-2 text-brand-primary">Thank You!</h3>
-          <p className="text-muted-foreground">
-            Your message has been sent successfully. We'll get back to you shortly.
-          </p>
+    <div className="bg-white rounded-2xl shadow-card p-6 sm:p-8 md:p-12 flex flex-col items-center justify-center text-center">
+      <div className="mb-6 md:mb-8">
+        <div className="mx-auto w-14 h-14 md:w-16 md:h-16 bg-brand-light rounded-full flex items-center justify-center mb-4">
+          <MessageSquareQuote className="text-brand-primary" size={isMobile ? 28 : 32} />
         </div>
-      ) : (
-        <form onSubmit={handleSubmit} className="space-y-5">
-          <div>
-            <label htmlFor="name" className="block text-sm font-medium mb-1">
-              Full Name
-            </label>
-            <Input
-              id="name"
-              name="name"
-              placeholder="Enter your full name"
-              value={formData.name}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium mb-1">
-                Email Address
-              </label>
-              <Input
-                id="email"
-                name="email"
-                type="email"
-                placeholder="Enter your email"
-                value={formData.email}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div>
-              <label htmlFor="phone" className="block text-sm font-medium mb-1">
-                Phone Number
-              </label>
-              <Input
-                id="phone"
-                name="phone"
-                placeholder="Enter your phone number"
-                value={formData.phone}
-                onChange={handleChange}
-                required
-              />
-            </div>
-          </div>
-          
-          <div>
-            <label htmlFor="service" className="block text-sm font-medium mb-1">
-              Service Interested In
-            </label>
-            <Select
-              value={formData.service}
-              onValueChange={handleSelectChange}
-            >
-              <SelectTrigger id="service" className="w-full">
-                <SelectValue placeholder="Select a service" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="general">General Cleaning Services</SelectItem>
-                <SelectItem value="facility">Facility Management</SelectItem>
-                <SelectItem value="moveInOut">Move In/Move Out Services</SelectItem>
-                <SelectItem value="construction">Post Construction Cleaning</SelectItem>
-                <SelectItem value="renovation">Renovation Cleaning</SelectItem>
-                <SelectItem value="janitorial">Janitorial Services</SelectItem>
-                <SelectItem value="fumigation">Fumigation</SelectItem>
-                <SelectItem value="other">Other</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-          
-          <div>
-            <label htmlFor="message" className="block text-sm font-medium mb-1">
-              Your Message
-            </label>
-            <Textarea
-              id="message"
-              name="message"
-              placeholder="Tell us about your cleaning needs"
-              rows={4}
-              value={formData.message}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          
-          <Button 
-            type="submit" 
-            className="w-full bg-brand-primary hover:bg-brand-secondary text-white" 
-            disabled={isSubmitting}
-          >
-            {isSubmitting ? 'Sending...' : 'Send Message'}
-          </Button>
-        </form>
-      )}
+        <h3 className="text-xl md:text-2xl font-semibold mb-3 md:mb-4 text-brand-primary">Need a Cleaning Quote?</h3>
+        <p className="text-sm md:text-base text-muted-foreground mb-4 md:mb-6">
+          Get a personalized quotation for your cleaning needs. Our team is ready to assist you with a custom solution that fits your requirements.
+        </p>
+      </div>
+      
+      <Button 
+        onClick={handleGetQuotation}
+        className="bg-brand-primary hover:bg-brand-secondary text-white w-full max-w-xs py-5 rounded-full text-base font-medium transition-all duration-300 hover:scale-105 flex items-center justify-center gap-3"
+      >
+        <MessageSquareQuote size={18} />
+        <span className="whitespace-nowrap">Get Quotation on WhatsApp</span>
+      </Button>
     </div>
   );
 };

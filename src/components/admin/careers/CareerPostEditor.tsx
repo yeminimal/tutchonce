@@ -1,106 +1,143 @@
 
-import React, { useState, useEffect } from 'react';
-import { Button } from "@/components/ui/button";
+import React, { useState, useCallback, useEffect } from 'react';
+import { Card } from "@/components/ui/card";
 import { toast } from "@/components/ui/use-toast";
-import { Plus } from 'lucide-react';
+import BasicJobInfo from './components/BasicJobInfo';
+import JobDetailsSection from './components/JobDetailsSection';
+import JobStatus from './components/JobStatus';
+import CareerEditorHeader from './components/CareerEditorHeader';
+import EditorFooter from '../components/EditorFooter';
 import { CareerPost } from './types';
-import CareerPostForm from './CareerPostForm';
-import CareerPostList from './CareerPostList';
 
-const CareerPostEditor = () => {
-  const [posts, setPosts] = useState<CareerPost[]>([]);
-  const [currentPost, setCurrentPost] = useState<CareerPost | null>(null);
-  const [formVisible, setFormVisible] = useState(false);
+interface CareerPostEditorProps {
+  currentPost: CareerPost;
+  setCurrentPost: React.Dispatch<React.SetStateAction<CareerPost | null>>;
+  onSubmit: (e: React.FormEvent) => void;
+  onBack: () => void;
+}
+
+const CareerPostEditor: React.FC<CareerPostEditorProps> = ({
+  currentPost,
+  setCurrentPost,
+  onSubmit,
+  onBack
+}) => {
+  const isEditing = !!currentPost.id && currentPost.id !== '';
+  const [isDraft, setIsDraft] = useState(currentPost.status === 'draft');
   
+  // Ensure status is properly initialized
   useEffect(() => {
-    // Load posts from localStorage
-    const savedPosts = localStorage.getItem('careerPosts');
-    if (savedPosts) {
-      setPosts(JSON.parse(savedPosts));
-    }
-  }, []);
-  
-  const savePosts = (updatedPosts: CareerPost[]) => {
-    setPosts(updatedPosts);
-    localStorage.setItem('careerPosts', JSON.stringify(updatedPosts));
-  };
-  
-  const handleNewPost = () => {
-    setCurrentPost({
-      id: Date.now().toString(),
-      title: '',
-      description: '',
-      location: '',
-      type: '',
-      requirements: '',
-      date: new Date().toISOString().split('T')[0]
-    });
-    setFormVisible(true);
-  };
-  
-  const handleEditPost = (post: CareerPost) => {
-    setCurrentPost({ ...post });
-    setFormVisible(true);
-  };
-  
-  const handleDeletePost = (id: string) => {
-    if (window.confirm('Are you sure you want to delete this job listing?')) {
-      const updatedPosts = posts.filter(post => post.id !== id);
-      savePosts(updatedPosts);
-      toast({
-        title: "Success",
-        description: "Job listing deleted successfully.",
+    if (!currentPost.status) {
+      setCurrentPost(prev => {
+        if (!prev) return null;
+        return {...prev, status: 'draft'};
       });
+      setIsDraft(true);
+    } else {
+      setIsDraft(currentPost.status === 'draft');
     }
-  };
+  }, [currentPost.id, currentPost.status, setCurrentPost]);
+
+  // Memoize update functions to prevent unnecessary re-renders
+  const updatePost = useCallback((updatedPost: Partial<CareerPost>) => {
+    setCurrentPost(prev => {
+      if (!prev) return null;
+      return {...prev, ...updatedPost};
+    });
+  }, [setCurrentPost]);
   
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!currentPost) return;
+  const handleSaveDraft = useCallback(() => {
+    updatePost({ status: 'draft' });
+    setIsDraft(true);
     
-    const updatedPosts = currentPost.id 
-      ? posts.map(post => post.id === currentPost.id ? currentPost : post)
-      : [...posts, currentPost];
-    
-    savePosts(updatedPosts);
-    setCurrentPost(null);
-    setFormVisible(false);
+    // Save the draft
+    const event = { preventDefault: () => {} } as React.FormEvent;
+    onSubmit(event);
     
     toast({
-      title: "Success",
-      description: `Job listing ${currentPost.id ? 'updated' : 'created'} successfully.`,
+      title: "Draft Saved",
+      description: "Your job posting has been saved as a draft."
     });
-  };
-
-  const handleCancelForm = () => {
-    setFormVisible(false);
-    setCurrentPost(null);
-  };
+  }, [updatePost, onSubmit]);
+  
+  const handlePublish = useCallback(() => {
+    // Validate required fields
+    if (!currentPost.title.trim()) {
+      toast({
+        title: "Error",
+        description: "Job title is required before publishing",
+        variant: "destructive"
+      });
+      return;
+    }
+    
+    if (!currentPost.location.trim()) {
+      toast({
+        title: "Error",
+        description: "Job location is required before publishing",
+        variant: "destructive"
+      });
+      return;
+    }
+    
+    // Explicitly set status to active for career posts
+    updatePost({ status: 'active' });
+    setIsDraft(false);
+    
+    // Short delay to ensure status is updated before submitting
+    setTimeout(() => {
+      // Publish the post
+      const event = { preventDefault: () => {} } as React.FormEvent;
+      onSubmit(event);
+      
+      toast({
+        title: "Job Posting Published",
+        description: "Your job posting has been published successfully and is now visible on the careers page."
+      });
+    }, 100);
+  }, [currentPost.title, currentPost.location, updatePost, onSubmit]);
   
   return (
     <div>
-      <div className="flex justify-between items-center mb-6">
-        <h3 className="text-lg font-medium">Manage Job Listings</h3>
-        <Button onClick={handleNewPost} className="bg-brand-primary hover:bg-brand-secondary text-white">
-          <Plus size={16} className="mr-2" />
-          New Listing
-        </Button>
-      </div>
+      <CareerEditorHeader isEditing={isEditing} onBack={onBack} />
       
-      {formVisible && currentPost && (
-        <CareerPostForm 
-          currentPost={currentPost}
-          setCurrentPost={setCurrentPost}
-          onCancel={handleCancelForm}
-          onSubmit={handleSubmit}
-        />
-      )}
-      
-      <CareerPostList 
-        posts={posts}
-        onEdit={handleEditPost}
-        onDelete={handleDeletePost}
-      />
+      <form onSubmit={(e) => {
+        e.preventDefault();
+        handlePublish();
+      }} className="space-y-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="col-span-2">
+            <BasicJobInfo 
+              currentPost={currentPost}
+              setCurrentPost={setCurrentPost}
+            />
+            
+            <JobDetailsSection 
+              currentPost={currentPost}
+              setCurrentPost={setCurrentPost}
+            />
+          </div>
+          
+          <div>
+            <div className="space-y-6">
+              <JobStatus 
+                currentPost={currentPost}
+                setCurrentPost={setCurrentPost}
+                isDraft={isDraft}
+              />
+              
+              <Card className="border border-gray-200 p-4">
+                <EditorFooter 
+                  onBack={onBack} 
+                  onSaveDraft={handleSaveDraft}
+                  onUpload={handlePublish}
+                  contentType="career"
+                />
+              </Card>
+            </div>
+          </div>
+        </div>
+      </form>
     </div>
   );
 };

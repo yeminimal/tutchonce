@@ -1,0 +1,100 @@
+/* Floating Chat Icon */
+.chat-icon {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #228977;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  font-size: 24px;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 9999; /* Add this */
+  isolation: isolate; /* Ensures it stays clickable even inside stacking contexts */
+}
+
+/* Chat Modal */
+.chat-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.chat-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9998; /* just under the icon if necessary */
+}
+
+.chat-modal-content {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 20px;
+  width: 90%;
+  max-width: 360px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  text-align: left;
+  font-family: 'Segoe UI', sans-serif;
+  position: relative;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.quote-btn {
+  margin: 10px 0;
+  padding: 10px 20px;
+  background-color: #228977; /* Replace with your website's primary color */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.close-btn {
+  margin-top: 10px;
+  padding: 5px 10px;
+  background-color: #FF0000;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Ensure animate-reveal elements are visible */
+.animate-reveal {
+  opacity: 1 !important; /* Force visibility */
+  transform: none !important;
+  visibility: visible !important;
+  display: block !important;
+}
+
+/* Debugging border for visibility */
+.animate-reveal {
+  border: 1px dashed red !important; /* Optional visual debug */
+}

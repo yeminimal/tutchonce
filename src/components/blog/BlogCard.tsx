@@ -3,7 +3,7 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { User, Calendar, Clock, ChevronRight } from 'lucide-react';
 import { BlogPost } from '@/components/admin/blog/types';
-
+import sanitizeHtml from 'sanitize-html';
 interface BlogCardProps {
   post: BlogPost;
   index: number;
@@ -49,7 +49,7 @@ const BlogCard = ({ post, index, onOpenPost }: BlogCardProps) => {
           {post.title}
         </h3>
         <p className="mt-3 text-muted-foreground text-sm line-clamp-3">
-          {post.excerpt || post.content.replace(/<[^>]*>/g, '').substring(0, 150) + '...'}
+          {post.excerpt || sanitizeHtml(post.content, { allowedTags: [], allowedAttributes: {} }).substring(0, 150) + '...'}
         </p>
         <div className="mt-5 flex items-center justify-between text-sm text-muted-foreground">
           <div className="flex items-center">

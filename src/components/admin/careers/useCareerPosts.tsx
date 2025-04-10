@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { CareerPost, ViewMode } from './types';
+import { supabase } from './supabaseClient';
+import { CareerPost } from './types';
 import { toast } from "@/components/ui/use-toast";
 
 const defaultCareerPost: CareerPost = {
@@ -20,41 +21,36 @@ const defaultCareerPost: CareerPost = {
 export const useCareerPosts = () => {
   const [posts, setPosts] = useState<CareerPost[]>([]);
   const [currentPost, setCurrentPost] = useState<CareerPost | null>(null);
-  const [view, setView] = useState<ViewMode>('list');
+  const [view, setView] = useState<'list' | 'editor'>('list');
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
 
   useEffect(() => {
-    // Load posts from localStorage with a specific key for careers
-    const savedPosts = localStorage.getItem('careerPosts');
-    if (savedPosts) {
-      try {
-        const parsedPosts = JSON.parse(savedPosts);
-        // Validate that we're loading career posts by checking for required fields
-        const validPosts = parsedPosts.filter((post: any) =>
-          post.title !== undefined &&
-          post.location !== undefined &&
-          post.type !== undefined
-        );
-        setPosts(validPosts);
-      } catch (error) {
-        console.error('Error parsing career posts:', error);
+    // Fetch posts from Supabase
+    const fetchPosts = async () => {
+      const { data, error } = await supabase.from('career_posts').select('*');
+      if (error) {
+        console.error('Error fetching career posts:', error.message);
         setPosts([]);
+      } else {
+        setPosts(data || []);
       }
-    }
+    };
+
+    fetchPosts();
   }, []);
 
-  const savePosts = (updatedPosts: CareerPost[]) => {
-    setPosts(updatedPosts);
-    // Use a distinct key for career posts storage
-    localStorage.setItem('careerPosts', JSON.stringify(updatedPosts));
+  const savePosts = async (updatedPosts: CareerPost[]) => {
+    const { error } = await supabase.from('career_posts').upsert(updatedPosts);
+    if (error) {
+      console.error('Error saving career posts:', error.message);
+    } else {
+      setPosts(updatedPosts);
+    }
   };
 
   const handleNewPost = () => {
-    setCurrentPost({
-      ...defaultCareerPost,
-      id: Date.now().toString(),
-    });
+    setCurrentPost({ ...defaultCareerPost, id: Date.now().toString() });
     setView('editor');
   };
 
@@ -63,10 +59,10 @@ export const useCareerPosts = () => {
     setView('editor');
   };
 
-  const handleDeletePost = (id: string) => {
+  const handleDeletePost = async (id: string) => {
     if (window.confirm('Are you sure you want to delete this job listing? This action cannot be undone.')) {
       const updatedPosts = posts.filter((post) => post.id !== id);
-      savePosts(updatedPosts);
+      await savePosts(updatedPosts);
       toast({
         title: "Job Deleted",
         description: "The job listing has been deleted successfully.",
@@ -74,23 +70,14 @@ export const useCareerPosts = () => {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!currentPost) return;
 
-    if (!currentPost.title.trim()) {
+    if (!currentPost.title.trim() || !currentPost.location.trim()) {
       toast({
         title: "Error",
-        description: "Job title is required",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    if (!currentPost.location.trim()) {
-      toast({
-        title: "Error",
-        description: "Job location is required",
+        description: "Job title and location are required",
         variant: "destructive",
       });
       return;
@@ -100,7 +87,7 @@ export const useCareerPosts = () => {
       ? posts.map((post) => (post.id === currentPost.id ? currentPost : post))
       : [...posts, currentPost];
 
-    savePosts(updatedPosts);
+    await savePosts(updatedPosts);
     setCurrentPost(null);
     setView('list');
 
@@ -108,18 +95,6 @@ export const useCareerPosts = () => {
       title: "Success",
       description: `Job listing has been ${currentPost.status === 'draft' ? 'saved as draft' : 'published'} successfully.`,
     });
-  };
-
-  const handleBackToList = () => {
-    if (currentPost && (currentPost.title || currentPost.description)) {
-      if (window.confirm('You have unsaved changes. Are you sure you want to leave?')) {
-        setCurrentPost(null);
-        setView('list');
-      }
-    } else {
-      setCurrentPost(null);
-      setView('list');
-    }
   };
 
   const getFilteredPosts = () => {
@@ -148,6 +123,5 @@ export const useCareerPosts = () => {
     handleEditPost,
     handleDeletePost,
     handleSubmit,
-    handleBackToList,
   };
 };

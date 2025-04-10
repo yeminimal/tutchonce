@@ -85,3 +85,19 @@
     transform: translateY(0);
   }
 }
+/* Animation Trigger Classes */
+.animate-reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.animate-reveal.in-view {
+  opacity: 1;
+  transform: none;
+}
+/* DEBUG ONLY - Force Reveal */
+.animate-reveal {
+  opacity: 1 !important;
+  transform: none !important;
+}

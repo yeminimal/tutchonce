@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef, useState } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
@@ -7,6 +6,7 @@ import { CareerPost } from '@/components/admin/careers/types';
 import CareerHero from '@/components/careers/CareerHero';
 import CareerBenefits from '@/components/careers/CareerBenefits';
 import JobListings from '@/components/careers/JobListings';
+import { supabase } from '@/integrations/supabase/client';
 
 const Careers = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -14,38 +14,24 @@ const Careers = () => {
 
   useEffect(() => {
     document.documentElement.classList.add('smooth-scroll');
-    
-    // Load career posts from localStorage
-    const savedPosts = localStorage.getItem('careerPosts');
-    if (savedPosts) {
-      try {
-        const parsedPosts = JSON.parse(savedPosts);
-        console.log('Raw career posts from storage:', parsedPosts);
-        
-        // Filter out any null or undefined posts
-        const validPosts = parsedPosts.filter((post: any) => 
-          post && typeof post === 'object'
-        );
-        
-        // Only show active job listings, filter out drafts and closed jobs
-        const activeJobs = validPosts.filter((job: CareerPost) => 
-          job.status === 'active'
-        );
-        console.log('Active jobs after filtering:', activeJobs);
-        
-        // Sort by date, newest first
-        const sortedJobs = activeJobs.sort((a: CareerPost, b: CareerPost) => 
-          new Date(b.date).getTime() - new Date(a.date).getTime()
-        );
-        setJobs(sortedJobs);
-      } catch (error) {
-        console.error('Error parsing career posts:', error);
+
+    const fetchCareers = async () => {
+      const { data, error } = await supabase
+        .from('career_posts')
+        .select('*')
+        .eq('status', 'published')
+        .order('date', { ascending: false });
+
+      if (error) {
+        console.error('Error fetching career posts from Supabase:', error.message);
         setJobs([]);
+      } else {
+        setJobs(data || []);
       }
-    } else {
-      console.log('No career posts found in localStorage');
-    }
-    
+    };
+
+    fetchCareers();
+
     const handleIntersection = (entries: IntersectionObserverEntry[]) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -53,17 +39,17 @@ const Careers = () => {
         }
       });
     };
-    
+
     const observer = new IntersectionObserver(handleIntersection, {
       threshold: 0.1,
       rootMargin: '0px 0px -50px 0px'
     });
-    
+
     if (sectionRef.current) {
       const elements = sectionRef.current.querySelectorAll('.animate-reveal');
       elements.forEach(el => observer.observe(el));
     }
-    
+
     return () => {
       document.documentElement.classList.remove('smooth-scroll');
       if (sectionRef.current) {
@@ -73,7 +59,6 @@ const Careers = () => {
     };
   }, []);
 
-  // Scroll to top on page load
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -84,7 +69,7 @@ const Careers = () => {
         <title>Careers | Tutchonce Cleaning Services</title>
         <meta name="description" content="Join the Tutchonce Cleaning Services team. View open positions and apply today for a rewarding career in the cleaning industry." />
       </Helmet>
-      
+
       <Navbar />
       <main ref={sectionRef}>
         <CareerHero />

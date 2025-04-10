@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { CareerPost, ViewMode } from './types';
 import { toast } from "@/components/ui/use-toast";
@@ -15,7 +14,7 @@ const defaultCareerPost: CareerPost = {
   salary: '',
   applicationProcess: '<p>To apply for this position, please send your resume and cover letter to <a href="mailto:careers@tutchonce.com">careers@tutchonce.com</a></p>',
   date: new Date().toISOString().split('T')[0],
-  status: 'draft'
+  status: 'draft',
 };
 
 export const useCareerPosts = () => {
@@ -24,7 +23,7 @@ export const useCareerPosts = () => {
   const [view, setView] = useState<ViewMode>('list');
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
-  
+
   useEffect(() => {
     // Load posts from localStorage with a specific key for careers
     const savedPosts = localStorage.getItem('careerPosts');
@@ -32,9 +31,9 @@ export const useCareerPosts = () => {
       try {
         const parsedPosts = JSON.parse(savedPosts);
         // Validate that we're loading career posts by checking for required fields
-        const validPosts = parsedPosts.filter((post: any) => 
-          post.title !== undefined && 
-          post.location !== undefined && 
+        const validPosts = parsedPosts.filter((post: any) =>
+          post.title !== undefined &&
+          post.location !== undefined &&
           post.type !== undefined
         );
         setPosts(validPosts);
@@ -44,13 +43,13 @@ export const useCareerPosts = () => {
       }
     }
   }, []);
-  
+
   const savePosts = (updatedPosts: CareerPost[]) => {
     setPosts(updatedPosts);
     // Use a distinct key for career posts storage
     localStorage.setItem('careerPosts', JSON.stringify(updatedPosts));
   };
-  
+
   const handleNewPost = () => {
     setCurrentPost({
       ...defaultCareerPost,
@@ -58,15 +57,15 @@ export const useCareerPosts = () => {
     });
     setView('editor');
   };
-  
+
   const handleEditPost = (post: CareerPost) => {
     setCurrentPost({ ...post });
     setView('editor');
   };
-  
+
   const handleDeletePost = (id: string) => {
     if (window.confirm('Are you sure you want to delete this job listing? This action cannot be undone.')) {
-      const updatedPosts = posts.filter(post => post.id !== id);
+      const updatedPosts = posts.filter((post) => post.id !== id);
       savePosts(updatedPosts);
       toast({
         title: "Job Deleted",
@@ -74,37 +73,37 @@ export const useCareerPosts = () => {
       });
     }
   };
-  
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!currentPost) return;
-    
+
     if (!currentPost.title.trim()) {
       toast({
         title: "Error",
         description: "Job title is required",
-        variant: "destructive"
+        variant: "destructive",
       });
       return;
     }
-    
+
     if (!currentPost.location.trim()) {
       toast({
         title: "Error",
         description: "Job location is required",
-        variant: "destructive"
+        variant: "destructive",
       });
       return;
     }
-    
-    const updatedPosts = currentPost.id && posts.some(post => post.id === currentPost.id)
-      ? posts.map(post => post.id === currentPost.id ? currentPost : post)
+
+    const updatedPosts = currentPost.id && posts.some((post) => post.id === currentPost.id)
+      ? posts.map((post) => (post.id === currentPost.id ? currentPost : post))
       : [...posts, currentPost];
-    
+
     savePosts(updatedPosts);
     setCurrentPost(null);
     setView('list');
-    
+
     toast({
       title: "Success",
       description: `Job listing has been ${currentPost.status === 'draft' ? 'saved as draft' : 'published'} successfully.`,
@@ -124,11 +123,13 @@ export const useCareerPosts = () => {
   };
 
   const getFilteredPosts = () => {
-    return posts.filter(post => {
-      const matchesSearch = post.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
-                          post.location.toLowerCase().includes(searchTerm.toLowerCase());
-      const matchesStatus = statusFilter === 'all' || post.status === statusFilter;
-      
+    return posts.filter((post) => {
+      const matchesSearch =
+        post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        post.location.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesStatus =
+        statusFilter === 'all' || post.status === statusFilter;
+
       return matchesSearch && matchesStatus;
     });
   };
@@ -147,6 +148,6 @@ export const useCareerPosts = () => {
     handleEditPost,
     handleDeletePost,
     handleSubmit,
-    handleBackToList
+    handleBackToList,
   };
 };

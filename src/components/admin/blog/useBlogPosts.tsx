@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useToast } from "@/hooks/use-toast";
 import { BlogPost } from './types';
@@ -10,7 +9,7 @@ export const useBlogPosts = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const { toast } = useToast();
-  
+
   useEffect(() => {
     // Load posts from localStorage with a specific key for blog posts
     const savedPosts = localStorage.getItem('blogPosts');
@@ -18,9 +17,9 @@ export const useBlogPosts = () => {
       try {
         const parsedPosts = JSON.parse(savedPosts);
         // Validate that we're loading blog posts by checking for required fields
-        const validPosts = parsedPosts.filter((post: any) => 
-          post.title !== undefined && 
-          post.content !== undefined && 
+        const validPosts = parsedPosts.filter((post: any) =>
+          post.title !== undefined &&
+          post.content !== undefined &&
           post.excerpt !== undefined
         );
         setPosts(validPosts);
@@ -31,14 +30,14 @@ export const useBlogPosts = () => {
       }
     }
   }, []);
-  
+
   const savePosts = (updatedPosts: BlogPost[]) => {
     setPosts(updatedPosts);
     // Use a distinct key for blog posts storage
     localStorage.setItem('blogPosts', JSON.stringify(updatedPosts));
     console.log('Saved blog posts:', updatedPosts);
   };
-  
+
   const handleNewPost = () => {
     setCurrentPost({
       id: Date.now().toString(),
@@ -53,19 +52,19 @@ export const useBlogPosts = () => {
       seoTitle: '',
       seoDescription: '',
       seoKeywords: '',
-      status: 'draft'
+      status: 'draft',
     });
     setView('editor');
   };
-  
+
   const handleEditPost = (post: BlogPost) => {
     setCurrentPost({ ...post });
     setView('editor');
   };
-  
+
   const handleDeletePost = (id: string) => {
     if (window.confirm('Are you sure you want to delete this post? This action cannot be undone.')) {
-      const updatedPosts = posts.filter(post => post.id !== id);
+      const updatedPosts = posts.filter((post) => post.id !== id);
       savePosts(updatedPosts);
       toast({
         title: "Post Deleted",
@@ -73,39 +72,39 @@ export const useBlogPosts = () => {
       });
     }
   };
-  
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!currentPost) return;
-    
+
     if (!currentPost.title.trim()) {
       toast({
         title: "Error",
         description: "Post title is required",
-        variant: "destructive"
+        variant: "destructive",
       });
       return;
     }
-    
+
     // Calculate reading time based on content length
     const wordCount = currentPost.content.replace(/<[^>]*>/g, '').split(/\s+/).length;
     const readingTime = Math.ceil(wordCount / 200); // Assuming 200 words per minute
-    
+
     const postToSave = {
       ...currentPost,
       readingTime: `${readingTime} min read`,
-      status: currentPost.status || 'published' // Default to published if not set
+      status: currentPost.status || 'published', // Default to published if not set
     };
-    
+
     // If the post already exists in the posts array, update it, otherwise add it
-    const updatedPosts = currentPost.id && posts.some(post => post.id === currentPost.id)
-      ? posts.map(post => post.id === currentPost.id ? postToSave : post)
+    const updatedPosts = currentPost.id && posts.some((post) => post.id === currentPost.id)
+      ? posts.map((post) => (post.id === currentPost.id ? postToSave : post))
       : [...posts, postToSave];
-    
+
     savePosts(updatedPosts);
     setCurrentPost(null);
     setView('list');
-    
+
     toast({
       title: "Success",
       description: `Blog post has been ${postToSave.status === 'draft' ? 'saved as draft' : 'published'} successfully.`,
@@ -144,19 +143,21 @@ export const useBlogPosts = () => {
       setView('list');
     }
   };
-  
+
   const getFilteredPosts = () => {
-    return posts.filter(post => {
-      const matchesSearch = post.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
-                            post.excerpt.toLowerCase().includes(searchTerm.toLowerCase());
-      const matchesStatus = statusFilter === 'all' || 
-                           (statusFilter === 'published' && post.status === 'published') || 
-                           (statusFilter === 'draft' && post.status === 'draft');
-      
+    return posts.filter((post) => {
+      const matchesSearch =
+        post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        post.excerpt.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesStatus =
+        statusFilter === 'all' ||
+        (statusFilter === 'published' && post.status === 'published') ||
+        (statusFilter === 'draft' && post.status === 'draft');
+
       return matchesSearch && matchesStatus;
     });
   };
-  
+
   return {
     posts,
     filteredPosts: getFilteredPosts(),
@@ -172,6 +173,6 @@ export const useBlogPosts = () => {
     handleDeletePost,
     handleSubmit,
     handleImageUpload,
-    handleBackToList
+    handleBackToList,
   };
 };

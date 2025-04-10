@@ -21,7 +21,6 @@ const Blog = () => {
       const { data, error } = await supabase
         .from('blog_posts')
         .select('*')
-        .eq('status', 'published')
         .order('date', { ascending: false });
 
       if (error) {

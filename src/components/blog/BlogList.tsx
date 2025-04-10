@@ -1,5 +1,6 @@
 import React from 'react';
-import { BlogPost } from './types';
+import BlogCard from './BlogCard';
+import { BlogPost } from '@/components/admin/blog/types';
 
 interface BlogListProps {
   blogPosts: BlogPost[];
@@ -7,19 +8,28 @@ interface BlogListProps {
 }
 
 const BlogList: React.FC<BlogListProps> = ({ blogPosts, onOpenPost }) => {
-  if (!blogPosts.length) {
-    // Display a message for empty state
-    return <div>No blog posts available.</div>;
-  }
-
   return (
-    <div>
-      {blogPosts.map(post => (
-        <div key={post.id} onClick={() => onOpenPost(post)}>
-          <h2>{post.title}</h2>
-          <p>{post.summary}</p>
+    <div className="container mx-auto px-4">
+      {blogPosts.length > 0 ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {blogPosts.map((post) => (
+            <BlogCard 
+              key={post.id} 
+              post={post} 
+              onOpenPost={onOpenPost} 
+            />
+          ))}
         </div>
-      ))}
+      ) : (
+        <div className="flex flex-col items-center justify-center py-16 bg-white rounded-2xl shadow-card">
+          <h3 className="text-xl font-semibold text-brand-primary mb-2">
+            No Blog Posts Yet
+          </h3>
+          <p className="text-muted-foreground">
+            Check back soon for new articles and cleaning tips!
+          </p>
+        </div>
+      )}
     </div>
   );
 };

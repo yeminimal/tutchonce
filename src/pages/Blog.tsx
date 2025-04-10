@@ -34,32 +34,34 @@ const Blog = () => {
 
     fetchBlogPosts();
 
-    const handleIntersection = (entries: IntersectionObserverEntry[]) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('in-view');
-        }
-      });
-    };
-
-    const observer = new IntersectionObserver(handleIntersection, {
-      threshold: 0.1,
-      rootMargin: '0px 0px -50px 0px'
+useEffect(() => {
+  const handleIntersection = (entries: IntersectionObserverEntry[]) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in-view');
+      } else {
+        entry.target.classList.remove('in-view'); // Debugging
+      }
     });
+  };
 
+  const observer = new IntersectionObserver(handleIntersection, {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px',
+  });
+
+  if (sectionRef.current) {
+    const elements = sectionRef.current.querySelectorAll('.animate-reveal');
+    elements.forEach(el => observer.observe(el));
+  }
+
+  return () => {
     if (sectionRef.current) {
       const elements = sectionRef.current.querySelectorAll('.animate-reveal');
-      elements.forEach(el => observer.observe(el));
+      elements.forEach(el => observer.unobserve(el));
     }
-
-    return () => {
-      document.documentElement.classList.remove('smooth-scroll');
-      if (sectionRef.current) {
-        const elements = sectionRef.current.querySelectorAll('.animate-reveal');
-        elements.forEach(el => observer.unobserve(el));
-      }
-    };
-  }, []);
+  };
+}, []);
 
   // Scroll to top on page load
   useEffect(() => {

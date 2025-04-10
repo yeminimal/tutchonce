@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import sanitizeHtml from 'sanitize-html';
 import { supabase } from './supabaseClient';
 import { BlogPost } from './types';
 import { useToast } from '@/hooks/use-toast';
@@ -85,7 +86,11 @@ export const useBlogPosts = () => {
     }
 
     // Calculate reading time based on content length
-    const wordCount = currentPost.content.replace(/<[^>]*>/g, '').split(/\s+/).length;
+    const sanitizedContent = sanitizeHtml(currentPost.content, {
+      allowedTags: [],
+      allowedAttributes: {}
+    });
+    const wordCount = sanitizedContent.split(/\s+/).length;
     const readingTime = Math.ceil(wordCount / 200); // Assuming 200 words per minute
 
     const postToSave = {

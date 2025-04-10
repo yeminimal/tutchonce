@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Edit2, Trash2 } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import { BlogPost } from '../types';
+import sanitizeHtml from 'sanitize-html';
 
 interface BlogPostCardProps {
   post: BlogPost;
@@ -31,7 +32,7 @@ const BlogPostCard: React.FC<BlogPostCardProps> = ({ post, onEditPost, onDeleteP
               )}
             </div>
             <p className="mt-1 text-sm text-muted-foreground line-clamp-2">
-              {post.excerpt || post.content.replace(/<[^>]*>/g, '').substring(0, 120) + '...'}
+              {post.excerpt || sanitizeHtml(post.content).substring(0, 120) + '...'}
             </p>
             <div className="mt-2 flex flex-wrap gap-2 items-center text-xs text-muted-foreground">
               <span className="inline-flex items-center">

@@ -85,22 +85,7 @@
     transform: translateY(0);
   }
 }
-/* Animation Trigger Classes */
-.animate-reveal {
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.4s ease, transform 0.4s ease;
-}
 
-.animate-reveal.in-view {
-  opacity: 1;
-  transform: none;
-}
-/* DEBUG ONLY - Force Reveal */
-.animate-reveal {
-  opacity: 1 !important;
-  transform: none !important;
-}
 /* TEMP PATCH — Force visibility of hidden cards */
 .animate-reveal {
   opacity: 1 !important;
@@ -109,11 +94,4 @@
   z-index: 10 !important;
   display: block !important;
   border: 1px dashed red !important; /* Optional for visual debug */
-}
-.blog-grid,
-.job-listings,
-.shadow-card {
-  opacity: 1 !important;
-  display: grid !important;
-  z-index: 10 !important;
 }

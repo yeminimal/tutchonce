@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Edit2, Trash2, MapPin, Briefcase, CalendarDays } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import { CareerPost } from '../types';
-
+import sanitizeHtml from 'sanitize-html';
 interface CareerPostCardProps {
   post: CareerPost;
   onEditPost: (post: CareerPost) => void;
@@ -56,7 +56,7 @@ const CareerPostCard: React.FC<CareerPostCardProps> = ({ post, onEditPost, onDel
             </div>
             
             <p className="mt-2 text-sm text-muted-foreground line-clamp-2">
-              {post.description.replace(/<[^>]*>/g, '').substring(0, 120) + '...'}
+              {sanitizeHtml(post.description).substring(0, 120) + '...'}
             </p>
           </div>
           

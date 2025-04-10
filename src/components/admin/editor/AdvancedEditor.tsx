@@ -1,4 +1,3 @@
-
 import React, { useRef, useEffect, useState } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
@@ -22,12 +21,12 @@ const AdvancedEditor: React.FC<AdvancedEditorProps> = ({
   placeholder = 'Start writing...',
   className,
   minHeight = '300px',
-  onImageUpload
+  onImageUpload,
 }) => {
   const quillRef = useRef<ReactQuill>(null);
   const [isMounted, setIsMounted] = useState(false);
   const [internalValue, setInternalValue] = useState(value || '');
-  
+
   // Initialize editor only after component mounts
   useEffect(() => {
     setIsMounted(true);
@@ -39,7 +38,7 @@ const AdvancedEditor: React.FC<AdvancedEditorProps> = ({
       setInternalValue(value);
     }
   }, [value]);
-  
+
   // Handle internal changes and propagate to parent only if component is mounted
   const handleChange = (newValue: string) => {
     if (isMounted) {
@@ -47,10 +46,10 @@ const AdvancedEditor: React.FC<AdvancedEditorProps> = ({
       onChange(newValue);
     }
   };
-  
+
   // Get toolbar configuration
   const modules = EditorToolbar({ onImageUpload });
-  
+
   // Handle image upload via toolbar
   if (onImageUpload && modules.toolbar && modules.toolbar.handlers) {
     modules.toolbar.handlers.image = () => {
@@ -71,14 +70,14 @@ const AdvancedEditor: React.FC<AdvancedEditorProps> = ({
   }
 
   return (
-    <div className={cn("advanced-editor", className)}>
+    <div className={cn('advanced-editor', className)}>
       <EditorStyles minHeight={minHeight} />
-      
+
       <ImageUploader 
         onImageUpload={onImageUpload} 
         quillRef={quillRef} 
       />
-      
+
       <ReactQuill
         ref={quillRef}
         theme="snow"

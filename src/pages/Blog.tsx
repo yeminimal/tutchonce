@@ -6,7 +6,7 @@ import { BlogPost } from '@/components/admin/blog/types';
 import BlogHeader from '@/components/blog/BlogHeader';
 import BlogList from '@/components/blog/BlogList';
 import BlogDialog from '@/components/blog/BlogDialog';
-import { supabase } from '@/integrations/supabaseClient';
+import { supabase } from '@/integrations/supabase/client';
 
 const Blog = () => {
   const sectionRef = useRef<HTMLDivElement>(null);

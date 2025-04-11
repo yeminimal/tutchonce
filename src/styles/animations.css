@@ -46,13 +46,16 @@
   animation: floating 3s ease-in-out infinite;
 }
 
+/* Default visibility for animate-reveal */
 .animate-reveal {
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+  opacity: 1; /* Ensure visible */
+  transform: none; /* Reset transform */
+  visibility: visible; /* Ensure it's not hidden */
+  transition: opacity 0.3s ease-out, transform 0.3s ease-out;
 }
 
-.animate-reveal.in-view {
-  opacity: 1;
-  transform: translateY(0);
+/* When in view, apply animation */
+.in-view {
+  opacity: 1; /* Ensure visible */
+  transform: translateY(0); /* Reset transform */
 }

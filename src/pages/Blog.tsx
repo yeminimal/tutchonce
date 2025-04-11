@@ -15,23 +15,30 @@ const Blog = () => {
   const [showDialog, setShowDialog] = useState(false);
 
 useEffect(() => {
-  document.documentElement.classList.add('smooth-scroll');
-
-const revealElements = () => {
-    const elements = sectionRef.current?.querySelectorAll('.animate-reveal') || [];
-
-    elements.forEach((el, i) => {
-// Delay each reveal for staggered animation effect
-      setTimeout(() => {
-        el.classList.add('in-view');
-      }, i * 100);
+  const handleIntersection = (entries: IntersectionObserverEntry[]) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in-view');
+      } else {
+        entry.target.classList.remove('in-view'); // Optional: Debugging
+      }
     });
   };
 
-// Run after DOM updates (especially after Supabase data loads)
-  setTimeout(revealElements, 300);
+  const observer = new IntersectionObserver(handleIntersection, {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px',
+  });
+
+  if (sectionRef.current) {
+    const elements = sectionRef.current.querySelectorAll('.animate-reveal');
+    elements.forEach(el => observer.observe(el));
+  }
 
   return () => {
-    document.documentElement.classList.remove('smooth-scroll');
+    if (sectionRef.current) {
+      const elements = sectionRef.current.querySelectorAll('.animate-reveal');
+      elements.forEach(el => observer.unobserve(el));
+    }
   };
 }, []);

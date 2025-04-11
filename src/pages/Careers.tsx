@@ -12,73 +12,24 @@ const Careers = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const [jobs, setJobs] = useState<CareerPost[]>([]);
 
-  useEffect(() => {
-    document.documentElement.classList.add('smooth-scroll');
+useEffect(() => {
+  document.documentElement.classList.add('smooth-scroll');
 
-    const fetchCareers = async () => {
-      const { data, error } = await supabase
-        .from('career_posts')
-        .select('*')
-        .eq('status', 'published')
-        .order('date', { ascending: false });
+const revealElements = () => {
+    const elements = sectionRef.current?.querySelectorAll('.animate-reveal') || [];
 
-      if (error) {
-        console.error('Error fetching career posts from Supabase:', error.message);
-        setJobs([]);
-      } else {
-        setJobs(data || []);
-      }
-    };
-
-    fetchCareers();
-
-    const handleIntersection = (entries: IntersectionObserverEntry[]) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('in-view');
-        }
-      });
-    };
-
-    const observer = new IntersectionObserver(handleIntersection, {
-      threshold: 0.1,
-      rootMargin: '0px 0px -50px 0px'
+    elements.forEach((el, i) => {
+// Delay each reveal for staggered animation effect
+      setTimeout(() => {
+        el.classList.add('in-view');
+      }, i * 100);
     });
+  };
 
-    if (sectionRef.current) {
-      const elements = sectionRef.current.querySelectorAll('.animate-reveal');
-      elements.forEach(el => observer.observe(el));
-    }
+// Run after DOM updates (especially after Supabase data loads)
+  setTimeout(revealElements, 300);
 
-    return () => {
-      document.documentElement.classList.remove('smooth-scroll');
-      if (sectionRef.current) {
-        const elements = sectionRef.current.querySelectorAll('.animate-reveal');
-        elements.forEach(el => observer.unobserve(el));
-      }
-    };
-  }, []);
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
-  return (
-    <div className="min-h-screen bg-background">
-      <Helmet>
-        <title>Careers | Tutchonce Cleaning Services</title>
-        <meta name="description" content="Join the Tutchonce Cleaning Services team. View open positions and apply today for a rewarding career in the cleaning industry." />
-      </Helmet>
-
-      <Navbar />
-      <main ref={sectionRef}>
-        <CareerHero />
-        <CareerBenefits />
-        <JobListings jobs={jobs} />
-      </main>
-      <Footer />
-    </div>
-  );
-};
-
-export default Careers;
+  return () => {
+    document.documentElement.classList.remove('smooth-scroll');
+  };
+}, []);

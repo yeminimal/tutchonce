@@ -34,6 +34,12 @@ const Blog = () => {
 
     fetchBlogPosts();
 
+ setTimeout(() => {
+  document.querySelectorAll('.animate-reveal').forEach(el => {
+    el.classList.add('in-view');
+  });
+}, 500);
+    
 useEffect(() => {
   const handleIntersection = (entries: IntersectionObserverEntry[]) => {
     entries.forEach(entry => {

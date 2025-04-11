@@ -88,13 +88,8 @@
 
 /* Ensure animate-reveal elements are visible */
 .animate-reveal {
-  opacity: 1 !important; /* Force visibility */
+  opacity: 1 !important;
   transform: none !important;
   visibility: visible !important;
   display: block !important;
-}
-
-/* Debugging border for visibility */
-.animate-reveal {
-  border: 1px dashed red !important; /* Optional visual debug */
 }

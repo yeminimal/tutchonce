@@ -96,3 +96,18 @@
   opacity: 1;
   transform: none;
 }
+
+/* RESET: Ensure all reveal elements are visible */
+.animate-reveal {
+  opacity: 1 !important;
+  transform: none !important;
+  visibility: visible !important;
+  display: block !important;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+/* Animate when in view — optional styling, add back when stable */
+.animate-reveal.in-view {
+  border: 2px dashed green; /* debug visual */
+  background-color: rgba(0, 255, 0, 0.03);
+}
